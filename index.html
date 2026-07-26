@@ -1,0 +1,2110 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#1a1a1a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="Yuki">
+<link rel="manifest" href="manifest.json">
+<title>Yuki</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --negro:#1a1a1a;--gris-oscuro:#2a2a2a;
+  --oro:#c8a96e;--oro-claro:#f0e6d0;
+  --verde:#4a7c59;--verde-bg:#e8f4ed;
+  --azul:#3d6b8e;--azul-bg:#e8f0f7;
+  --rojo:#c0392b;--rojo-bg:#fde8e8;
+  --naranja:#b45309;--naranja-bg:#fff3e0;
+  --gris:#f5f5f5;--gris-card:#fff;
+  --texto:#222;--texto-suave:#666;--borde:#ebebeb;
+}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#E3F2FD;color:var(--texto);font-size:18px;min-height:100vh}
+
+/* HEADER */
+header{background:var(--negro);color:#fff;padding:18px 20px;position:sticky;top:0;z-index:200;display:flex;align-items:center;justify-content:space-between}
+header h1{font-size:22px;font-weight:800;letter-spacing:1px;color:var(--oro)}
+header .fecha{font-size:14px;color:#888}
+
+/* NAV */
+nav{display:flex;overflow-x:auto;background:var(--gris-oscuro);scrollbar-width:none;position:sticky;top:59px;z-index:100}
+nav::-webkit-scrollbar{display:none}
+nav button{background:none;border:none;color:#999;padding:14px 18px;font-size:15px;white-space:nowrap;cursor:pointer;border-bottom:4px solid transparent;font-family:inherit;transition:all .2s}
+nav button.active{color:#fff;border-bottom-color:var(--oro)}
+nav button:hover{color:#fff}
+
+/* TABS */
+.tab{display:none;padding:18px;max-width:750px;margin:0 auto;padding-bottom:40px}
+.tab.active{display:block}
+
+/* CARDS */
+.card{background:var(--gris-card);border-radius:18px;padding:22px;margin-bottom:16px;box-shadow:0 2px 6px rgba(0,0,0,.08)}
+.card-title{font-size:14px;font-weight:700;color:#999;text-transform:uppercase;letter-spacing:.8px;margin-bottom:16px}
+
+/* SECCIÓN TÍTULO */
+.sec-title{font-size:16px;font-weight:700;color:var(--texto-suave);margin:22px 0 10px;text-transform:uppercase;letter-spacing:.6px}
+
+/* BOTONES */
+.btn{display:inline-flex;align-items:center;gap:8px;padding:12px 20px;border-radius:24px;border:none;font-size:16px;font-weight:600;cursor:pointer;font-family:inherit;transition:opacity .15s}
+.btn:active{opacity:.75}
+.btn-primary{background:var(--negro);color:#fff}
+.btn-oro{background:var(--oro);color:#fff}
+.btn-sm{padding:8px 16px;font-size:15px}
+.btn-outline{background:transparent;border:2px solid var(--borde);color:var(--texto)}
+.btn-rojo{background:var(--rojo);color:#fff}
+
+/* INPUTS */
+input[type=text],input[type=number],input[type=date],select,textarea{
+  width:100%;padding:14px 16px;border:2px solid var(--borde);border-radius:14px;
+  font-size:17px;font-family:inherit;background:#fafafa;color:var(--texto);outline:none;
+  transition:border-color .2s
+}
+input:focus,select:focus,textarea:focus{border-color:var(--oro);background:#fff}
+textarea{resize:vertical;min-height:110px;line-height:1.6}
+label{font-size:15px;color:var(--texto-suave);display:block;margin-bottom:7px;font-weight:500}
+.form-group{margin-bottom:18px}
+
+/* EMOJIS SELECTOR */
+.emoji-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+.emoji-btn{font-size:28px;padding:8px 12px;border-radius:12px;border:2px solid transparent;background:#f5f5f5;cursor:pointer;transition:all .15s;line-height:1}
+.emoji-btn.sel{border-color:var(--oro);background:var(--oro-claro)}
+
+/* ESCALA */
+.escala{display:flex;gap:8px;margin-top:10px}
+.esc-btn{flex:1;padding:12px 6px;border-radius:10px;border:2px solid var(--borde);background:#f5f5f5;font-size:16px;font-weight:700;cursor:pointer;text-align:center;transition:all .15s;color:#999}
+.esc-btn.sel{border-color:var(--oro);background:var(--oro-claro);color:var(--negro)}
+
+/* TAGS */
+.tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.tag{padding:6px 14px;border-radius:18px;font-size:15px;font-weight:600;cursor:pointer;border:2px solid var(--borde);background:#f5f5f5;color:#666;transition:all .15s}
+.tag.sel{background:var(--negro);color:#fff;border-color:var(--negro)}
+
+/* ENTRADAS LISTA */
+.entrada{background:#fff;border-radius:16px;padding:18px;margin-bottom:12px;box-shadow:0 2px 4px rgba(0,0,0,.06)}
+.entrada-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px}
+.entrada-fecha{font-size:14px;color:#999}
+.entrada-texto{font-size:17px;line-height:1.6;color:var(--texto)}
+.entrada-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.etag{font-size:13px;padding:4px 10px;border-radius:12px;background:#f0f0f0;color:#666;font-weight:600}
+.btn-borrar{background:none;border:none;color:#ccc;cursor:pointer;font-size:18px;padding:4px}
+.btn-borrar:hover{color:var(--rojo)}
+
+/* LUNA */
+.luna-grande{font-size:84px;text-align:center;padding:10px 0 6px;line-height:1}
+.luna-nombre{font-size:18px;font-weight:700;text-align:center;color:var(--negro)}
+.luna-sub{font-size:14px;color:#999;text-align:center;margin-top:4px}
+.luna-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+.luna-dato{background:#f8f8f8;border-radius:12px;padding:12px 14px;text-align:center}
+.luna-dato .ld-val{font-size:20px;font-weight:800;color:var(--negro)}
+.luna-dato .ld-lab{font-size:13px;color:#999;margin-top:4px}
+
+/* I CHING */
+.hexagrama{text-align:center;padding:12px 0}
+.hex-num{font-size:52px;margin-bottom:6px}
+.hex-nombre{font-size:22px;font-weight:800;color:var(--negro)}
+.hex-chino{font-size:16px;color:#999;margin-top:4px}
+.hex-lineas{display:flex;flex-direction:column;gap:6px;align-items:center;margin:18px 0}
+.hex-linea{width:72px;height:9px;background:var(--negro);border-radius:4px;position:relative}
+.hex-linea.yin::after{content:'';position:absolute;left:50%;transform:translateX(-50%);width:12px;height:100%;background:#E3F2FD;border-radius:2px}
+.hex-linea.yang-mov{background:#c8a96e}
+.hex-linea.yin-mov{background:#c8a96e}
+.hex-texto{font-size:13px;color:var(--texto-suave);line-height:1.7;text-align:left}
+
+/* GASTOS */
+.gasto-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--borde)}
+.gasto-row:last-child{border-bottom:none}
+.gasto-cat{display:flex;align-items:center;gap:8px;font-size:14px}
+.gasto-ico{font-size:18px}
+.gasto-importe{font-size:15px;font-weight:700;color:var(--negro)}
+.gasto-sub{font-size:11px;color:#999}
+.total-card{background:var(--negro);color:#fff;border-radius:14px;padding:16px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center}
+.total-card .t-label{font-size:12px;color:#aaa}
+.total-card .t-val{font-size:28px;font-weight:800;color:var(--oro)}
+.cat-bar{display:flex;align-items:center;gap:8px;padding:6px 0;font-size:13px}
+.cat-bar-fill{height:6px;border-radius:3px;background:var(--oro);transition:width .3s}
+.cat-bar-bg{flex:1;height:6px;border-radius:3px;background:#eee;overflow:hidden}
+
+/* PLANTAS */
+.planta-card{background:#fff;border-radius:14px;padding:14px;margin-bottom:10px;box-shadow:0 1px 4px rgba(0,0,0,.07)}
+.planta-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.planta-nombre{font-size:16px;font-weight:700}
+.planta-emoji{font-size:28px}
+.planta-info{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
+.planta-dato{background:#f8f8f8;border-radius:8px;padding:8px 10px;text-align:center}
+.planta-dato .pd-val{font-size:16px;font-weight:800}
+.planta-dato .pd-lab{font-size:10px;color:#999;margin-top:1px}
+.planta-dato.urgente .pd-val{color:var(--rojo)}
+.planta-dato.ok .pd-val{color:var(--verde)}
+.planta-dato.pronto .pd-val{color:var(--naranja)}
+.btn-regar{background:var(--azul-bg);color:var(--azul);border:none;padding:8px 14px;border-radius:20px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit}
+.btn-abonar{background:var(--verde-bg);color:var(--verde);border:none;padding:8px 14px;border-radius:20px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;margin-left:6px}
+
+/* MODAL */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:500;align-items:flex-end;justify-content:center}
+.modal-overlay.open{display:flex}
+.modal{background:#fff;border-radius:20px 20px 0 0;padding:20px;width:100%;max-width:680px;max-height:90vh;overflow-y:auto}
+.modal-title{font-size:16px;font-weight:800;margin-bottom:16px;display:flex;justify-content:space-between;align-items:center}
+.modal-close{background:none;border:none;font-size:22px;cursor:pointer;color:#999;padding:0}
+
+/* TOAST */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--negro);color:#fff;padding:10px 20px;border-radius:20px;font-size:13px;font-weight:600;opacity:0;transition:all .3s;z-index:1000;pointer-events:none;white-space:nowrap}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* BADGE */
+.badge{font-size:11px;font-weight:700;padding:3px 9px;border-radius:14px}
+.b-verde{background:var(--verde-bg);color:var(--verde)}
+.b-naranja{background:var(--naranja-bg);color:var(--naranja)}
+.b-rojo{background:var(--rojo-bg);color:var(--rojo)}
+.b-gris{background:#f0f0f0;color:#888}
+.b-oro{background:var(--oro-claro);color:#8a6a2a}
+
+/* UTILIDADES */
+.flex-between{display:flex;justify-content:space-between;align-items:center}
+.mt-8{margin-top:8px}
+.mt-12{margin-top:12px}
+.gap-8{gap:8px}
+.text-suave{color:var(--texto-suave);font-size:13px}
+.divider{height:1px;background:var(--borde);margin:12px 0}
+.empty{text-align:center;padding:32px 16px;color:#bbb;font-size:14px}
+.empty .empty-ico{font-size:40px;margin-bottom:8px}
+
+/* Agenda Tabs */
+.side-tabs {
+  position: fixed;
+  right: 0;
+  top: 80px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  z-index: 1000;
+}
+.side-tab {
+  background: var(--fondo-card);
+  border: 1px solid var(--oro);
+  border-right: none;
+  color: var(--oro);
+  padding: 12px 8px;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  border-radius: 8px 0 0 8px;
+  font-size: 11px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: -2px 2px 5px rgba(0,0,0,0.3);
+  transition: all 0.2s;
+}
+.side-tab.active {
+  background: var(--oro);
+  color: var(--negro);
+  padding-right: 15px;
+}
+
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🌸 Yuki</h1>
+  <span class="fecha" id="header-fecha"></span>
+</header>
+
+
+<div class="side-tabs">
+  <div class="side-tab active" onclick="tab('check',this)">DÍA</div>
+  <div class="side-tab" onclick="tab('cocina',this)">COCINA</div>
+  <div class="side-tab" onclick="tab('casa',this)">CASA</div>
+  <div class="side-tab" onclick="tab('diario',this)">DIARIO</div>
+  <div class="side-tab" onclick="tab('luna',this)">LUNA</div>
+</div>
+
+<nav>
+  <button class="active" onclick="tab('check',this)">✨ Día</button>
+  <button onclick="tab('diario',this)">📓 Diario</button>
+  <button onclick="tab('luna',this)">🌙 Luna</button>
+  <button onclick="tab('gastos',this)">💸 Gastos</button>
+  <button onclick="tab('plantas',this)">🌿 Plantas</button>
+  <button onclick="tab('reflexiones',this)">🪞 Reflexiones</button>
+  <button onclick="tab('salud',this)">🧘 Salud</button>
+  <button onclick="tab('guia',this)">🔮 Guía</button>
+  <button onclick="tab('belleza',this)">🧴 Belleza</button>
+  <button onclick="tab('compra',this)">🛒 Compra</button>
+  <button onclick="tab('tareas',this)">✅ Tareas</button>
+  <button onclick="tab('cocina',this)">🍳 Cocina</button>
+  <button onclick="tab('casa',this)">🧹 Casa</button>
+</nav>
+
+<div id="toast" class="toast"></div>
+
+<!-- ══════════════════════════════════════════
+     CHECK DEL DÍA
+══════════════════════════════════════════ -->
+<div id="tab-check" class="tab active">
+  <!-- ALQUIMIA SOMÁTICA v4.2 -->
+  <div class="card" style="background:#1a1a1a;color:white;border-left:5px solid #c8a96e;margin-bottom:15px;">
+    <div class="card-title" style="color:#c8a96e;display:flex;justify-content:space-between;margin-bottom:10px;">
+      <span>⚡ ALQUIMIA: EL ARCHIVO VIVO</span>
+      <span style="font-size:10px;opacity:0.7;">v4.2</span>
+    </div>
+    
+    <div style="background:#2a2a2a;padding:12px;border-radius:12px;margin-bottom:12px;">
+      <div style="font-size:12px;color:#c8a96e;margin-bottom:8px;font-weight:bold;text-transform:uppercase;letter-spacing:1px;">📍 MAPA DEL ARCHIVO (DERECHO)</div>
+      <div style="font-size:11px;line-height:1.5;display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+        <div><b>Mano:</b> Control y Rabia</div>
+        <div><b>Cadera:</b> Soporte y Pasado</div>
+        <div><b>Pie:</b> Raíces y Neuroma</div>
+        <div><b>Planta:</b> Fascia y Huesudo</div>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:15px;">
+      <button class="btn" style="background:#c8a96e;color:#1a1a1a;font-weight:bold;font-size:13px;padding:10px;" onclick="abrirSomatica('pausa')">🧘 PAUSA SOMÁTICA</button>
+      <button class="btn" style="border:1px solid #c8a96e;background:transparent;color:#c8a96e;font-size:13px;padding:10px;" onclick="abrirSomatica('limpieza')">🧹 LIMPIEZA CAMPO</button>
+    </div>
+
+    <div style="border-top:1px solid #333;padding-top:12px;display:flex;gap:15px;overflow-x:auto;padding-bottom:5px;">
+      <div style="text-align:center;min-width:70px;cursor:pointer;" onclick="abrirSomatica('renpho')">
+        <div style="font-size:24px;">👣</div>
+        <div style="font-size:10px;margin-top:4px;color:#888;">RENPHO</div>
+      </div>
+      <div style="text-align:center;min-width:70px;cursor:pointer;" onclick="abrirSomatica('bolas')">
+        <div style="font-size:24px;">🔮</div>
+        <div style="font-size:10px;margin-top:4px;color:#888;">BOLAS</div>
+      </div>
+      <div style="text-align:center;min-width:70px;cursor:pointer;" onclick="abrirSomatica('miofascial')">
+        <div style="font-size:24px;">🧘</div>
+        <div style="font-size:10px;margin-top:4px;color:#888;">FASCIA</div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="card" id="check-resumen" style="display:none">
+    <div class="card-title">✅ Check de hoy registrado</div>
+    <div id="check-resumen-content"></div>
+    <button class="btn btn-outline btn-sm mt-12" onclick="editarCheck()">Editar</button>
+  </div>
+
+  <div id="check-form">
+    <div class="card">
+      <div class="card-title">☁️ Tiempo</div>
+      <div class="emoji-row" id="tiempo-row">
+        <button class="emoji-btn" data-val="☀️" onclick="selEmoji('tiempo',this)">☀️</button>
+        <button class="emoji-btn" data-val="⛅" onclick="selEmoji('tiempo',this)">⛅</button>
+        <button class="emoji-btn" data-val="🌧️" onclick="selEmoji('tiempo',this)">🌧️</button>
+        <button class="emoji-btn" data-val="🌬️" onclick="selEmoji('tiempo',this)">🌬️</button>
+        <button class="emoji-btn" data-val="❄️" onclick="selEmoji('tiempo',this)">❄️</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">💭 Humor</div>
+      <div class="emoji-row" id="humor-row">
+        <button class="emoji-btn" data-val="😄" onclick="selEmoji('humor',this)">😄</button>
+        <button class="emoji-btn" data-val="🙂" onclick="selEmoji('humor',this)">🙂</button>
+        <button class="emoji-btn" data-val="😐" onclick="selEmoji('humor',this)">😐</button>
+        <button class="emoji-btn" data-val="😔" onclick="selEmoji('humor',this)">😔</button>
+        <button class="emoji-btn" data-val="😤" onclick="selEmoji('humor',this)">😤</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">⚡ Energía</div>
+      <div class="escala" id="energia-row">
+        <button class="esc-btn" data-val="1" onclick="selEscala('energia',this)">1</button>
+        <button class="esc-btn" data-val="2" onclick="selEscala('energia',this)">2</button>
+        <button class="esc-btn" data-val="3" onclick="selEscala('energia',this)">3</button>
+        <button class="esc-btn" data-val="4" onclick="selEscala('energia',this)">4</button>
+        <button class="esc-btn" data-val="5" onclick="selEscala('energia',this)">5</button>
+      </div>
+      <div class="flex-between mt-8" style="font-size:11px;color:#bbb"><span>Agotada</span><span>Plena energía</span></div>
+    </div>
+
+    <div class="card">
+      <div class="form-group">
+        <label>🌟 Lo mejor del día</label>
+        <textarea id="check-mejor" placeholder="¿Qué ha ido bien hoy?" rows="2"></textarea>
+      </div>
+      <div class="form-group">
+        <label>🔄 ¿Qué mejorarías?</label>
+        <textarea id="check-mejorar" placeholder="Sin juicio, solo observar..." rows="2"></textarea>
+      </div>
+      <div class="form-group" style="margin-bottom:0">
+        <label>💬 Una palabra para hoy</label>
+        <input type="text" id="check-palabra" placeholder="Solo una...">
+      </div>
+    </div>
+
+    <button class="btn btn-primary" style="width:100%" onclick="guardarCheck()">Guardar check del día</button>
+  </div>
+
+  <!-- Historial checks recientes -->
+  <div class="sec-title mt-12">Últimos días</div>
+  <div id="check-historial"></div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     DIARIO
+══════════════════════════════════════════ -->
+<div id="tab-diario" class="tab">
+
+  <div class="card">
+    <div class="card-title">📝 Nueva entrada · <span id="diario-hoy" style="color:var(--oro);font-size:14px"></span></div>
+    <div class="form-group">
+      <textarea id="diario-texto" placeholder="¿Qué quieres registrar hoy?..." rows="4"></textarea>
+    </div>
+    <div class="form-group">
+      <label>Tags</label>
+      <div class="tags" id="diario-tags">
+        <span class="tag" onclick="toggleTag(this)">reflexión</span>
+        <span class="tag" onclick="toggleTag(this)">sueño</span>
+        <span class="tag" onclick="toggleTag(this)">importante</span>
+        <span class="tag" onclick="toggleTag(this)">pendiente</span>
+        <span class="tag" onclick="toggleTag(this)">insight</span>
+        <span class="tag" onclick="toggleTag(this)">patrón</span>
+        <span class="tag" onclick="toggleTag(this)">gratitud</span>
+      </div>
+    </div>
+    <button class="btn btn-primary" style="width:100%" onclick="guardarEntrada()">Guardar</button>
+  </div>
+
+  <!-- Filtro tags -->
+  <div class="flex-between mt-8 mb-8" style="margin-bottom:8px">
+    <span class="text-suave">Entradas</span>
+    <select id="filtro-tag" onchange="renderDiario()" style="width:auto;padding:6px 10px;font-size:12px">
+      <option value="">Todas</option>
+      <option value="reflexión">reflexión</option>
+      <option value="sueño">sueño</option>
+      <option value="importante">importante</option>
+      <option value="pendiente">pendiente</option>
+      <option value="insight">insight</option>
+      <option value="patrón">patrón</option>
+      <option value="gratitud">gratitud</option>
+    </select>
+  </div>
+
+  <div id="diario-lista"></div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     LUNA
+══════════════════════════════════════════ -->
+<div id="tab-luna" class="tab">
+
+  <div class="card">
+    <div class="luna-grande" id="luna-emoji">🌕</div>
+    <div class="luna-nombre" id="luna-nombre">Luna llena</div>
+    <div class="luna-sub" id="luna-sub">Cargando datos lunares...</div>
+    <div class="luna-grid" id="luna-grid"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🌟 Carta natal · Lore</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <span class="badge b-oro">☀️ Sol Cáncer</span>
+      <span class="badge b-gris">🌙 Luna Capricornio</span>
+      <span class="badge b-verde">⬆️ Asc Libra</span>
+    </div>
+    <div class="divider"></div>
+    <div class="text-suave" id="luna-guia" style="line-height:1.7;font-size:13px">
+      Calculando guía del día según tu carta natal y la fase lunar...
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">☯️ I Ching · Tirada del día</div>
+    <div id="iching-display"></div>
+    <div style="display:flex;gap:8px;margin-top:14px;flex-wrap:wrap">
+      <button class="btn btn-primary btn-sm" onclick="tiradaIChingManual()">🎲 TIRADA MANUAL</button>
+      <button class="btn btn-outline btn-sm" onclick="tiradaIChing()">🔄 Tirada automática</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📝 Notas del ciclo</div>
+    <textarea id="luna-notas" placeholder="Observaciones sobre este ciclo lunar..." rows="3" onchange="guardarLunaNotas()"></textarea>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     GASTOS
+══════════════════════════════════════════ -->
+<div id="tab-gastos" class="tab">
+
+  <div class="total-card">
+    <div>
+      <div class="t-label">Gasto este mes</div>
+      <div class="t-val" id="total-mes">0,00 €</div>
+    </div>
+    <div style="text-align:right">
+      <div class="t-label">Presupuesto</div>
+      <div style="font-size:16px;font-weight:700;color:#fff" id="presupuesto-disp">— €</div>
+    </div>
+  </div>
+
+  <!-- Barras por categoría -->
+  <div class="card" id="gastos-barras">
+    <div class="card-title">Por categoría</div>
+    <div id="barras-content"></div>
+  </div>
+
+  <!-- Nuevo gasto -->
+  <div class="card">
+    <div class="card-title">➕ Nuevo gasto</div>
+    <div class="form-group">
+      <label>Categoría</label>
+      <select id="gasto-cat">
+        <option value="🍎 Alimentación">🍎 Alimentación</option>
+        <option value="🏥 Salud">🏥 Salud</option>
+        <option value="👗 Ropa">👗 Ropa</option>
+        <option value="🎭 Ocio">🎭 Ocio</option>
+        <option value="🏠 Hogar">🏠 Hogar</option>
+        <option value="🚌 Transporte">🚌 Transporte</option>
+        <option value="✨ Belleza">✨ Belleza</option>
+        <option value="📦 Otros">📦 Otros</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Importe (€)</label>
+      <input type="number" id="gasto-importe" placeholder="0,00" step="0.01" min="0">
+    </div>
+    <div class="form-group">
+      <label>Nota</label>
+      <input type="text" id="gasto-nota" placeholder="¿En qué?">
+    </div>
+    <button class="btn btn-primary" style="width:100%" onclick="guardarGasto()">Añadir gasto</button>
+  </div>
+
+  <!-- Config presupuesto -->
+  <div class="card">
+    <div class="card-title">⚙️ Presupuesto mensual</div>
+    <div class="form-group">
+      <label>Total mensual (€)</label>
+      <input type="number" id="presupuesto-input" placeholder="ej. 1200" step="10">
+    </div>
+    <button class="btn btn-outline btn-sm" onclick="guardarPresupuesto()">Guardar</button>
+  </div>
+
+  <!-- Lista gastos -->
+  <div class="sec-title">Gastos del mes</div>
+  <div id="gastos-lista"></div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     PLANTAS
+══════════════════════════════════════════ -->
+<div id="tab-plantas" class="tab">
+
+  <div style="display:flex;justify-content:flex-end;margin-bottom:10px">
+    <button class="btn btn-oro btn-sm" onclick="abrirModalPlanta()">+ Nueva planta</button>
+  </div>
+
+  <div id="plantas-lista"></div>
+</div>
+
+<!-- TAB REFLEXIONES -->
+<div id="tab-reflexiones" class="tab">
+  <div class="card">
+    <div class="card-title">🌅 Mañana estoica</div>
+    <div id="reflexion-manana-texto" style="font-size:14px;color:var(--texto-suave);font-style:italic;margin-bottom:12px;line-height:1.6"></div>
+    <textarea id="reflexion-manana-resp" rows="3" placeholder="Tu reflexión de hoy..." style="width:100%;border:1.5px solid var(--borde);border-radius:10px;padding:10px;font-family:inherit;font-size:14px;resize:vertical"></textarea>
+  </div>
+  <div class="card">
+    <div class="card-title">🌙 Noche taoísta</div>
+    <div id="reflexion-noche-texto" style="font-size:14px;color:var(--texto-suave);font-style:italic;margin-bottom:12px;line-height:1.6"></div>
+    <textarea id="reflexion-noche-resp" rows="3" placeholder="¿Cómo fluyó el día?" style="width:100%;border:1.5px solid var(--borde);border-radius:10px;padding:10px;font-family:inherit;font-size:14px;resize:vertical"></textarea>
+  </div>
+  <button class="btn btn-primary" style="width:100%" onclick="guardarReflexiones()">Guardar reflexiones</button>
+  <div class="sec-title" style="margin-top:18px">Últimas reflexiones</div>
+  <div id="reflexiones-historial"></div>
+</div>
+
+<!-- TAB SALUD -->
+<div id="tab-salud" class="tab">
+  <div class="card">
+    <div class="card-title">⚗️ Alquimia Somática</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+      <button class="btn btn-outline btn-sm" onclick="abrirAlquimia('morton')">👣 SOS Morton</button>
+      <button class="btn btn-outline btn-sm" onclick="abrirAlquimia('manos')">👐 Bolas Baoding</button>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">👣 Pasos de hoy</div>
+    <input type="number" id="salud-pasos" placeholder="ej. 8000" style="width:100%;border:1.5px solid var(--borde);border-radius:10px;padding:10px;font-size:16px;font-family:inherit">
+  </div>
+  <div class="card">
+    <div class="card-title">🏃 Práctica de hoy</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px" id="salud-practicas">
+      <button class="btn btn-outline btn-sm salud-pr" data-val="Pilates" onclick="togglePractica(this)">🧘 Pilates</button>
+      <button class="btn btn-outline btn-sm salud-pr" data-val="Natación" onclick="togglePractica(this)">🏊 Natación</button>
+      <button class="btn btn-outline btn-sm salud-pr" data-val="Yoga" onclick="togglePractica(this)">🌿 Yoga</button>
+      <button class="btn btn-outline btn-sm salud-pr" data-val="Caminata" onclick="togglePractica(this)">🚶 Caminata</button>
+      <button class="btn btn-outline btn-sm salud-pr" data-val="Fuerza" onclick="togglePractica(this)">💪 Fuerza</button>
+      <button class="btn btn-outline btn-sm salud-pr" data-val="Otro" onclick="togglePractica(this)">✨ Otro</button>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">📏 Mis medidas</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+      <div><label style="font-size:12px;color:var(--texto-suave)">Peso (kg)</label><input type="number" id="salud-peso" step="0.1" style="width:100%;border:1.5px solid var(--borde);border-radius:10px;padding:8px;font-family:inherit"></div>
+      <div><label style="font-size:12px;color:var(--texto-suave)">Cintura (cm)</label><input type="number" id="salud-cintura" style="width:100%;border:1.5px solid var(--borde);border-radius:10px;padding:8px;font-family:inherit"></div>
+      <div><label style="font-size:12px;color:var(--texto-suave)">Cadera (cm)</label><input type="number" id="salud-cadera" style="width:100%;border:1.5px solid var(--borde);border-radius:10px;padding:8px;font-family:inherit"></div>
+      <div><label style="font-size:12px;color:var(--texto-suave)">Pecho (cm)</label><input type="number" id="salud-pecho" style="width:100%;border:1.5px solid var(--borde);border-radius:10px;padding:8px;font-family:inherit"></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">📝 Notas de salud</div>
+    <textarea id="salud-notas" rows="3" placeholder="Cómo te sientes, síntomas, energía..." style="width:100%;border:1.5px solid var(--borde);border-radius:10px;padding:10px;font-family:inherit;font-size:14px;resize:vertical"></textarea>
+  </div>
+  <button class="btn btn-primary" style="width:100%" onclick="guardarSalud()">Guardar</button>
+  <div class="sec-title" style="margin-top:18px">Historial semanal</div>
+  <div id="salud-historial"></div>
+</div>
+
+<!-- TAB GUÍA -->
+<div id="tab-guia" class="tab">
+  <div class="card">
+    <div class="card-title">☯️ Tao Te Ching — versículo del día</div>
+    <div id="tao-versiculo" style="font-size:15px;line-height:1.8;color:var(--texto);font-style:italic"></div>
+    <div id="tao-numero" style="font-size:11px;color:var(--texto-suave);margin-top:8px"></div>
+    <button class="btn btn-outline btn-sm" style="margin-top:12px" onclick="nuevoTao()">🔄 Otro versículo</button>
+  </div>
+  <div class="card">
+    <div class="card-title">4️⃣ Eneagrama 4w3 — reflexión del día</div>
+    <div id="enea-reflexion" style="font-size:14px;line-height:1.7;color:var(--texto-suave)"></div>
+    <button class="btn btn-outline btn-sm" style="margin-top:12px" onclick="nuevaEnea()">🔄 Otra reflexión</button>
+  </div>
+  <div class="card">
+    <div class="card-title">🌙 Eneagrama — conceptos clave del 4w3</div>
+    <div style="font-size:13px;line-height:1.8;color:var(--texto-suave)">
+      <p><strong>Motivación central:</strong> Ser auténtica y única, encontrar identidad profunda.</p>
+      <p style="margin-top:8px"><strong>Miedo básico:</strong> No tener identidad propia, ser ordinaria o insignificante.</p>
+      <p style="margin-top:8px"><strong>Ala 3 suma:</strong> Ambición, capacidad de trabajo, orientación a resultados.</p>
+      <p style="margin-top:8px"><strong>En crecimiento:</strong> Acción concreta, presencia en lo cotidiano, menos idealización.</p>
+      <p style="margin-top:8px"><strong>Wu Wei aplicado al 4:</strong> Confiar en el flujo sin forzar la intensidad.</p>
+    </div>
+  </div>
+</div>
+
+<!-- TAB BELLEZA -->
+<div id="tab-belleza" class="tab">
+
+  <!-- MAÑANA -->
+  <div class="card">
+    <div class="card-title">🌅 Rutina de mañana</div>
+    <div style="font-size:13px;line-height:2;color:var(--texto)">
+      <div>☐ Limpieza suave</div>
+      <div>☐ Tónico / agua micelar</div>
+      <div>☐ Sérum vitamina C</div>
+      <div>☐ Hidratante + SPF</div>
+    </div>
+  </div>
+
+  <!-- NOCHE -->
+  <div class="card">
+    <div class="card-title">🌙 Rutina de noche</div>
+    <div style="font-size:13px;line-height:2;color:var(--texto)">
+      <div>☐ Desmaquillado / doble limpieza</div>
+      <div>☐ Tónico</div>
+      <div>☐ Sérum o retinol</div>
+      <div>☐ Contorno de ojos</div>
+      <div>☐ Crema nutritiva</div>
+      <div>☐ Aceite facial (opcional)</div>
+    </div>
+  </div>
+
+  <!-- MASAJE KOBIDO -->
+  <div class="card">
+    <div class="card-title">🇯🇵 Masaje facial japonés · Kobido</div>
+    <p style="font-size:12px;color:var(--texto-suave);margin-bottom:12px">Hazlo en la cama, con aceite. 5-10 minutos.</p>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <a href="https://www.youtube.com/watch?v=KgdwjtO9weU" target="_blank" class="btn btn-outline btn-sm" style="text-decoration:none;display:flex;align-items:center;gap:8px">
+        ▶️ Masaje Kobido — favorito
+      </a>
+      <a href="https://youtu.be/3AQjNxFfTaE" target="_blank" class="btn btn-outline btn-sm" style="text-decoration:none;display:flex;align-items:center;gap:8px">
+        ▶️ Automasaje Kobido
+      </a>
+      <a href="https://youtu.be/dFgDNZhAL3I" target="_blank" class="btn btn-outline btn-sm" style="text-decoration:none;display:flex;align-items:center;gap:8px">
+        ▶️ Masaje facial 10 min
+      </a>
+      <a href="https://youtu.be/DsIOg-8WgRs" target="_blank" class="btn btn-outline btn-sm" style="text-decoration:none;display:flex;align-items:center;gap:8px">
+        ▶️ Masaje japonés lifting facial
+      </a>
+      <a href="https://www.youtube.com/watch?v=NIhAogiBwkc" target="_blank" class="btn btn-outline btn-sm" style="text-decoration:none;display:flex;align-items:center;gap:8px">
+        ▶️ Curso completo Kobido 3h — referencia
+      </a>
+    </div>
+    <div class="sec-title" style="margin-top:14px">Pasos básicos</div>
+    <div style="font-size:13px;line-height:2;color:var(--texto)">
+      <div>1. Aplica aceite en manos y rostro</div>
+      <div>2. Deslizamientos suaves frente → sienes</div>
+      <div>3. Círculos en mejillas y mandíbula</div>
+      <div>4. Pellizcos suaves en contorno facial</div>
+      <div>5. Presiones en puntos de tensión</div>
+      <div>6. Drenaje cuello → clavículas</div>
+    </div>
+  </div>
+
+  <!-- YOGA FACIAL -->
+  <div class="card">
+    <div class="card-title">🧘 Yoga facial</div>
+    <p style="font-size:12px;color:var(--texto-suave);margin-bottom:12px">5-7 minutos. Perfecto para hacer tumbada.</p>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <a href="https://youtu.be/12QOEELUX8Q" target="_blank" class="btn btn-outline btn-sm" style="text-decoration:none;display:flex;align-items:center;gap:8px">
+        ▶️ Yoga facial — favorito
+      </a>
+      <a href="https://www.youtube.com/watch?v=5R6VCJnQ89g" target="_blank" class="btn btn-outline btn-sm" style="text-decoration:none;display:flex;align-items:center;gap:8px">
+        ▶️ Rutina diaria completa
+      </a>
+    </div>
+  </div>
+
+  <!-- NOTAS -->
+  <div class="card">
+    <div class="card-title">📝 Mis productos y notas</div>
+    <textarea id="belleza-notas" rows="4" placeholder="Productos que uso, marcas, notas de piel..." style="width:100%;border:1.5px solid var(--borde);border-radius:10px;padding:10px;font-family:inherit;font-size:14px;resize:vertical" oninput="guardar('belleza_notas',this.value)"></textarea>
+  </div>
+
+</div>
+
+<!-- TAB COMPRA -->
+<div id="tab-compra" class="tab">
+  <div class="card">
+    <div class="card-title">🛒 Lista de la compra</div>
+    <div style="display:flex;gap:8px;margin-bottom:12px">
+      <input type="text" id="compra-input" placeholder="Añadir producto..." style="flex:1;border:1.5px solid var(--borde);border-radius:10px;padding:9px 12px;font-family:inherit;font-size:14px" onkeydown="if(event.key==='Enter')addCompra()">
+      <button class="btn btn-oro btn-sm" onclick="addCompra()">+</button>
+    </div>
+    <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap">
+      <button class="btn btn-outline btn-sm" onclick="filtroCompra('todos')" id="fc-todos" style="border-color:var(--oro)">Todos</button>
+      <button class="btn btn-outline btn-sm" onclick="filtroCompra('super')" id="fc-super">🏪 Super</button>
+      <button class="btn btn-outline btn-sm" onclick="filtroCompra('farmacia')" id="fc-farmacia">💊 Farmacia</button>
+      <button class="btn btn-outline btn-sm" onclick="filtroCompra('drogueria')" id="fc-drogueria">🧹 Droguería</button>
+      <button class="btn btn-outline btn-sm" onclick="filtroCompra('otro')" id="fc-otro">📦 Otro</button>
+    </div>
+    <div id="compra-lista"></div>
+    <button class="btn btn-outline btn-sm" style="margin-top:10px;color:var(--rojo)" onclick="limpiarComprados()">🗑 Borrar marcados</button>
+  </div>
+</div>
+
+<!-- TAB TAREAS -->
+<div id="tab-tareas" class="tab">
+  <div class="card">
+    <div class="card-title">✅ Tareas pendientes</div>
+    <div style="display:flex;gap:8px;margin-bottom:12px">
+      <input type="text" id="tarea-input" placeholder="Nueva tarea..." style="flex:1;border:1.5px solid var(--borde);border-radius:10px;padding:9px 12px;font-family:inherit;font-size:14px" onkeydown="if(event.key==='Enter')addTarea()">
+      <button class="btn btn-oro btn-sm" onclick="addTarea()">+</button>
+    </div>
+    <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap">
+      <button class="btn btn-outline btn-sm" onclick="filtroTarea('todas')" id="ft-todas" style="border-color:var(--oro)">Todas</button>
+      <button class="btn btn-outline btn-sm" onclick="filtroTarea('casa')" id="ft-casa">🏠 Casa</button>
+      <button class="btn btn-outline btn-sm" onclick="filtroTarea('personal')" id="ft-personal">👤 Personal</button>
+      <button class="btn btn-outline btn-sm" onclick="filtroTarea('urgente')" id="ft-urgente">🔴 Urgente</button>
+    </div>
+    <div id="tareas-lista"></div>
+    <button class="btn btn-outline btn-sm" style="margin-top:10px;color:var(--rojo)" onclick="limpiarTareasHechas()">🗑 Borrar completadas</button>
+  </div>
+</div>
+
+<!-- TAB COCINA -->
+<div id="tab-cocina" class="tab">
+  <div class="card">
+    <div class="card-title">🥬 Dieta Antiinflamatoria</div>
+    <div style="font-size:13px;line-height:1.8;color:var(--texto)">
+      <div style="margin-bottom:8px">✨ <b>Pilares:</b> Alimentos reales, fermentados (chucrut, kéfir), reducción de sal y procesados.</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <div style="background:rgba(0,128,0,0.05);padding:8px;border-radius:8px">
+          <b style="color:green">SÍ:</b><br>🥦 Crucíferas<br>🐟 Omega 3<br>🫐 Antocianinas<br>🫚 Jengibre/Cúrcuma
+        </div>
+        <div style="background:rgba(255,0,0,0.05);padding:8px;border-radius:8px">
+          <b style="color:red">EVITAR:</b><br>🍭 Azúcar<br>🥖 Harinas refinadas<br>🌻 Aceites semilla<br>🧪 Aditivos
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🍳 Recetas Antiinflamatorias</div>
+    <div style="font-size:13px;color:var(--texto)">
+      <details style="margin-bottom:10px">
+        <summary style="font-weight:bold;cursor:pointer;padding:5px;background:rgba(212,175,55,0.1);border-radius:4px">🥣 Desayuno: Kéfir Potenciado</summary>
+        <div style="padding:10px;line-height:1.6">
+          Kéfir de cabra con semillas de lino molidas, arándanos (antocianinas) y una pizca de canela. Ayuda a tu microbiota desde primera hora.
+        </div>
+      </details>
+      <details style="margin-bottom:10px">
+        <summary style="font-weight:bold;cursor:pointer;padding:5px;background:rgba(212,175,55,0.1);border-radius:4px">🥗 Almuerzo: Ensalada de Crucíferas</summary>
+        <div style="padding:10px;line-height:1.6">
+          Brócoli al vapor (poco hecho), caballa o sardinas (Omega 3), chucrut y aliño de aceite de oliva virgen extra con cúrcuma y pimienta negra.
+        </div>
+      </details>
+      <details style="margin-bottom:10px">
+        <summary style="font-weight:bold;cursor:pointer;padding:5px;background:rgba(212,175,55,0.1);border-radius:4px">🍲 Cena: Crema Depurativa</summary>
+        <div style="padding:10px;line-height:1.6">
+          Crema de calabaza y jengibre fresco. El jengibre es un potente antiinflamatorio natural ideal para antes de dormir.
+        </div>
+      </details>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📦 Stock Despensa</div>
+    <div id="cocina-stock" style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+      <!-- Se genera por JS -->
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🍽 Sugerencias de Cena</div>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <button class="btn btn-outline btn-sm" onclick="toast('Crema de calabaza con semillas y kéfir')">🥣 Crema de verduras</button>
+      <button class="btn btn-outline btn-sm" onclick="toast('Salmón a la plancha con brócoli al vapor')">🐟 Pescado + Verde</button>
+      <button class="btn btn-outline btn-sm" onclick="toast('Tortilla de 2 huevos con espinacas y cúrcuma')">🥚 Proteína limpia</button>
+    </div>
+  </div>
+</div>
+
+<!-- TAB CASA -->
+<div id="tab-casa" class="tab">
+  <div class="card" style="background:#fefce8; border-left: 5px solid #eab308; margin-top:15px;">
+    <div class="card-title" style="color:#854d0e">🧪 Fórmulas Magistrales</div>
+    <div style="font-size:13px; line-height:1.6;">
+      <details style="margin-bottom:10px; background:#fff; padding:8px; border-radius:8px;">
+        <summary style="font-weight:bold; cursor:pointer; color:#b45309;">🍋 El Multiusos Cítrico</summary>
+        <p style="padding:8px 0 0 5px; font-size:12px; color:#451a03;">Agua, vinagre blanco y rodajas de limón natural (deja reposar). Desinfecta y da brillo Shokunin.</p>
+      </details>
+      <details style="margin-bottom:10px; background:#fff; padding:8px; border-radius:8px;">
+        <summary style="font-weight:bold; cursor:pointer; color:#b45309;">💎 Cristales y Espejos</summary>
+        <p style="padding:8px 0 0 5px; font-size:12px; color:#451a03;">Alcohol de limpieza y agua a partes iguales. Un chorrito de amoníaco opcional. Secar con papel.</p>
+      </details>
+      <details style="margin-bottom:10px; background:#fff; padding:8px; border-radius:8px;">
+        <summary style="font-weight:bold; cursor:pointer; color:#b45309;">🪵 Nutrición Madera</summary>
+        <p style="padding:8px 0 0 5px; font-size:12px; color:#451a03;">Aceite de oliva y zumo de limón fresco. Mezcla bien y aplica con paño suave para revivir muebles.</p>
+      </details>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🧹 Rutina de Casa</div>
+    <p style="font-size:12px;color:var(--texto-suave)">Próximamente: Checklist por habitaciones.</p>
+  </div>
+</div>
+
+
+<!-- MODAL ALQUIMIA SOMÁTICA -->
+<div class="modal-overlay" id="modal-somatica">
+  <div class="modal" style="border-top:5px solid #c8a96e;">
+    <div class="modal-title">
+      <span id="somatica-titulo">Alquimia Somática</span>
+      <button class="modal-close" onclick="cerrarModal('modal-somatica')">×</button>
+    </div>
+    <div id="somatica-contenido" style="font-size:14px; line-height:1.6; color:#444;">
+      <!-- Se llena dinámicamente -->
+    </div>
+    <button class="btn btn-primary" style="width:100%; margin-top:20px;" onclick="cerrarModal('modal-somatica')">Entendido</button>
+  </div>
+</div>
+
+<!-- MODAL ALQUIMIA -->
+<div class="modal-overlay" id="modal-alquimia" style="display:none">
+  <div class="modal">
+    <div class="modal-title">
+      <span id="alquimia-titulo">Alquimia Somática</span>
+      <button class="modal-close" onclick="cerrarAlquimia()">×</button>
+    </div>
+    <div id="alquimia-contenido" style="padding:10px 0"></div>
+  </div>
+</div>
+
+<!-- MODAL PLANTA -->
+<div class="modal-overlay" id="modal-planta">
+  <div class="modal">
+    <div class="modal-title">
+      <span id="modal-planta-titulo">Nueva planta</span>
+      <button class="modal-close" onclick="cerrarModal('modal-planta')">×</button>
+    </div>
+    <div class="form-group">
+      <label>Nombre</label>
+      <input type="text" id="p-nombre" placeholder="ej. Monstera">
+    </div>
+    <div class="form-group">
+      <label>Emoji</label>
+      <div class="emoji-row" id="p-emoji-row">
+        <button class="emoji-btn" data-val="🌿" onclick="selPlantaEmoji(this)">🌿</button>
+        <button class="emoji-btn" data-val="🌵" onclick="selPlantaEmoji(this)">🌵</button>
+        <button class="emoji-btn" data-val="🌸" onclick="selPlantaEmoji(this)">🌸</button>
+        <button class="emoji-btn" data-val="🌺" onclick="selPlantaEmoji(this)">🌺</button>
+        <button class="emoji-btn" data-val="🌻" onclick="selPlantaEmoji(this)">🌻</button>
+        <button class="emoji-btn" data-val="🍃" onclick="selPlantaEmoji(this)">🍃</button>
+        <button class="emoji-btn" data-val="🌱" onclick="selPlantaEmoji(this)">🌱</button>
+        <button class="emoji-btn" data-val="🪴" onclick="selPlantaEmoji(this)">🪴</button>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Días entre riegos</label>
+      <input type="number" id="p-riego-dias" placeholder="ej. 7" min="1">
+    </div>
+    <div class="form-group">
+      <label>Último riego</label>
+      <input type="date" id="p-ultimo-riego">
+    </div>
+    <div class="form-group">
+      <label>Días entre abonos</label>
+      <input type="number" id="p-abono-dias" placeholder="ej. 30" min="1">
+    </div>
+    <div class="form-group">
+      <label>Último abono</label>
+      <input type="date" id="p-ultimo-abono">
+    </div>
+    <div class="form-group">
+      <label>Notas</label>
+      <textarea id="p-notas" placeholder="Luz, sustrato, cuidados especiales..." rows="2"></textarea>
+    </div>
+    <input type="hidden" id="p-id">
+    <button class="btn btn-primary" style="width:100%" onclick="guardarPlanta()">Guardar planta</button>
+  </div>
+</div>
+
+<script>
+// ════════════════════════════════════════════════════════
+// BASE DE DATOS (localStorage)
+// ════════════════════════════════════════════════════════
+
+function cargar(key, def) {
+  try { return JSON.parse(localStorage.getItem('yuki_' + key)) || def; }
+  catch(e) { return def; }
+}
+function guardar(key, val) {
+  localStorage.setItem('yuki_' + key, JSON.stringify(val));
+}
+
+// ════════════════════════════════════════════════════════
+// NAVEGACIÓN
+// ════════════════════════════════════════════════════════
+
+function tab(id, btn) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  btn.classList.add('active');
+  if(id === 'diario') renderDiario();
+  if(id === 'luna') initLuna();
+  if(id === 'gastos') renderGastos();
+  if(id === 'plantas') renderPlantas();
+  if(id === 'check') renderCheckHistorial();
+  if(id === 'reflexiones') initReflexiones();
+  if(id === 'salud') initSalud();
+  if(id === 'guia') initGuia();
+  if(id === 'belleza') initBelleza();
+  if(id === 'compra') renderCompra();
+  if(id === 'tareas') renderTareas();
+  if(id === 'cocina') renderCocina();
+  if(id === 'casa') renderCasa();
+}
+
+// ════════════════════════════════════════════════════════
+
+function abrirSomatica(tipo) {
+  const mod = document.getElementById('modal-somatica');
+  const tit = document.getElementById('somatica-titulo');
+  const cont = document.getElementById('somatica-contenido');
+  
+  const datos = {
+    pausa: {
+      t: "🧘 Pausa Somática (1 min)",
+      c: "1. Pon la mano en la zona que duele.<br>2. No intentes arreglar nada.<br>3. Respira <b>dentro</b> del dolor, imagina que el aire es agua.<br>4. Di: <i>'Te oigo, estoy aquí'</i>."
+    },
+    limpieza: {
+      t: "🧹 Limpieza de Campo",
+      c: "Al salir del bar: sacude tus manos y pies con fuerza. Imagina que el peso de los demás cae al suelo. Respira hondo y visualiza tu casa como un espacio sagrado y limpio."
+    },
+    renpho: {
+      t: "👣 Sesión Renpho",
+      c: "Acomoda tus pies huesudos. Siente cómo la máquina hace el trabajo de sostenerte. Registra este momento como 'Autocuidado: Pies' en tu diario."
+    },
+    bolas: {
+      t: "🔮 Bolas de Mano",
+      c: "Hazlas girar suavemente. No busques fuerza, busca <b>espacio</b>. Imagina que los huesos de la mano se separan y fluyen."
+    },
+    miofascial: {
+      t: "🧘 Práctica Miofascial",
+      c: "Usa la pelota o el rodillo. Busca el punto de dolor y quédate ahí, respirando, hasta que sientas que el tejido 'se derrite'. Es alquimia pura."
+    }
+  };
+  
+  if(datos[tipo]) {
+    tit.innerHTML = datos[tipo].t;
+    cont.innerHTML = datos[tipo].c;
+    mod.classList.add('open');
+  }
+}
+function cerrarModal(id) { document.getElementById(id).classList.remove('open'); }
+
+// FECHA / CABECERA
+// ════════════════════════════════════════════════════════
+
+function hoyStr() {
+  return new Date().toISOString().slice(0,10);
+}
+function formatFecha(iso) {
+  const d = new Date(iso + 'T12:00:00');
+  const opciones = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
+  return d.toLocaleDateString('es-ES', opciones).replace(/^\w/, (c) => c.toUpperCase());
+}
+function initHeader() {
+  const h = document.getElementById('header-fecha');
+  if(h) h.textContent = formatFecha(hoyStr());
+}
+
+// ════════════════════════════════════════════════════════
+// CHECK DEL DÍA
+// ════════════════════════════════════════════════════════
+
+let checkState = { tiempo:'', humor:'', energia:'', mejor:'', mejorar:'', palabra:'' };
+
+function selEmoji(campo, btn) {
+  btn.closest('.emoji-row').querySelectorAll('.emoji-btn').forEach(b => b.classList.remove('sel'));
+  btn.classList.add('sel');
+  checkState[campo] = btn.dataset.val;
+}
+function selEscala(campo, btn) {
+  btn.closest('.escala').querySelectorAll('.esc-btn').forEach(b => b.classList.remove('sel'));
+  btn.classList.add('sel');
+  checkState[campo] = btn.dataset.val;
+}
+
+function guardarCheck() {
+  checkState.mejor = document.getElementById('check-mejor').value.trim();
+  checkState.mejorar = document.getElementById('check-mejorar').value.trim();
+  checkState.palabra = document.getElementById('check-palabra').value.trim();
+
+  if(!checkState.humor && !checkState.tiempo) { toast('Selecciona al menos tiempo y humor'); return; }
+
+  const checks = cargar('checks', {});
+  checks[hoyStr()] = { ...checkState, fecha: hoyStr(), ts: Date.now() };
+  guardar('checks', checks);
+
+  toast('✅ Check guardado');
+  mostrarCheckResumen();
+  renderCheckHistorial();
+}
+
+function mostrarCheckResumen() {
+  const checks = cargar('checks', {});
+  const hoy = checks[hoyStr()];
+  if(!hoy) return;
+
+  const partes = [];
+  if(hoy.tiempo) partes.push(hoy.tiempo);
+  if(hoy.humor) partes.push(hoy.humor);
+  if(hoy.energia) partes.push(`⚡${hoy.energia}/5`);
+  if(hoy.palabra) partes.push(`"${hoy.palabra}"`);
+
+  document.getElementById('check-resumen-content').innerHTML = `
+    <div style="font-size:22px;margin-bottom:8px">${partes.join(' · ')}</div>
+    ${hoy.mejor ? `<p style="font-size:13px;color:#555;margin-bottom:4px">🌟 ${hoy.mejor}</p>` : ''}
+    ${hoy.mejorar ? `<p style="font-size:13px;color:#555">🔄 ${hoy.mejorar}</p>` : ''}
+  `;
+  document.getElementById('check-resumen').style.display = 'block';
+  document.getElementById('check-form').style.display = 'none';
+}
+
+function editarCheck() {
+  document.getElementById('check-resumen').style.display = 'none';
+  document.getElementById('check-form').style.display = 'block';
+  const checks = cargar('checks', {});
+  const hoy = checks[hoyStr()];
+  if(!hoy) return;
+  // Restaurar estado
+  checkState = {...hoy};
+  document.getElementById('check-mejor').value = hoy.mejor || '';
+  document.getElementById('check-mejorar').value = hoy.mejorar || '';
+  document.getElementById('check-palabra').value = hoy.palabra || '';
+  // Restaurar selecciones visuales
+  document.querySelectorAll('#tiempo-row .emoji-btn').forEach(b => { if(b.dataset.val===hoy.tiempo) b.classList.add('sel'); });
+  document.querySelectorAll('#humor-row .emoji-btn').forEach(b => { if(b.dataset.val===hoy.humor) b.classList.add('sel'); });
+  document.querySelectorAll('#energia-row .esc-btn').forEach(b => { if(b.dataset.val===hoy.energia) b.classList.add('sel'); });
+}
+
+function renderCheckHistorial() {
+  const checks = cargar('checks', {});
+  const hoy = hoyStr();
+  const entradas = Object.values(checks)
+    .filter(c => c.fecha !== hoy)
+    .sort((a,b) => b.fecha.localeCompare(a.fecha))
+    .slice(0, 7);
+
+  const el = document.getElementById('check-historial');
+  if(!entradas.length) { el.innerHTML = '<div class="empty"><div class="empty-ico">🗓️</div>Sin registros anteriores</div>'; return; }
+
+  el.innerHTML = entradas.map(c => `
+    <div class="entrada">
+      <div class="entrada-header">
+        <span style="font-size:13px;font-weight:600">${formatFecha(c.fecha)}</span>
+        <span>${c.tiempo||''} ${c.humor||''} ${c.energia ? '⚡'+c.energia : ''}</span>
+      </div>
+      ${c.palabra ? `<div style="font-size:13px;color:#888;font-style:italic">"${c.palabra}"</div>` : ''}
+      ${c.mejor ? `<div style="font-size:13px;color:#555;margin-top:4px">🌟 ${c.mejor}</div>` : ''}
+    </div>
+  `).join('');
+
+  // Si hay check hoy, mostrar resumen
+  if(checks[hoy]) mostrarCheckResumen();
+}
+
+// ════════════════════════════════════════════════════════
+// DIARIO
+// ════════════════════════════════════════════════════════
+
+function toggleTag(el) { el.classList.toggle('sel'); }
+
+function guardarEntrada() {
+  const texto = document.getElementById('diario-texto').value.trim();
+  if(!texto) { toast('Escribe algo primero'); return; }
+
+  const tags = [...document.querySelectorAll('#diario-tags .tag.sel')].map(t => t.textContent);
+  const entradas = cargar('diario', []);
+  entradas.unshift({ id: Date.now(), fecha: hoyStr(), texto, tags, ts: Date.now() });
+  guardar('diario', entradas);
+
+  document.getElementById('diario-texto').value = '';
+  document.querySelectorAll('#diario-tags .tag').forEach(t => t.classList.remove('sel'));
+  toast('📓 Guardado');
+  renderDiario();
+}
+
+function borrarEntrada(id) {
+  if(!confirm('¿Borrar esta entrada?')) return;
+  const entradas = cargar('diario', []).filter(e => e.id !== id);
+  guardar('diario', entradas);
+  renderDiario();
+}
+
+function renderDiario() {
+  document.getElementById('diario-hoy').innerText = formatFecha(hoyStr());
+  const filtro = document.getElementById('filtro-tag').value;
+  let entradas = cargar('diario', []);
+  if(filtro) entradas = entradas.filter(e => e.tags && e.tags.includes(filtro));
+
+  const el = document.getElementById('diario-lista');
+  if(!entradas.length) { el.innerHTML = '<div class="empty"><div class="empty-ico">📓</div>Sin entradas' + (filtro ? ' con este tag' : '') + '</div>'; return; }
+
+  el.innerHTML = entradas.map(e => `
+    <div class="entrada">
+      <div class="entrada-header">
+        <span class="entrada-fecha">${formatFecha(e.fecha)}</span>
+        <button class="btn-borrar" onclick="borrarEntrada(${e.id})">×</button>
+      </div>
+      <div class="entrada-texto">${e.texto.replace(/\n/g,'<br>')}</div>
+      ${e.tags && e.tags.length ? `<div class="entrada-tags">${e.tags.map(t=>`<span class="etag">${t}</span>`).join('')}</div>` : ''}
+    </div>
+  `).join('');
+}
+
+// ════════════════════════════════════════════════════════
+// LUNA E I CHING
+// ════════════════════════════════════════════════════════
+
+function getLunaFase() {
+  // Cálculo fase lunar (algoritmo básico, preciso ±1 día)
+  const ahora = new Date();
+  const known = new Date('2000-01-06T18:14:00Z'); // luna nueva conocida
+  const ciclo = 29.530588853;
+  const diff = (ahora - known) / (1000 * 60 * 60 * 24);
+  const fase = ((diff % ciclo) + ciclo) % ciclo;
+  return fase;
+}
+
+function getLunaInfo() {
+  const fase = getLunaFase();
+  const ciclo = 29.530588853;
+  const pct = fase / ciclo;
+
+  let emoji, nombre, guia;
+  if(pct < 0.0625) { emoji='🌑'; nombre='Luna Nueva'; guia='Momento de intención y siembra. Tu Luna Capricornio pide estructura — ¿qué quieres construir en este ciclo?'; }
+  else if(pct < 0.1875) { emoji='🌒'; nombre='Luna Creciente'; guia='La energía empieza a moverse. Sol Cáncer: cuida lo que has empezado con ternura y constancia.'; }
+  else if(pct < 0.3125) { emoji='🌓'; nombre='Cuarto Creciente'; guia='Momento de acción. Libra ascendente busca equilibrio — decide y actúa sin paralizarte.'; }
+  else if(pct < 0.4375) { emoji='🌔'; nombre='Gibosa Creciente'; guia='Ajusta y perfecciona. Luna Capricornio: evalúa con rigor pero sin dureza contigo misma.'; }
+  else if(pct < 0.5625) { emoji='🌕'; nombre='Luna Llena'; guia='Máxima luz y revelación. Sol Cáncer en oposición lunar — integra el sentir con el hacer. Momento poderoso.'; }
+  else if(pct < 0.6875) { emoji='🌖'; nombre='Gibosa Menguante'; guia='Agradece y comparte lo aprendido. Libra: ¿qué has dado, qué has recibido?'; }
+  else if(pct < 0.8125) { emoji='🌗'; nombre='Cuarto Menguante'; guia='Suelta lo que no sirve. Luna Capricornio: ¿qué estructura ya cumplió su función?'; }
+  else { emoji='🌘'; nombre='Luna Menguante'; guia='Reposo y integración. Sol Cáncer: recoge, descansa, prepárate para el próximo ciclo.'; }
+
+  const diasHastaLlena = pct < 0.5
+    ? Math.round((0.5 - pct) * ciclo)
+    : Math.round((1.5 - pct) * ciclo);
+  const diasHastaNueva = pct < 0.0 || pct > 0.5
+    ? Math.round((1 - pct) * ciclo)
+    : Math.round((1 - pct) * ciclo);
+
+  return { emoji, nombre, guia, fase: Math.round(pct * 100), diasHastaLlena, diasHastaNueva, diaDelCiclo: Math.round(fase) };
+}
+
+function initLuna() {
+  const info = getLunaInfo();
+  document.getElementById('luna-emoji').textContent = info.emoji;
+  document.getElementById('luna-nombre').textContent = info.nombre;
+  document.getElementById('luna-sub').textContent = `Día ${info.diaDelCiclo} del ciclo · ${info.fase}% del ciclo completado`;
+  document.getElementById('luna-guia').textContent = info.guia;
+  document.getElementById('luna-grid').innerHTML = `
+    <div class="luna-dato"><div class="ld-val">${info.diasHastaLlena}</div><div class="ld-lab">días hasta luna llena</div></div>
+    <div class="luna-dato"><div class="ld-val">${info.diaDelCiclo}</div><div class="ld-lab">día del ciclo (de 29)</div></div>
+  `;
+
+  // Notas guardadas
+  const notas = cargar('luna_notas', '');
+  document.getElementById('luna-notas').value = notas;
+
+  // I Ching si ya hay tirada del día
+  const ichingHoy = cargar('iching_hoy', null);
+  if(ichingHoy && ichingHoy.fecha === hoyStr()) {
+    renderHexagrama(ichingHoy.hex);
+  } else {
+    tiradaIChing();
+  }
+}
+
+function guardarLunaNotas() {
+  guardar('luna_notas', document.getElementById('luna-notas').value);
+}
+
+// I CHING — 64 hexagramas (datos básicos)
+const ICHING = [
+  {n:1,nombre:'La Fuerza Creadora',chino:'乾 Qián',texto:'El movimiento del cielo es poderoso. El sabio hace de sí mismo algo nuevo continuamente. Fuerza, persistencia, acción sin resistencia.'},
+  {n:2,nombre:'Lo Receptivo',chino:'坤 Kūn',texto:'La tierra en su receptividad. Rendirse al flujo natural. Hay poder en la quietud y en acoger lo que viene.'},
+  {n:3,nombre:'La Dificultad Inicial',chino:'屯 Zhūn',texto:'Todo comienzo lleva dificultad. Como el brote que abre la tierra helada: persevera, no abandones.'},
+  {n:4,nombre:'La Necedad Juvenil',chino:'蒙 Méng',texto:'Tiempo de aprender. No busques que el oráculo repita su respuesta. La ignorancia honesta es el primer paso.'},
+  {n:5,nombre:'La Espera',chino:'需 Xū',texto:'No fuerces. Hay nubes pero aún no llueve. Espera con confianza, el momento correcto llegará.'},
+  {n:6,nombre:'El Conflicto',chino:'讼 Sòng',texto:'No lleves el conflicto hasta el final. Busca el punto medio. La rigidez solo multiplica el problema.'},
+  {n:7,nombre:'El Ejército',chino:'師 Shī',texto:'La disciplina al servicio de lo correcto. Organiza tus fuerzas internas. El caos solo se vence con orden interior.'},
+  {n:8,nombre:'La Solidaridad',chino:'比 Bǐ',texto:'Busca aliados verdaderos. La unión sincera multiplica la fuerza. Examina si tus vínculos te elevan.'},
+  {n:9,nombre:'La Fuerza Domeñadora de lo Pequeño',chino:'小畜 Xiǎo Chù',texto:'Los grandes cambios llegan por acumulación de pequeños pasos. Paciencia con el proceso.'},
+  {n:10,nombre:'El Porte',chino:'履 Lǚ',texto:'Actúa con cuidado y honestidad incluso en situaciones delicadas. El tigre no te morderá si caminas con rectitud.'},
+  {n:11,nombre:'La Paz',chino:'泰 Tài',texto:'El cielo y la tierra se comunican. Momento de armonía y prosperidad. Aprovecha este tiempo bien.'},
+  {n:12,nombre:'El Estancamiento',chino:'否 Pǐ',texto:'El cielo y la tierra no se comunican. Retírate hacia adentro, conserva tu esencia. No es tiempo de actuar hacia afuera.'},
+  {n:13,nombre:'Comunidad con los Hombres',chino:'同人 Tóng Rén',texto:'La unión abierta y honesta. Sal de tu mundo interior y conecta con otros desde la verdad.'},
+  {n:14,nombre:'La Gran Posesión',chino:'大有 Dà Yǒu',texto:'Abundancia bajo el cielo. No te aferres. La verdadera posesión es saber compartir y no apegarse.'},
+  {n:15,nombre:'La Modestia',chino:'謙 Qiān',texto:'El sabio no se pone en primer lugar y por eso llega el primero. La modestia es la fuerza que mueve montañas.'},
+  {n:16,nombre:'El Entusiasmo',chino:'豫 Yù',texto:'Actúa con alegría y desde el centro. El entusiasmo verdadero surge del alineamiento interior, no del impulso.'},
+  {n:17,nombre:'El Seguimiento',chino:'隨 Suí',texto:'Adapta tu movimiento al momento. No lideres ahora, aprende siguiendo. Hay sabiduría en ceder el paso.'},
+  {n:18,nombre:'El Trabajo en lo Echado a Perder',chino:'蠱 Gǔ',texto:'Algo necesita ser reparado. No evites el trabajo. La corrección del pasado abre el futuro.'},
+  {n:19,nombre:'El Acercamiento',chino:'臨 Lín',texto:'La influencia benévola se acerca. Actúa con generosidad. El tiempo favorece la expansión.'},
+  {n:20,nombre:'La Contemplación',chino:'觀 Guān',texto:'Observa antes de actuar. La comprensión verdadera viene de ver las cosas tal como son.'},
+  {n:21,nombre:'La Mordedura Tajante',chino:'噬嗑 Shì Kè',texto:'Enfrenta los obstáculos directamente. No rodees lo que debe ser resuelto. La claridad corta.'},
+  {n:22,nombre:'La Gracia',chino:'賁 Bì',texto:'La forma bella debe tener contenido verdadero. No dejes que la apariencia tape la sustancia.'},
+  {n:23,nombre:'La Desintegración',chino:'剝 Bō',texto:'Momento de soltar. Lo que cae, cae. Cuida solo lo esencial. Pronto comienza un nuevo ciclo.'},
+  {n:24,nombre:'El Retorno',chino:'復 Fù',texto:'El punto de giro. Tras la oscuridad, una pequeña luz regresa. No fuerces, deja que germine sola.'},
+  {n:25,nombre:'La Inocencia',chino:'無妄 Wú Wàng',texto:'Actúa desde la pureza de intención, sin expectativas de resultado. El cielo guía al que no calcula.'},
+  {n:26,nombre:'La Fuerza Domeñadora de lo Grande',chino:'大畜 Dà Chù',texto:'Gran acumulación de energía. Aún no es tiempo de actuar. Retén y prepárate.'},
+  {n:27,nombre:'Las Comisuras de la Boca',chino:'頤 Yí',texto:'Cuida lo que nutres: tus pensamientos, tus palabras, tu cuerpo. De ello depende tu vitalidad.'},
+  {n:28,nombre:'La Preponderancia de lo Grande',chino:'大過 Dà Guò',texto:'Una viga a punto de ceder. Actúa con decisión pero con cuidado. No ignores lo que sobrecarga.'},
+  {n:29,nombre:'Lo Abismal',chino:'坎 Kǎn',texto:'El agua fluye siempre hacia abajo, llenando cada hoyo. Sigue fluyendo. El peligro se supera con constancia.'},
+  {n:30,nombre:'Lo Adherente',chino:'離 Lí',texto:'La luz necesita algo a lo que adherirse. Claridad y dependencia mutua. Aporta luz donde puedas.'},
+  {n:31,nombre:'El Influjo',chino:'咸 Xián',texto:'La influencia verdadera es sin ego. Toca al otro desde la receptividad, no desde el control.'},
+  {n:32,nombre:'La Duración',chino:'恆 Héng',texto:'La constancia no es rigidez: es adaptarse sin perder el centro. Lo duradero es flexible y firme a la vez.'},
+  {n:33,nombre:'La Retirada',chino:'遯 Dùn',texto:'Hay momentos en que retirarse es la mayor valentía. Preserva tu energía para cuando la situación cambie.'},
+  {n:34,nombre:'El Poder de lo Grande',chino:'大壯 Dà Zhuàng',texto:'Gran fuerza disponible. Úsala con rectitud. La fuerza sin sabiduría destruye lo que quiere construir.'},
+  {n:35,nombre:'El Progreso',chino:'晉 Jìn',texto:'Avance claro y luminoso. El príncipe recibe caballos y es recibido tres veces al día. Aprovecha este momento.'},
+  {n:36,nombre:'El Oscurecimiento de la Luz',chino:'明夷 Míng Yí',texto:'Oculta tu luz en tiempos oscuros. No expongas tu verdad donde no puede ser vista. Persevera en silencio.'},
+  {n:37,nombre:'La Familia',chino:'家人 Jiā Rén',texto:'El orden comienza en casa. Cuida tus vínculos más cercanos con la misma dedicación que tus proyectos.'},
+  {n:38,nombre:'El Antagonismo',chino:'睽 Kuí',texto:'Oposición y diferencia. En lo pequeño, la diferencia puede ser fértil. No busques la unidad forzada.'},
+  {n:39,nombre:'El Obstáculo',chino:'蹇 Jiǎn',texto:'El camino tiene un impedimento. Detente y examina: ¿es el camino incorrecto o el momento incorrecto?'},
+  {n:40,nombre:'La Liberación',chino:'解 Xiè',texto:'La tensión se libera. Como la lluvia después de la tormenta. Perdona, suelta, sigue adelante liviana.'},
+  {n:41,nombre:'La Mengua',chino:'損 Sǔn',texto:'Dar de lo que tienes para elevar al otro. La mengua sincera es una forma de abundancia.'},
+  {n:42,nombre:'El Aumento',chino:'益 Yì',texto:'Tiempo favorable para crecer y expandirse. Actúa desde la generosidad y el beneficio se multiplica.'},
+  {n:43,nombre:'El Desbordamiento',chino:'夬 Guài',texto:'La decisión debe tomarse. Anuncia tu posición con claridad. No uses la fuerza, usa la verdad.'},
+  {n:44,nombre:'El Encuentro',chino:'姤 Gòu',texto:'Un encuentro inesperado. No te dejes arrastrar por lo que parece poderoso pero viene de abajo.'},
+  {n:45,nombre:'La Reunión',chino:'萃 Cuì',texto:'Momento de congregar fuerzas y personas. La comunidad bien dirigida logra lo que el individuo no puede.'},
+  {n:46,nombre:'El Ascenso',chino:'升 Shēng',texto:'Ascenso gradual y sostenido. Como el árbol que crece hacia la luz: paso a paso, sin saltar etapas.'},
+  {n:47,nombre:'El Agotamiento',chino:'困 Kùn',texto:'Las palabras no son escuchadas. Cuida tu energía. El sabio encuentra alegría incluso en la adversidad.'},
+  {n:48,nombre:'El Pozo',chino:'井 Jǐng',texto:'La fuente siempre está ahí, pero hay que sacar el agua. Accede a tus recursos profundos. Nutre a otros.'},
+  {n:49,nombre:'La Revolución',chino:'革 Gé',texto:'Transformación necesaria. El cambio profundo requiere el momento correcto y la intención clara.'},
+  {n:50,nombre:'El Caldero',chino:'鼎 Dǐng',texto:'El recipiente sagrado de la transformación. Cuida lo que cocinas en tu interior y ofrece lo mejor.'},
+  {n:51,nombre:'Lo Suscitativo',chino:'震 Zhèn',texto:'El trueno despierta. Un shock que renueva. Tras el susto inicial viene la claridad y la risa.'},
+  {n:52,nombre:'El Aquietamiento',chino:'艮 Gèn',texto:'Detente. Aquieta la mente. La montaña no se mueve. En la quietud encuentras lo que el movimiento esconde.'},
+  {n:53,nombre:'El Desarrollo',chino:'漸 Jiàn',texto:'El ganso salvaje avanza paso a paso. No hay prisa en el desarrollo verdadero. Cada etapa tiene su valor.'},
+  {n:54,nombre:'La Muchacha que se Casa',chino:'歸妹 Guī Mèi',texto:'Relaciones que no parten de una posición ideal. Actúa con conciencia de tu lugar. La rectitud sostiene.'},
+  {n:55,nombre:'La Plenitud',chino:'豐 Fēng',texto:'Momento de máxima plenitud. Como el sol en su cénit. No dura para siempre: aprovecha con gratitud.'},
+  {n:56,nombre:'El Viajero',chino:'旅 Lǚ',texto:'En tierra extraña, sé cauto y adaptable. El viajero sabio no impone sus costumbres.'},
+  {n:57,nombre:'Lo Suave',chino:'巽 Xùn',texto:'El viento penetra suavemente pero llega a todas partes. La persuasión gentil y constante transforma.'},
+  {n:58,nombre:'Lo Sereno',chino:'兌 Duì',texto:'Alegría verdadera. La apertura y la comunicación sincera crean vínculos que sostienen.'},
+  {n:59,nombre:'La Dispersión',chino:'渙 Huàn',texto:'Disuelve los bloqueos. El agua sobre el hielo. Un ritual, una conversación honesta puede liberar lo congelado.'},
+  {n:60,nombre:'La Restricción',chino:'節 Jié',texto:'Los límites son necesarios. Como los canales que dan dirección al agua: sin ellos, la energía se pierde.'},
+  {n:61,nombre:'La Verdad Interior',chino:'中孚 Zhōng Fú',texto:'Cuando actúas desde la verdad interior, incluso los animales te escuchan. La autenticidad transforma.'},
+  {n:62,nombre:'La Preponderancia de lo Pequeño',chino:'小過 Xiǎo Guò',texto:'No es tiempo de grandes vuelos. Ocúpate de lo pequeño, lo cercano, lo cotidiano. Ahí está la clave ahora.'},
+  {n:63,nombre:'Después de la Consumación',chino:'既濟 Jì Jì',texto:'Todo está en su lugar. Pero cuidado: el equilibrio alcanzado requiere vigilancia para mantenerse.'},
+  {n:64,nombre:'Antes de la Consumación',chino:'未濟 Wèi Jì',texto:'El zorro casi cruza el río helado. La meta está cerca pero aún no se ha alcanzado. Mantén la atención.'},
+];
+
+function tiradaIChingManual() {
+  const lineas = [];
+  for(let i=0; i<6; i++) {
+    const r = prompt(`Línea ${i+1} de 6: ¿Qué ha salido? (escribe '3' para ─ yang, o '2' para - - yin)`);
+    lineas.push(r === '2' ? 'yin' : 'yang');
+  }
+  const idx = Math.floor(Math.random() * 64); // Por ahora el significado es aleatorio hasta que Lore meta su propia interpretación, pero la tirada visual es la suya
+  const hex = ICHING[idx];
+  guardar('iching_hoy', { hex, fecha: hoyStr(), lineasManuales: lineas });
+  renderHexagrama(hex, lineas);
+  toast('🎲 Tu tirada manual ha sido registrada');
+}
+
+function tiradaIChing() {
+  const idx = Math.floor(Math.random() * 64);
+  const hex = ICHING[idx];
+  const lineas = generarLineas();
+  guardar('iching_hoy', { hex, fecha: hoyStr(), lineas });
+  renderHexagrama(hex, lineas);
+}
+
+function generarLineas() {
+  // 6 líneas: yang(─) o yin(- -)
+  return Array.from({length:6}, () => Math.random() > 0.5 ? 'yang' : 'yin');
+}
+
+function renderHexagrama(hex, lineasPredefinidas) {
+  const lineas = lineasPredefinidas || generarLineas();
+  const el = document.getElementById('iching-display');
+  el.innerHTML = `
+    <div class="hexagrama">
+      <div class="hex-nombre">${hex.n}. ${hex.nombre}</div>
+      <div class="hex-chino">${hex.chino}</div>
+      <div class="hex-lineas">
+        ${[...lineas].reverse().map(l => `<div class="hex-linea ${l}"></div>`).join('')}
+      </div>
+      <div class="hex-texto">${hex.texto}</div>
+    </div>
+  `;
+}
+
+// ════════════════════════════════════════════════════════
+// GASTOS
+// ════════════════════════════════════════════════════════
+
+function mesActual() {
+  return hoyStr().slice(0,7);
+}
+
+function guardarGasto() {
+  const cat = document.getElementById('gasto-cat').value;
+  const importe = parseFloat(document.getElementById('gasto-importe').value);
+  const nota = document.getElementById('gasto-nota').value.trim();
+
+  if(!importe || importe <= 0) { toast('Introduce un importe válido'); return; }
+
+  const gastos = cargar('gastos', []);
+  gastos.unshift({ id: Date.now(), fecha: hoyStr(), cat, importe, nota, ts: Date.now() });
+  guardar('gastos', gastos);
+
+  document.getElementById('gasto-importe').value = '';
+  document.getElementById('gasto-nota').value = '';
+  toast('💸 Gasto añadido');
+  renderGastos();
+}
+
+function borrarGasto(id) {
+  if(!confirm('¿Borrar este gasto?')) return;
+  const gastos = cargar('gastos', []).filter(g => g.id !== id);
+  guardar('gastos', gastos);
+  renderGastos();
+}
+
+function guardarPresupuesto() {
+  const val = parseFloat(document.getElementById('presupuesto-input').value);
+  if(!val || val <= 0) { toast('Introduce un presupuesto válido'); return; }
+  guardar('presupuesto', val);
+  toast('✅ Presupuesto guardado');
+  renderGastos();
+}
+
+function renderGastos() {
+  const mes = mesActual();
+  const gastos = cargar('gastos', []).filter(g => g.fecha.startsWith(mes));
+  const presupuesto = cargar('presupuesto', 0);
+
+  const total = gastos.reduce((s, g) => s + g.importe, 0);
+  document.getElementById('total-mes').textContent = total.toFixed(2).replace('.', ',') + ' €';
+  document.getElementById('presupuesto-disp').textContent = presupuesto ? presupuesto.toFixed(0) + ' €' : '— €';
+  if(presupuesto) document.getElementById('presupuesto-input').value = presupuesto;
+
+  // Barras por categoría
+  const cats = {};
+  gastos.forEach(g => { cats[g.cat] = (cats[g.cat] || 0) + g.importe; });
+  const barrasEl = document.getElementById('barras-content');
+  if(!Object.keys(cats).length) {
+    barrasEl.innerHTML = '<div class="text-suave">Sin gastos este mes</div>';
+  } else {
+    barrasEl.innerHTML = Object.entries(cats)
+      .sort((a,b) => b[1]-a[1])
+      .map(([cat, imp]) => {
+        const pct = total > 0 ? Math.round((imp/total)*100) : 0;
+        return `
+          <div class="cat-bar">
+            <span style="width:130px;font-size:12px">${cat}</span>
+            <div class="cat-bar-bg"><div class="cat-bar-fill" style="width:${pct}%"></div></div>
+            <span style="width:60px;text-align:right;font-size:12px;font-weight:700">${imp.toFixed(2).replace('.',',')}€</span>
+          </div>`;
+      }).join('');
+  }
+
+  // Lista
+  const el = document.getElementById('gastos-lista');
+  if(!gastos.length) { el.innerHTML = '<div class="empty"><div class="empty-ico">💸</div>Sin gastos este mes</div>'; return; }
+  el.innerHTML = gastos.map(g => `
+    <div class="gasto-row">
+      <div class="gasto-cat">
+        <span>${g.cat}</span>
+        ${g.nota ? `<span class="gasto-sub">· ${g.nota}</span>` : ''}
+      </div>
+      <div style="display:flex;align-items:center;gap:10px">
+        <div style="text-align:right">
+          <div class="gasto-importe">${g.importe.toFixed(2).replace('.',',')}€</div>
+          <div class="gasto-sub">${g.fecha.slice(8)} ${g.fecha.slice(5,7)}</div>
+        </div>
+        <button class="btn-borrar" onclick="borrarGasto(${g.id})">×</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ════════════════════════════════════════════════════════
+// PLANTAS
+// ════════════════════════════════════════════════════════
+
+let plantaEmojiSel = '🌿';
+let plantaEditId = null;
+
+function selPlantaEmoji(btn) {
+  document.querySelectorAll('#p-emoji-row .emoji-btn').forEach(b => b.classList.remove('sel'));
+  btn.classList.add('sel');
+  plantaEmojiSel = btn.dataset.val;
+}
+
+function abrirModalPlanta(id) {
+  plantaEditId = id || null;
+  document.getElementById('modal-planta-titulo').textContent = id ? 'Editar planta' : 'Nueva planta';
+  document.getElementById('p-id').value = id || '';
+
+  if(id) {
+    const plantas = cargar('plantas', []);
+    const p = plantas.find(x => x.id === id);
+    if(p) {
+      document.getElementById('p-nombre').value = p.nombre;
+      document.getElementById('p-riego-dias').value = p.riegoDias;
+      document.getElementById('p-ultimo-riego').value = p.ultimoRiego;
+      document.getElementById('p-abono-dias').value = p.abonoDias || '';
+      document.getElementById('p-ultimo-abono').value = p.ultimoAbono || '';
+      document.getElementById('p-notas').value = p.notas || '';
+      plantaEmojiSel = p.emoji;
+      document.querySelectorAll('#p-emoji-row .emoji-btn').forEach(b => {
+        b.classList.toggle('sel', b.dataset.val === p.emoji);
+      });
+    }
+  } else {
+    document.getElementById('p-nombre').value = '';
+    document.getElementById('p-riego-dias').value = '';
+    document.getElementById('p-ultimo-riego').value = hoyStr();
+    document.getElementById('p-abono-dias').value = '';
+    document.getElementById('p-ultimo-abono').value = hoyStr();
+    document.getElementById('p-notas').value = '';
+    plantaEmojiSel = '🌿';
+    document.querySelectorAll('#p-emoji-row .emoji-btn').forEach(b => b.classList.remove('sel'));
+    document.querySelector('#p-emoji-row .emoji-btn').classList.add('sel');
+  }
+
+  document.getElementById('modal-planta').classList.add('open');
+}
+
+function cerrarModal(id) {
+  document.getElementById(id).classList.remove('open');
+}
+
+function guardarPlanta() {
+  const nombre = document.getElementById('p-nombre').value.trim();
+  const riegoDias = parseInt(document.getElementById('p-riego-dias').value);
+  const ultimoRiego = document.getElementById('p-ultimo-riego').value;
+
+  if(!nombre) { toast('Ponle un nombre'); return; }
+  if(!riegoDias) { toast('Indica cada cuántos días regar'); return; }
+  if(!ultimoRiego) { toast('¿Cuándo fue el último riego?'); return; }
+
+  const plantas = cargar('plantas', []);
+  const planta = {
+    id: plantaEditId || Date.now(),
+    nombre,
+    emoji: plantaEmojiSel,
+    riegoDias,
+    ultimoRiego,
+    abonoDias: parseInt(document.getElementById('p-abono-dias').value) || null,
+    ultimoAbono: document.getElementById('p-ultimo-abono').value || null,
+    notas: document.getElementById('p-notas').value.trim(),
+  };
+
+  if(plantaEditId) {
+    const idx = plantas.findIndex(p => p.id === plantaEditId);
+    if(idx >= 0) plantas[idx] = planta;
+  } else {
+    plantas.push(planta);
+  }
+
+  guardar('plantas', plantas);
+  cerrarModal('modal-planta');
+  toast('🌿 Planta guardada');
+  renderPlantas();
+}
+
+function regar(id) {
+  const plantas = cargar('plantas', []);
+  const p = plantas.find(x => x.id === id);
+  if(p) { p.ultimoRiego = hoyStr(); guardar('plantas', plantas); renderPlantas(); toast('💧 Riego registrado'); }
+}
+
+function abonar(id) {
+  const plantas = cargar('plantas', []);
+  const p = plantas.find(x => x.id === id);
+  if(p) { p.ultimoAbono = hoyStr(); guardar('plantas', plantas); renderPlantas(); toast('🌱 Abono registrado'); }
+}
+
+function borrarPlanta(id) {
+  if(!confirm('¿Borrar esta planta?')) return;
+  const plantas = cargar('plantas', []).filter(p => p.id !== id);
+  guardar('plantas', plantas);
+  renderPlantas();
+}
+
+function diasDesde(fecha) {
+  if(!fecha) return null;
+  const hoy = new Date(hoyStr() + 'T12:00:00');
+  const f = new Date(fecha + 'T12:00:00');
+  return Math.floor((hoy - f) / (1000 * 60 * 60 * 24));
+}
+
+function estadoRiego(p) {
+  const dias = diasDesde(p.ultimoRiego);
+  if(dias === null) return { clase:'ok', texto:'Sin datos' };
+  const restantes = p.riegoDias - dias;
+  if(restantes <= 0) return { clase:'urgente', texto:`¡Regar ya! (${Math.abs(restantes)}d tarde)` };
+  if(restantes <= 2) return { clase:'pronto', texto:`Regar en ${restantes}d` };
+  return { clase:'ok', texto:`Regar en ${restantes}d` };
+}
+
+function estadoAbono(p) {
+  if(!p.abonoDias || !p.ultimoAbono) return null;
+  const dias = diasDesde(p.ultimoAbono);
+  const restantes = p.abonoDias - dias;
+  if(restantes <= 0) return { clase:'urgente', texto:`¡Abonar ya!` };
+  if(restantes <= 5) return { clase:'pronto', texto:`Abonar en ${restantes}d` };
+  return { clase:'ok', texto:`Abonar en ${restantes}d` };
+}
+
+function renderPlantas() {
+  const plantas = cargar('plantas', []);
+  const el = document.getElementById('plantas-lista');
+
+  if(!plantas.length) {
+    el.innerHTML = '<div class="empty"><div class="empty-ico">🌿</div>Sin plantas aún<br><span style="font-size:12px">Añade tu primera planta</span></div>';
+    return;
+  }
+
+  // Ordenar: urgentes primero
+  plantas.sort((a,b) => {
+    const da = diasDesde(a.ultimoRiego) - a.riegoDias;
+    const db = diasDesde(b.ultimoRiego) - b.riegoDias;
+    return db - da;
+  });
+
+  el.innerHTML = plantas.map(p => {
+    const riego = estadoRiego(p);
+    const abono = estadoAbono(p);
+    return `
+      <div class="planta-card">
+        <div class="planta-header">
+          <div>
+            <div class="planta-nombre">${p.emoji} ${p.nombre}</div>
+            ${p.notas ? `<div style="font-size:12px;color:#999;margin-top:2px">${p.notas}</div>` : ''}
+          </div>
+          <div style="display:flex;gap:6px">
+            <button style="background:none;border:none;color:#bbb;cursor:pointer;font-size:13px" onclick="abrirModalPlanta(${p.id})">✏️</button>
+            <button style="background:none;border:none;color:#bbb;cursor:pointer;font-size:13px" onclick="borrarPlanta(${p.id})">🗑️</button>
+          </div>
+        </div>
+        <div class="planta-info">
+          <div class="planta-dato ${riego.clase}">
+            <div class="pd-val">💧</div>
+            <div class="pd-lab">${riego.texto}</div>
+          </div>
+          ${abono ? `
+          <div class="planta-dato ${abono.clase}">
+            <div class="pd-val">🌱</div>
+            <div class="pd-lab">${abono.texto}</div>
+          </div>` : `
+          <div class="planta-dato ok">
+            <div class="pd-val" style="font-size:12px;color:#bbb">Cada ${p.riegoDias}d</div>
+            <div class="pd-lab">frecuencia riego</div>
+          </div>`}
+        </div>
+        <div>
+          <button class="btn-regar" onclick="regar(${p.id})">💧 Regar hoy</button>
+          ${p.abonoDias ? `<button class="btn-abonar" onclick="abonar(${p.id})">🌱 Abonar hoy</button>` : ''}
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+// ════════════════════════════════════════════════════════
+// TOAST
+// ════════════════════════════════════════════════════════
+
+function toast(msg) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 2200);
+}
+
+// ════════════════════════════════════════════════════════
+// INIT
+// ════════════════════════════════════════════════════════
+
+initHeader();
+renderCheckHistorial();
+
+// ════════════════════════════════════════════════════════
+// REFLEXIONES
+// ════════════════════════════════════════════════════════
+
+const PREGUNTAS_ESTOICAS = [
+  '¿Qué está en mi control hoy y qué no lo está?',
+  '¿Cómo puedo actuar con virtud hoy, independientemente de las circunstancias?',
+  '¿Qué haría Marco Aurelio ante mi situación actual?',
+  '¿Estoy reaccionando o eligiendo?',
+  '¿Qué es lo peor que puede pasar y cómo lo afrontaría?',
+  '¿Qué hábito quiero cultivar hoy con mis acciones?',
+  '¿Estoy usando mi energía en lo que depende de mí?',
+  '¿Qué prejuicio estoy cargando que podría soltar hoy?',
+  '¿Cómo puedo ser útil a alguien hoy sin esperar nada a cambio?',
+  '¿Qué haría si supiera que es el último día que voy a repetir este patrón?',
+];
+
+const PREGUNTAS_TAOISTAS = [
+  '¿Dónde estás forzando lo que podría fluir solo?',
+  '¿Qué parte de hoy puedes soltar sin perder nada esencial?',
+  '¿El agua rodea la piedra o lucha contra ella?',
+  '¿Estás siendo o estás haciendo?',
+  '¿Qué pasaría si hoy no intentaras controlar ningún resultado?',
+  '¿Dónde está el camino de menor resistencia hacia lo que importa?',
+  '¿Qué tiene que morir para que algo nuevo pueda nacer?',
+  '¿Estás siguiendo tu naturaleza o la de otro?',
+  '¿Qué silencio necesitas hoy?',
+  '¿Qué es suficiente, justo como está?',
+];
+
+function initReflexiones() {
+  const hoy = hoyStr();
+  const idx = Math.abs(hoy.split('-').join('').split('').reduce((a,c)=>a+c.charCodeAt(0),0)) % PREGUNTAS_ESTOICAS.length;
+  document.getElementById('reflexion-manana-texto').textContent = '🌄 ' + PREGUNTAS_ESTOICAS[idx];
+  document.getElementById('reflexion-noche-texto').textContent = '🌊 ' + PREGUNTAS_TAOISTAS[idx];
+  const saved = cargar('reflexiones_' + hoy, {});
+  if(saved.manana) document.getElementById('reflexion-manana-resp').value = saved.manana;
+  if(saved.noche) document.getElementById('reflexion-noche-resp').value = saved.noche;
+  renderReflexionesHistorial();
+}
+
+function guardarReflexiones() {
+  const hoy = hoyStr();
+  const data = {
+    manana: document.getElementById('reflexion-manana-resp').value,
+    noche: document.getElementById('reflexion-noche-resp').value,
+    fecha: hoy
+  };
+  guardar('reflexiones_' + hoy, data);
+  const lista = cargar('reflexiones_lista', []);
+  if(!lista.includes(hoy)) { lista.unshift(hoy); guardar('reflexiones_lista', lista); }
+  toast('✨ Reflexiones guardadas');
+  renderReflexionesHistorial();
+}
+
+function renderReflexionesHistorial() {
+  const lista = cargar('reflexiones_lista', []).slice(0,5);
+  const el = document.getElementById('reflexiones-historial');
+  if(!lista.length) { el.innerHTML = '<div class="empty"><div class="empty-ico">🪞</div>Sin reflexiones aún</div>'; return; }
+  el.innerHTML = lista.map(fecha => {
+    const r = cargar('reflexiones_' + fecha, {});
+    return `<div class="card" style="margin-bottom:8px">
+      <div style="font-size:11px;color:var(--texto-suave);margin-bottom:6px">${formatFecha(fecha)}</div>
+      ${r.manana ? `<p style="font-size:13px;margin-bottom:4px">🌄 ${r.manana}</p>` : ''}
+      ${r.noche ? `<p style="font-size:13px">🌙 ${r.noche}</p>` : ''}
+    </div>`;
+  }).join('');
+}
+
+// ════════════════════════════════════════════════════════
+// SALUD
+// ════════════════════════════════════════════════════════
+
+let practicasHoy = [];
+
+function togglePractica(btn) {
+  const val = btn.dataset.val;
+  if(practicasHoy.includes(val)) {
+    practicasHoy = practicasHoy.filter(p => p !== val);
+    btn.classList.remove('btn-primary');
+    btn.classList.add('btn-outline');
+  } else {
+    practicasHoy.push(val);
+    btn.classList.remove('btn-outline');
+    btn.classList.add('btn-primary');
+  }
+}
+
+function initSalud() {
+  practicasHoy = [];
+  document.querySelectorAll('.salud-pr').forEach(b => { b.classList.remove('btn-primary'); b.classList.add('btn-outline'); });
+  const hoy = hoyStr();
+  const saved = cargar('salud_' + hoy, {});
+  if(saved.pasos) document.getElementById('salud-pasos').value = saved.pasos;
+  if(saved.peso) document.getElementById('salud-peso').value = saved.peso;
+  if(saved.cintura) document.getElementById('salud-cintura').value = saved.cintura;
+  if(saved.cadera) document.getElementById('salud-cadera').value = saved.cadera;
+  if(saved.pecho) document.getElementById('salud-pecho').value = saved.pecho;
+  if(saved.notas) document.getElementById('salud-notas').value = saved.notas;
+  if(saved.practicas) {
+    practicasHoy = saved.practicas;
+    saved.practicas.forEach(p => {
+      const btn = [...document.querySelectorAll('.salud-pr')].find(b => b.dataset.val === p);
+      if(btn) { btn.classList.remove('btn-outline'); btn.classList.add('btn-primary'); }
+    });
+  }
+  renderSaludHistorial();
+}
+
+// ════════════════════════════════════════════════════════
+// ALQUIMIA SOMÁTICA - MODAL Y VÍDEOS
+// ════════════════════════════════════════════════════════
+
+function abrirAlquimia(tipo) {
+  const modal = document.getElementById('modal-alquimia');
+  const titulo = document.getElementById('alquimia-titulo');
+  const contenido = document.getElementById('alquimia-contenido');
+  
+  modal.style.display = 'flex';
+  
+  if(tipo === 'morton') {
+    titulo.innerText = '👣 Alivio Neuroma de Morton';
+    contenido.innerHTML = `
+      <div style="margin-bottom:15px">
+        <p style="font-size:14px"><strong>SOS:</strong> El nervio está comprimido. Necesitas "abrir" el pie.</p>
+        <div style="position:relative;padding-bottom:56.25%;height:0;margin:15px 0;background:#000;border-radius:8px;overflow:hidden">
+          <iframe src="https://www.youtube.com/embed/DqgSkjQph4E" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allowfullscreen></iframe>
+        </div>
+        <ul style="font-size:14px; margin-left:20px; line-height:1.6; color:var(--texto)">
+          <li><strong>Pelota:</strong> Rueda suave para separar los metatarsos.</li>
+          <li><strong>Frío local:</strong> 10 min de hielo para bajar la inflamación.</li>
+          <li><strong>Separadores:</strong> Usa algodón entre los dedos 3 y 4.</li>
+        </ul>
+      </div>
+    `;
+  } else if(tipo === 'manos') {
+    titulo.innerText = '👐 Bolas Baoding (Manos)';
+    contenido.innerHTML = `
+      <p style="font-size:14px">Ejercicios circulares para recuperar la movilidad tras el turno en cocina.</p>
+      <div style="position:relative;padding-bottom:56.25%;height:0;margin:15px 0;background:#000;border-radius:8px;overflow:hidden">
+        <iframe src="https://www.youtube.com/embed/n4p_fD-uUog" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allowfullscreen></iframe>
+      </div>
+    `;
+  }
+}
+
+function cerrarAlquimia() {
+  document.getElementById('modal-alquimia').style.display = 'none';
+}
+
+function guardarSalud() {
+  const hoy = hoyStr();
+  const data = {
+    pasos: document.getElementById('salud-pasos').value,
+    practicas: practicasHoy,
+    peso: document.getElementById('salud-peso').value,
+    cintura: document.getElementById('salud-cintura').value,
+    cadera: document.getElementById('salud-cadera').value,
+    pecho: document.getElementById('salud-pecho').value,
+    notas: document.getElementById('salud-notas').value,
+    fecha: hoy
+  };
+  guardar('salud_' + hoy, data);
+  const lista = cargar('salud_lista', []);
+  if(!lista.includes(hoy)) { lista.unshift(hoy); guardar('salud_lista', lista); }
+  toast('🧘 Salud guardada');
+  renderSaludHistorial();
+}
+
+function renderSaludHistorial() {
+  const lista = cargar('salud_lista', []).slice(0,7);
+  const el = document.getElementById('salud-historial');
+  if(!lista.length) { el.innerHTML = '<div class="empty"><div class="empty-ico">🧘</div>Sin registros aún</div>'; return; }
+  el.innerHTML = lista.map(fecha => {
+    const r = cargar('salud_' + fecha, {});
+    return `<div class="card" style="margin-bottom:8px">
+      <div style="font-size:11px;color:var(--texto-suave);margin-bottom:6px">${formatFecha(fecha)}</div>
+      <div style="display:flex;flex-wrap:wrap;gap:6px;font-size:12px">
+        ${r.pasos ? `<span>👣 ${r.pasos} pasos</span>` : ''}
+        ${r.peso ? `<span>⚖️ ${r.peso} kg</span>` : ''}
+        ${r.practicas && r.practicas.length ? `<span>🏃 ${r.practicas.join(', ')}</span>` : ''}
+      </div>
+      ${r.notas ? `<p style="font-size:12px;color:var(--texto-suave);margin-top:6px">${r.notas}</p>` : ''}
+    </div>`;
+  }).join('');
+}
+
+// ════════════════════════════════════════════════════════
+// GUÍA TAOÍSTA + ENEAGRAMA
+// ════════════════════════════════════════════════════════
+
+const TAO_VERSOS = [
+  { n:1, texto:'El Tao que puede ser nombrado no es el Tao eterno. El nombre que puede ser pronunciado no es el nombre eterno.' },
+  { n:2, texto:'Cuando todos reconocen la belleza como belleza, surge la fealdad. Cuando todos reconocen el bien como bien, surge el mal.' },
+  { n:8, texto:'El bien supremo es como el agua, que beneficia a todos los seres sin competir con ellos.' },
+  { n:11, texto:'Treinta radios convergen en el cubo de una rueda; pero es el vacío central el que hace útil al carro.' },
+  { n:15, texto:'Los maestros del Tao son sutiles, misteriosos, profundos, receptivos. Su profundidad es insondable.' },
+  { n:16, texto:'Vacíate hasta el límite. Mantén la quietud con fuerza. Las diez mil cosas surgen y caen, pero vuelven a su raíz.' },
+  { n:22, texto:'Cede y vence. Doblega y permanece erguido. Vacíate y queda lleno. Gástate y queda nuevo.' },
+  { n:33, texto:'Conocer a los otros es sabiduría. Conocerse a uno mismo es iluminación. Dominar a otros requiere fuerza. Dominarse a uno mismo requiere mayor fuerza.' },
+  { n:44, texto:'¿Qué es más cercano, tu fama o tú mismo? ¿Qué es más valioso, tú o tus posesiones?' },
+  { n:48, texto:'En la búsqueda del saber, cada día se añade algo. En la búsqueda del Tao, cada día se suelta algo.' },
+  { n:55, texto:'Quien está en armonía con el Tao es como un niño recién nacido, cuyo corazón es puro.' },
+  { n:64, texto:'El árbol que no puedes rodear con los brazos creció de una pequeña semilla. Una torre de nueve pisos se construye ladrillo a ladrillo.' },
+  { n:76, texto:'El hombre al nacer es blando y débil; al morir es rígido y duro. La hierba y los árboles son blandos cuando nacen.' },
+  { n:81, texto:'Las palabras verdaderas no son bonitas. Las palabras bonitas no son verdaderas. El sabio no debate; quien debate no es sabio.' },
+];
+
+const ENEA_REFLEXIONES = [
+  'El 4w3 siente profundamente y actúa con propósito. Hoy: ¿qué sientes que merece ser creado?',
+  'Tu singularidad no es algo que demuestras. Es algo que vives. ¿Estás viviéndola hoy?',
+  'El ala 3 te da la capacidad de convertir visión en obra. ¿Qué paso concreto puedes dar hoy?',
+  'El 4 tiende a compararse y sentirse incompleto. ¿Qué tienes hoy que vale exactamente lo que es?',
+  'La melancolía del 4 es una brújula, no un destino. ¿Hacia dónde te señala ahora mismo?',
+  'Cuando el 4w3 se centra, crea cosas extraordinarias. ¿En qué quieres concentrar tu energía hoy?',
+  'El miedo a ser ordinaria te ha mantenido a salvo. ¿Y si hoy lo ordinario fuera la puerta a algo grande?',
+  'Tu profundidad emocional es un don. ¿Cómo puedes usarla hoy en lugar de habitarla?',
+  'El ala 3 sabe que el trabajo es sagrado. ¿Qué obra pequeña puedes terminar hoy?',
+  'Eres más que tus estados de ánimo. Tú eliges desde dónde actúas.',
+];
+
+let taoIdx = 0;
+let eneaIdx = 0;
+
+function initGuia() {
+  const hoy = hoyStr();
+  const seed = hoy.split('-').join('').split('').reduce((a,c) => a + c.charCodeAt(0), 0);
+  taoIdx = seed % TAO_VERSOS.length;
+  eneaIdx = seed % ENEA_REFLEXIONES.length;
+  mostrarTao();
+  mostrarEnea();
+}
+
+function mostrarTao() {
+  const v = TAO_VERSOS[taoIdx];
+  document.getElementById('tao-versiculo').textContent = '"' + v.texto + '"';
+  document.getElementById('tao-numero').textContent = 'Capítulo ' + v.n + ' · Tao Te Ching';
+}
+
+function nuevoTao() {
+  taoIdx = (taoIdx + 1) % TAO_VERSOS.length;
+  mostrarTao();
+}
+
+function mostrarEnea() {
+  document.getElementById('enea-reflexion').textContent = ENEA_REFLEXIONES[eneaIdx];
+}
+
+function nuevaEnea() {
+  eneaIdx = (eneaIdx + 1) % ENEA_REFLEXIONES.length;
+  mostrarEnea();
+}
+
+// ════════════════════════════════════════════════════════
+// LISTA DE LA COMPRA
+// ════════════════════════════════════════════════════════
+let filtroCompraActivo = 'todos';
+
+function addCompra() {
+  const inp = document.getElementById('compra-input');
+  const texto = inp.value.trim();
+  if(!texto) return;
+  const items = cargar('compra', []);
+  items.push({ id: Date.now(), texto, categoria: 'super', hecho: false });
+  guardar('compra', items);
+  inp.value = '';
+  renderCompra();
+}
+
+function toggleCompra(id) {
+  const items = cargar('compra', []);
+  const i = items.find(x => x.id === id);
+  if(i) i.hecho = !i.hecho;
+  guardar('compra', items);
+  renderCompra();
+}
+
+function limpiarComprados() {
+  const items = cargar('compra', []).filter(x => !x.hecho);
+  guardar('compra', items);
+  renderCompra();
+}
+
+function filtroCompra(f) {
+  filtroCompraActivo = f;
+  document.querySelectorAll('[id^="fc-"]').forEach(b => b.style.borderColor = '');
+  document.getElementById('fc-' + f).style.borderColor = 'var(--oro)';
+  renderCompra();
+}
+
+function renderCompra() {
+  let items = cargar('compra', []);
+  if(filtroCompraActivo !== 'todos') items = items.filter(x => x.categoria === filtroCompraActivo);
+  const el = document.getElementById('compra-lista');
+  if(!items.length) { el.innerHTML = '<div class="empty"><div class="empty-ico">🛒</div>Lista vacía</div>'; return; }
+  el.innerHTML = items.map(i => `
+    <div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--borde)">
+      <input type="checkbox" ${i.hecho?'checked':''} onchange="toggleCompra(${i.id})" style="width:18px;height:18px;cursor:pointer">
+      <span style="flex:1;font-size:14px;${i.hecho?'text-decoration:line-through;color:var(--texto-suave)':''}">${i.texto}</span>
+      <select onchange="cambiarCatCompra(${i.id},this.value)" style="font-size:11px;border:1px solid var(--borde);border-radius:6px;padding:2px 4px;background:#fff">
+        <option value="super" ${i.categoria==='super'?'selected':''}>🏪</option>
+        <option value="farmacia" ${i.categoria==='farmacia'?'selected':''}>💊</option>
+        <option value="drogueria" ${i.categoria==='drogueria'?'selected':''}>🧹</option>
+        <option value="otro" ${i.categoria==='otro'?'selected':''}>📦</option>
+      </select>
+    </div>
+  `).join('');
+}
+
+function cambiarCatCompra(id, cat) {
+  const items = cargar('compra', []);
+  const i = items.find(x => x.id === id);
+  if(i) i.categoria = cat;
+  guardar('compra', items);
+}
+
+// ════════════════════════════════════════════════════════
+// TAREAS
+// ════════════════════════════════════════════════════════
+let filtroTareaActivo = 'todas';
+
+function addTarea() {
+  const inp = document.getElementById('tarea-input');
+  const texto = inp.value.trim();
+  if(!texto) return;
+  const items = cargar('tareas', []);
+  items.push({ id: Date.now(), texto, categoria: 'personal', hecha: false });
+  guardar('tareas', items);
+  inp.value = '';
+  renderTareas();
+}
+
+function toggleTarea(id) {
+  const items = cargar('tareas', []);
+  const i = items.find(x => x.id === id);
+  if(i) i.hecha = !i.hecha;
+  guardar('tareas', items);
+  renderTareas();
+}
+
+function limpiarTareasHechas() {
+  const items = cargar('tareas', []).filter(x => !x.hecha);
+  guardar('tareas', items);
+  renderTareas();
+}
+
+function filtroTarea(f) {
+  filtroTareaActivo = f;
+  document.querySelectorAll('[id^="ft-"]').forEach(b => b.style.borderColor = '');
+  document.getElementById('ft-' + f).style.borderColor = 'var(--oro)';
+  renderTareas();
+}
+
+function renderTareas() {
+  let items = cargar('tareas', []);
+  if(filtroTareaActivo !== 'todas') items = items.filter(x => x.categoria === filtroTareaActivo);
+  const el = document.getElementById('tareas-lista');
+  if(!items.length) { el.innerHTML = '<div class="empty"><div class="empty-ico">✅</div>Sin tareas pendientes</div>'; return; }
+  el.innerHTML = items.map(i => `
+    <div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--borde)">
+      <input type="checkbox" ${i.hecha?'checked':''} onchange="toggleTarea(${i.id})" style="width:18px;height:18px;cursor:pointer">
+      <span style="flex:1;font-size:14px;${i.hecha?'text-decoration:line-through;color:var(--texto-suave)':''}">${i.texto}</span>
+      <select onchange="cambiarCatTarea(${i.id},this.value)" style="font-size:11px;border:1px solid var(--borde);border-radius:6px;padding:2px 4px;background:#fff">
+        <option value="personal" ${i.categoria==='personal'?'selected':''}>👤</option>
+        <option value="casa" ${i.categoria==='casa'?'selected':''}>🏠</option>
+        <option value="urgente" ${i.categoria==='urgente'?'selected':''}>🔴</option>
+      </select>
+    </div>
+  `).join('');
+}
+
+function cambiarCatTarea(id, cat) {
+  const items = cargar('tareas', []);
+  const i = items.find(x => x.id === id);
+  if(i) i.categoria = cat;
+  guardar('tareas', items);
+}
+
+// ════════════════════════════════════════════════════════
+// COCINA
+// ════════════════════════════════════════════════════════
+const STOCK_INICIAL = [
+  "Huevos", "Kéfir", "Chucrut", "Brócoli", "Espinacas", "Cúrcuma", 
+  "Jengibre", "Nueces", "Salmón", "Aguacate", "Calabaza", "Aceite AOVE"
+];
+
+
+// --- GESTIÓN DE RECETAS Y COMPRA ---
+function agregarRecetaPropia() {
+  const nombre = prompt('Nombre de la receta:');
+  if(!nombre) return;
+  const ingredientes = prompt('Ingredientes (separados por comas):');
+  if(!ingredientes) return;
+  
+  const recetas = cargar('recetas_propias', []);
+  recetas.push({ id: Date.now(), nombre, ingredientes: ingredientes.split(',').map(i => i.trim()) });
+  guardar('recetas_propias', recetas);
+  renderCocina();
+}
+
+function mandarACompra(ingredientes) {
+  const compra = cargar('compra', []);
+  const nuevos = ingredientes.map(i => ({ id: Date.now() + Math.random(), texto: i, check: false }));
+  guardar('compra', [...compra, ...nuevos]);
+  alert('¡Ingredientes añadidos a la lista de la compra! 🛒');
+}
+
+function renderCocina() {
+  const stock = cargar('cocina_stock', STOCK_INICIAL.reduce((acc, x) => ({...acc, [x]: true}), {}));
+  const recetas = cargar('recetas_propias', []);
+  let html = `
+    <div class='card'>
+      <div class='card-title'>🍲 Mis Recetas & Menús</div>
+      <button class='btn btn-primary btn-sm mt-12 mb-12' onclick='agregarRecetaPropia()'>+ Nueva Receta</button>
+      <div id='lista-recetas-propias'>
+        ${recetas.map(r => `
+          <div class='entrada' style='margin-bottom:10px'>
+            <b>${r.nombre}</b>
+            <div style='font-size:12px; color:var(--texto-suave)'>${r.ingredientes.join(', ')}</div>
+            <button class='btn btn-outline btn-sm mt-8' onclick='mandarACompra(${JSON.stringify(r.ingredientes)})'>🛒 Añadir a Compra</button>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+    <div class='card'>
+      <div class='card-title'>🥬 Pilares Antiinflamatorios</div>
+      <div style='font-size:13px;line-height:1.6'>
+        <details>
+          <summary><b>Recetas Sugeridas</b></summary>
+          <div class='entrada mt-8'>
+            <b>Kéfir Potenciado</b><br>
+            <button class='btn btn-outline btn-sm mt-8' onclick=\"mandarACompra(['Kéfir de cabra', 'Semillas de lino', 'Arándanos'])\">🛒 Comprar ingredientes</button>
+          </div>
+        </details>
+      </div>
+    </div>
+    <div class='card'>
+      <div class='card-title'>📦 Stock Despensa</div>
+      <div id='cocina-stock' style='display:grid;grid-template-columns:1fr 1fr;gap:8px'>
+        ${Object.keys(stock).map(item => `
+          <div style='display:flex;align-items:center;gap:8px;font-size:13px;padding:5px;border-radius:6px;background:var(--gris-card);border:1px solid var(--borde)'>
+            <input type='checkbox' ${stock[item]?'checked':''} onchange='toggleStock(\"${item}\")'>
+            <span style='flex:1'>${item}</span>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  `;
+  document.getElementById('tab-cocina').innerHTML = html;
+}
+function toggleStock(item) {
+  const stock = cargar('cocina_stock', {});
+  stock[item] = !stock[item];
+  guardar('cocina_stock', stock);
+}
+
+// ════════════════════════════════════════════════════════
+// BELLEZA
+// ════════════════════════════════════════════════════════
+function initBelleza() {
+  const notas = cargar('belleza_notas', '');
+  document.getElementById('belleza-notas').value = notas;
+}
+
+// ── PLANTAS PRECARGADAS ───────────────────────────────
+(function() {
+  const KEY = 'plantas';
+  const existing = JSON.parse(localStorage.getItem(KEY) || '[]');
+  if (existing.length === 0) {
+    const hoy = new Date().toISOString().slice(0,10);
+    const plantas = [
+      { id:1, nombre:'Planta del dinero grande 1', emoji:'🌿', riegoDias:8,  abonoDias:30, ultimoRiego:hoy, ultimoAbono:hoy },
+      { id:2, nombre:'Planta del dinero grande 2', emoji:'🌿', riegoDias:8,  abonoDias:30, ultimoRiego:hoy, ultimoAbono:hoy },
+      { id:3, nombre:'Planta del dinero mini',     emoji:'🌱', riegoDias:7,  abonoDias:30, ultimoRiego:hoy, ultimoAbono:hoy },
+      { id:4, nombre:'Planta del dinero en agua',  emoji:'💧', riegoDias:7,  abonoDias:0,  ultimoRiego:hoy, ultimoAbono:null },
+      { id:5, nombre:'Suculenta',                  emoji:'🪴', riegoDias:18, abonoDias:45, ultimoRiego:hoy, ultimoAbono:hoy },
+      { id:6, nombre:'Monstera',                   emoji:'🌴', riegoDias:8,  abonoDias:30, ultimoRiego:hoy, ultimoAbono:hoy },
+    ];
+    localStorage.setItem(KEY, JSON.stringify(plantas));
+  }
+})();
+
+// ── SERVICE WORKER (PWA offline) ──────────────────────
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js').catch(() => {});
+  });
+}
+
+function renderCasa() {
+  const html = `
+    <div class="card">
+      <div class="card-title">🧹 Fórmulas Magistrales</div>
+      <div class="entrada" onclick="this.querySelector('details').open = !this.querySelector('details').open">
+        <details>
+          <summary><b>✨ Multiusos Alquímico</b></summary>
+          <p style="font-size:13px; margin-top:8px">
+            • 1/2 taza de vinagre blanco<br>
+            • 1 taza de agua destilada<br>
+            • Piel de 1 limón (macerar 15 días)<br>
+            • 10 gotas de aceite esencial de árbol de té.
+          </p>
+        </details>
+      </div>
+      <div class="entrada" onclick="this.querySelector('details').open = !this.querySelector('details').open">
+        <details>
+          <summary><b>🪞 Limpiacristales Natural</b></summary>
+          <p style="font-size:13px; margin-top:8px">
+            • 1/2 taza de alcohol de limpieza<br>
+            • 1/2 taza de vinagre blanco<br>
+            • 1 cucharada de maicena (el secreto del brillo).
+          </p>
+        </details>
+      </div>
+      <div class="entrada" onclick="this.querySelector('details').open = !this.querySelector('details').open">
+        <details>
+          <summary><b>🪵 Nutrición para Madera</b></summary>
+          <p style="font-size:13px; margin-top:8px">
+            • 1/4 taza de aceite de oliva<br>
+            • 1/4 taza de zumo de limón natural<br>
+            • Aplicar con paño de microfibra.
+          </p>
+        </details>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">🕯️ Rituales de Orden</div>
+      <p style="font-size:13px; color:var(--texto-suave)">
+        El orden externo es el reflejo del orden interno. Limpia con intención.
+      </p>
+    </div>
+  `;
+  document.getElementById('tab-casa').innerHTML = html;
+}
+</script>
+</body>
+</html>
