@@ -353,6 +353,13 @@ header h1{color:#292623!important}.yuki-mark{color:#b94735!important}
 .terracotta,.tag.sel,.esc-btn.sel,.emoji-btn.sel{background:#b94735!important;border-color:#b94735!important;color:#fff!important}
 .eyebrow,.quiet-link{color:#b94735!important}
 input:focus,select:focus,textarea:focus{border-color:#b94735!important}
+
+/* Iconos mínimos: un solo trazo, sin color ni emoji */
+.emoji-btn{display:inline-flex!important;flex-direction:column;align-items:center;justify-content:center;gap:6px;min-width:76px!important;min-height:68px!important;padding:9px 12px!important;border:1px solid var(--borde)!important;border-radius:3px!important;background:transparent!important;color:var(--texto)!important;font-size:12px!important;font-weight:500!important}
+.emoji-btn::before{content:attr(data-icon);display:block;font-family:Georgia,serif;font-size:25px;line-height:22px;font-weight:400;color:var(--texto-suave)}
+.emoji-btn.sel{background:transparent!important;border-color:#b94735!important;color:#292623!important}
+.emoji-btn.sel::before{color:#b94735!important}
+.emoji-row{gap:9px!important}
 </style>
 </head>
 <body>
@@ -426,22 +433,22 @@ input:focus,select:focus,textarea:focus{border-color:#b94735!important}
     <div class="card">
       <div class="card-title">Tiempo</div>
       <div class="emoji-row" id="tiempo-row">
-        <button class="emoji-btn" data-val="☀️" onclick="selEmoji('tiempo',this)">Claro</button>
-        <button class="emoji-btn" data-val="⛅" onclick="selEmoji('tiempo',this)">Variable</button>
-        <button class="emoji-btn" data-val="🌧️" onclick="selEmoji('tiempo',this)">Lluvia</button>
-        <button class="emoji-btn" data-val="🌬️" onclick="selEmoji('tiempo',this)">Viento</button>
-        <button class="emoji-btn" data-val="❄️" onclick="selEmoji('tiempo',this)">Frío</button>
+        <button class="emoji-btn" data-val="☀️" data-icon="☼" onclick="selEmoji('tiempo',this)">Claro</button>
+        <button class="emoji-btn" data-val="⛅" data-icon="◐" onclick="selEmoji('tiempo',this)">Variable</button>
+        <button class="emoji-btn" data-val="🌧️" data-icon="╱" onclick="selEmoji('tiempo',this)">Lluvia</button>
+        <button class="emoji-btn" data-val="🌬️" data-icon="∿" onclick="selEmoji('tiempo',this)">Viento</button>
+        <button class="emoji-btn" data-val="❄️" data-icon="✧" onclick="selEmoji('tiempo',this)">Frío</button>
       </div>
     </div>
 
     <div class="card">
       <div class="card-title">Humor</div>
       <div class="emoji-row" id="humor-row">
-        <button class="emoji-btn" data-val="😄" onclick="selEmoji('humor',this)">Alegre</button>
-        <button class="emoji-btn" data-val="🙂" onclick="selEmoji('humor',this)">Bien</button>
-        <button class="emoji-btn" data-val="😐" onclick="selEmoji('humor',this)">Neutro</button>
-        <button class="emoji-btn" data-val="😔" onclick="selEmoji('humor',this)">Bajo</button>
-        <button class="emoji-btn" data-val="😤" onclick="selEmoji('humor',this)">Tenso</button>
+        <button class="emoji-btn" data-val="😄" data-icon="⌣" onclick="selEmoji('humor',this)">Alegre</button>
+        <button class="emoji-btn" data-val="🙂" data-icon="◡" onclick="selEmoji('humor',this)">Bien</button>
+        <button class="emoji-btn" data-val="😐" data-icon="—" onclick="selEmoji('humor',this)">Neutro</button>
+        <button class="emoji-btn" data-val="😔" data-icon="⌢" onclick="selEmoji('humor',this)">Bajo</button>
+        <button class="emoji-btn" data-val="😤" data-icon="≋" onclick="selEmoji('humor',this)">Tenso</button>
       </div>
     </div>
 
