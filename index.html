@@ -35,6 +35,24 @@ nav button{background:none;border:none;color:#999;padding:14px 18px;font-size:15
 nav button.active{color:#fff;border-bottom-color:var(--oro)}
 nav button:hover{color:#fff}
 
+/* MENÚ LATERAL — mismo lenguaje de navegación que La Urbana */
+@media (min-width:800px){
+  body{background:#E3F2FD}
+  .side-tabs{display:none!important}
+  nav{
+    position:fixed;left:0;top:59px;bottom:0;width:220px;height:calc(100vh - 59px);
+    display:flex;flex-direction:column;align-items:stretch;overflow-y:auto;overflow-x:hidden;
+    padding:20px 12px;background:var(--gris-oscuro);z-index:150;
+  }
+  nav button{
+    width:100%;text-align:left;padding:11px 14px;border:0;border-radius:8px;
+    font-size:15px;color:#aaa;display:flex;align-items:center;gap:9px;flex-shrink:0;
+  }
+  nav button.active{color:#fff;background:rgba(200,169,110,.18);border-left:3px solid var(--oro);padding-left:11px}
+  nav button:hover{background:rgba(255,255,255,.08);color:#fff}
+  .tab{margin-left:220px;max-width:850px;margin-right:auto;padding:24px 28px 60px}
+}
+
 /* TABS */
 .tab{display:none;padding:18px;max-width:750px;margin:0 auto;padding-bottom:40px}
 .tab.active{display:block}
