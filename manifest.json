@@ -2,11 +2,11 @@
   "name": "Yuki — Agenda de Lore",
   "short_name": "Yuki",
   "description": "Agenda personal de Lore: diario, hábitos, luna y alquimia de vida",
-  "start_url": "/",
+  "start_url": "/yuki/",
   "display": "standalone",
   "background_color": "#1a1a1a",
   "theme_color": "#1a1a1a",
-  "orientation": "portrait",
+  "orientation": "any",
   "icons": [
     {
       "src": "icon-192.png",
@@ -20,5 +20,6 @@
       "type": "image/png",
       "purpose": "any maskable"
     }
-  ]
+  ],
+  "scope": "/yuki/"
 }
