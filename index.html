@@ -312,6 +312,22 @@ body.dark-mode{--marfil:#191817;--gris-card:#242220;--gris:#302d2a;--texto:#f1ec
 body.dark-mode header{background:#191817;border-color:#4a443e;color:var(--texto)}
 body.dark-mode .card,body.dark-mode .entrada,body.dark-mode .planta-card{background:var(--gris-card);border-color:#4a443e}
 body.dark-mode input[type=text],body.dark-mode input[type=number],body.dark-mode input[type=date],body.dark-mode select,body.dark-mode textarea{background:#242220;color:var(--texto);border-color:#4a443e}
+
+/* PORTADA REAL: cuaderno de climas, no formulario */
+.today-hero{background:transparent;border-bottom:1px solid var(--borde);padding:12px 0 34px;margin-bottom:28px;max-width:760px}
+.eyebrow{font-size:11px;letter-spacing:.16em;color:var(--terracota);font-weight:600;margin-bottom:22px}
+.today-hero h2{font-family:'Playfair Display',Georgia,serif;font-size:clamp(30px,5vw,48px);font-weight:500;line-height:1.12;max-width:600px;margin-bottom:12px}
+.today-lead{font-family:'Playfair Display',Georgia,serif;font-size:18px;color:var(--texto-suave);margin-bottom:28px}
+.today-lines{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:1px solid var(--borde);border-bottom:1px solid var(--borde);max-width:650px}
+.today-lines div{padding:15px 18px 15px 0;border-right:1px solid var(--borde);display:flex;flex-direction:column;gap:6px}
+.today-lines div+div{padding-left:18px}.today-lines div:last-child{border-right:0}
+.today-lines span{font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--texto-suave)}.today-lines b{font-family:'Playfair Display',serif;font-size:20px;font-weight:400}
+.quiet-link{border:0;background:none;color:var(--terracota);padding:18px 0 0;font-size:13px;font-weight:600;cursor:pointer}.quiet-link span{font-size:18px;margin-left:5px}
+#check-form>.card{background:transparent;border:0;border-bottom:1px solid var(--borde);border-radius:0;padding:0 0 24px;margin-bottom:26px;max-width:760px}
+#check-form>.card .card-title{font-size:22px;margin-bottom:15px}
+#check-form>.card:last-of-type{padding:22px;background:var(--gris-card);border:1px solid var(--borde);border-radius:4px}
+#check-form>.btn-primary{max-width:760px;background:transparent;color:var(--terracota);border:1px solid var(--terracota);font-weight:600}
+@media(max-width:599px){.today-hero{padding-top:4px}.today-hero h2{font-size:32px}.today-lines div{padding-right:8px}.today-lines div+div{padding-left:8px}}
 </style>
 </head>
 <body>
@@ -331,19 +347,19 @@ body.dark-mode input[type=text],body.dark-mode input[type=number],body.dark-mode
 </div>
 
 <nav>
-  <button class="active" onclick="tab('check',this)">✨ Día</button>
-  <button onclick="tab('diario',this)">📓 Diario</button>
-  <button onclick="tab('luna',this)">🌙 Luna</button>
-  <button onclick="tab('gastos',this)">💸 Gastos</button>
-  <button onclick="tab('plantas',this)">🌿 Plantas</button>
-  <button onclick="tab('reflexiones',this)">🪞 Reflexiones</button>
-  <button onclick="tab('salud',this)">🧘 Salud</button>
-  <button onclick="tab('guia',this)">🔮 Guía</button>
-  <button onclick="tab('belleza',this)">🧴 Belleza</button>
-  <button onclick="tab('compra',this)">🛒 Compra</button>
-  <button onclick="tab('tareas',this)">✅ Tareas</button>
-  <button onclick="tab('cocina',this)">🍳 Cocina</button>
-  <button onclick="tab('casa',this)">🧹 Casa</button>
+  <button class="active" onclick="tab('check',this)">Hoy</button>
+  <button onclick="tab('diario',this)">Diario</button>
+  <button onclick="tab('luna',this)">Luna</button>
+  <button onclick="tab('gastos',this)">Gastos</button>
+  <button onclick="tab('plantas',this)">Plantas</button>
+  <button onclick="tab('reflexiones',this)">Reflexiones</button>
+  <button onclick="tab('salud',this)">Salud</button>
+  <button onclick="tab('guia',this)">Guía</button>
+  <button onclick="tab('belleza',this)">Belleza</button>
+  <button onclick="tab('compra',this)">Compra</button>
+  <button onclick="tab('tareas',this)">Tareas</button>
+  <button onclick="tab('cocina',this)">Cocina</button>
+  <button onclick="tab('casa',this)">Casa</button>
 </nav>
 
 <div id="toast" class="toast"></div>
@@ -352,43 +368,17 @@ body.dark-mode input[type=text],body.dark-mode input[type=number],body.dark-mode
      CHECK DEL DÍA
 ══════════════════════════════════════════ -->
 <div id="tab-check" class="tab active">
-  <!-- ALQUIMIA SOMÁTICA v4.2 -->
-  <div class="card" style="background:#1a1a1a;color:white;border-left:5px solid #c8a96e;margin-bottom:15px;">
-    <div class="card-title" style="color:#c8a96e;display:flex;justify-content:space-between;margin-bottom:10px;">
-      <span>⚡ ALQUIMIA: EL ARCHIVO VIVO</span>
-      <span style="font-size:10px;opacity:0.7;">v4.2</span>
+  <section class="today-hero">
+    <div class="eyebrow">CUADERNO DE CLIMAS · HOY</div>
+    <h2>¿Cómo está tu clima interior?</h2>
+    <p class="today-lead">Una pausa breve para escucharte antes de seguir.</p>
+    <div class="today-lines">
+      <div><span>Cuerpo</span><b>—</b></div>
+      <div><span>Energía</span><b>—</b></div>
+      <div><span>Necesidad</span><b>—</b></div>
     </div>
-    
-    <div style="background:#2a2a2a;padding:12px;border-radius:12px;margin-bottom:12px;">
-      <div style="font-size:12px;color:#c8a96e;margin-bottom:8px;font-weight:bold;text-transform:uppercase;letter-spacing:1px;">📍 MAPA DEL ARCHIVO (DERECHO)</div>
-      <div style="font-size:11px;line-height:1.5;display:grid;grid-template-columns:1fr 1fr;gap:10px;">
-        <div><b>Mano:</b> Control y Rabia</div>
-        <div><b>Cadera:</b> Soporte y Pasado</div>
-        <div><b>Pie:</b> Raíces y Neuroma</div>
-        <div><b>Planta:</b> Fascia y Huesudo</div>
-      </div>
-    </div>
-
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:15px;">
-      <button class="btn" style="background:#c8a96e;color:#1a1a1a;font-weight:bold;font-size:13px;padding:10px;" onclick="abrirSomatica('pausa')">🧘 PAUSA SOMÁTICA</button>
-      <button class="btn" style="border:1px solid #c8a96e;background:transparent;color:#c8a96e;font-size:13px;padding:10px;" onclick="abrirSomatica('limpieza')">🧹 LIMPIEZA CAMPO</button>
-    </div>
-
-    <div style="border-top:1px solid #333;padding-top:12px;display:flex;gap:15px;overflow-x:auto;padding-bottom:5px;">
-      <div style="text-align:center;min-width:70px;cursor:pointer;" onclick="abrirSomatica('renpho')">
-        <div style="font-size:24px;">👣</div>
-        <div style="font-size:10px;margin-top:4px;color:#888;">RENPHO</div>
-      </div>
-      <div style="text-align:center;min-width:70px;cursor:pointer;" onclick="abrirSomatica('bolas')">
-        <div style="font-size:24px;">🔮</div>
-        <div style="font-size:10px;margin-top:4px;color:#888;">BOLAS</div>
-      </div>
-      <div style="text-align:center;min-width:70px;cursor:pointer;" onclick="abrirSomatica('miofascial')">
-        <div style="font-size:24px;">🧘</div>
-        <div style="font-size:10px;margin-top:4px;color:#888;">FASCIA</div>
-      </div>
-    </div>
-  </div>
+    <button class="quiet-link" onclick="document.getElementById('check-form').scrollIntoView({behavior:'smooth'})">Abrir mi registro <span>↓</span></button>
+  </section>
 
 
   <div class="card" id="check-resumen" style="display:none">
@@ -399,7 +389,7 @@ body.dark-mode input[type=text],body.dark-mode input[type=number],body.dark-mode
 
   <div id="check-form">
     <div class="card">
-      <div class="card-title">☁️ Tiempo</div>
+      <div class="card-title">Tiempo</div>
       <div class="emoji-row" id="tiempo-row">
         <button class="emoji-btn" data-val="☀️" onclick="selEmoji('tiempo',this)">☀️</button>
         <button class="emoji-btn" data-val="⛅" onclick="selEmoji('tiempo',this)">⛅</button>
@@ -410,7 +400,7 @@ body.dark-mode input[type=text],body.dark-mode input[type=number],body.dark-mode
     </div>
 
     <div class="card">
-      <div class="card-title">💭 Humor</div>
+      <div class="card-title">Humor</div>
       <div class="emoji-row" id="humor-row">
         <button class="emoji-btn" data-val="😄" onclick="selEmoji('humor',this)">😄</button>
         <button class="emoji-btn" data-val="🙂" onclick="selEmoji('humor',this)">🙂</button>
@@ -421,7 +411,7 @@ body.dark-mode input[type=text],body.dark-mode input[type=number],body.dark-mode
     </div>
 
     <div class="card">
-      <div class="card-title">⚡ Energía</div>
+      <div class="card-title">Energía</div>
       <div class="escala" id="energia-row">
         <button class="esc-btn" data-val="1" onclick="selEscala('energia',this)">1</button>
         <button class="esc-btn" data-val="2" onclick="selEscala('energia',this)">2</button>
