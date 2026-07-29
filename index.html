@@ -57,8 +57,23 @@ nav button:hover{color:#fff}
 .tab{display:none;padding:18px;max-width:750px;margin:0 auto;padding-bottom:40px}
 .tab.active{display:block}
 
+/* En tablet/ordenador el contenido empieza después del menú, no queda debajo */
+@media (min-width:800px){
+  .tab{display:none;margin-left:220px;margin-right:0;max-width:none;width:calc(100% - 220px);padding:24px 28px 60px}
+  .tab.active{display:block}
+}
+
 /* CARDS */
 .card{background:var(--gris-card);border-radius:18px;padding:22px;margin-bottom:16px;box-shadow:0 2px 6px rgba(0,0,0,.08)}
+
+/* Tema oscuro opcional */
+body.dark-mode{--gris-card:#242424;--gris:#303030;--texto:#f1f1f1;--texto-suave:#bdbdbd;--borde:#444;background:#171717;color:var(--texto)}
+body.dark-mode .card{box-shadow:0 2px 8px rgba(0,0,0,.3)}
+body.dark-mode input,body.dark-mode textarea,body.dark-mode select{background:#2d2d2d;color:#f1f1f1;border-color:#555}
+body.dark-mode .btn-outline{color:#f1f1f1;border-color:#555}
+body.dark-mode .entrada{background:#2d2d2d!important;border-color:#444!important}
+.theme-toggle{background:transparent;border:1px solid #555;color:#ddd;border-radius:20px;padding:7px 11px;font-size:13px;cursor:pointer;font-family:inherit}
+.theme-toggle:hover{border-color:var(--oro);color:var(--oro)}
 .card-title{font-size:14px;font-weight:700;color:#999;text-transform:uppercase;letter-spacing:.8px;margin-bottom:16px}
 
 /* SECCIÓN TÍTULO */
@@ -225,7 +240,7 @@ label{font-size:15px;color:var(--texto-suave);display:block;margin-bottom:7px;fo
 
 <header>
   <h1>🌸 Yuki</h1>
-  <span class="fecha" id="header-fecha"></span>
+  <span style="display:flex;align-items:center;gap:12px"><button class="theme-toggle" id="theme-toggle" onclick="toggleTema()" aria-label="Cambiar tema">☾ Oscuro</button><span class="fecha" id="header-fecha"></span></span>
 </header>
 
 
@@ -970,6 +985,18 @@ function formatFecha(iso) {
   const opciones = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
   return d.toLocaleDateString('es-ES', opciones).replace(/^\w/, (c) => c.toUpperCase());
 }
+function aplicarTema() {
+  const oscuro = cargar('tema_oscuro', false);
+  document.body.classList.toggle('dark-mode', oscuro);
+  const b = document.getElementById('theme-toggle');
+  if (b) b.textContent = oscuro ? '☀ Claro' : '☾ Oscuro';
+}
+function toggleTema() {
+  const oscuro = !document.body.classList.contains('dark-mode');
+  guardar('tema_oscuro', oscuro);
+  aplicarTema();
+}
+
 function initHeader() {
   const h = document.getElementById('header-fecha');
   if(h) h.textContent = formatFecha(hoyStr());
@@ -1587,6 +1614,7 @@ function toast(msg) {
 // ════════════════════════════════════════════════════════
 
 initHeader();
+aplicarTema();
 renderCheckHistorial();
 
 // ════════════════════════════════════════════════════════
