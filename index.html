@@ -365,6 +365,40 @@ input:focus,select:focus,textarea:focus{border-color:#b94735!important}
 .movement-routine{border-top:3px solid #b94735!important}.routine-intro{font-family:'Playfair Display',Georgia,serif;color:var(--texto-suave);font-size:16px;line-height:1.5;margin:-6px 0 18px}.routine-block{padding:14px 0;border-top:1px solid var(--borde);display:flex;flex-direction:column;gap:10px}.routine-time{font-size:10px;letter-spacing:.14em;color:#b94735;font-weight:700}.routine-block label{display:flex;align-items:flex-start;gap:10px;text-transform:none;letter-spacing:0;font-size:14px;color:var(--texto)}.routine-block input{accent-color:#b94735;margin-top:2px;width:16px;height:16px}.routine-note{margin-top:8px;padding-top:14px;border-top:1px solid var(--borde);font-size:12px;line-height:1.6;color:var(--texto-suave)}
 
 .routine-detail{margin-top:2px;font-size:12px;color:var(--texto-suave);line-height:1.6}.routine-detail summary{cursor:pointer;color:#b94735;font-weight:600;list-style:none}.routine-detail summary:before{content:'＋ ';font-size:13px}.routine-detail[open] summary:before{content:'− '}.routine-detail p{padding:8px 0 0 26px;max-width:650px}
+
+/* SISTEMA VISUAL GLOBAL YUKI · estética editorial tierra */
+:root{--marfil:#f5f1ea;--papel:#fffdf9;--piedra:#e8ddd0;--tinta:#292623;--suave:#756d65;--linea:#d8c9ba;--arcilla:#b94735;--musgo:#526b55;--dorado:#b7833f}
+html,body{background:var(--marfil)!important;color:var(--tinta)!important}
+body{font-family:'DM Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:16px}
+header{background:var(--marfil)!important;color:var(--tinta)!important;border-bottom:1px solid var(--linea)!important;box-shadow:none!important}
+header h1{font-family:'Playfair Display',Georgia,serif;color:var(--tinta)!important;font-weight:600}
+nav{background:var(--piedra)!important;border-color:var(--linea)!important;box-shadow:none!important}
+nav button{font-family:'DM Sans',sans-serif;background:transparent!important;color:#64574e!important;border:0!important;border-radius:2px!important}
+nav button.active{background:var(--arcilla)!important;color:#fff!important;border:0!important}
+nav button:hover{background:#d9c5b5!important;color:var(--tinta)!important}
+.nav-label{color:#9b6b59!important}
+.tab{background:var(--marfil)!important}
+.card,.entrada,.planta-card,.total-card,.luna-dato,.planta-dato{background:var(--papel)!important;color:var(--tinta)!important;border:1px solid var(--linea)!important;border-radius:3px!important;box-shadow:none!important}
+.card-title,.sec-title{font-family:'Playfair Display',Georgia,serif;color:var(--tinta)!important;font-weight:500}
+.btn,.btn-outline,.btn-oro,.btn-primary{font-family:'DM Sans',sans-serif;border-radius:3px!important;box-shadow:none!important}
+.btn-outline{background:transparent!important;border:1px solid var(--linea)!important;color:var(--tinta)!important}
+.btn-outline:hover{border-color:var(--arcilla)!important;color:var(--arcilla)!important}
+.btn-primary{background:var(--arcilla)!important;border-color:var(--arcilla)!important;color:#fff!important}
+.btn-oro{background:var(--dorado)!important;border-color:var(--dorado)!important;color:#fff!important}
+input,select,textarea{background:var(--papel)!important;color:var(--tinta)!important;border:1px solid var(--linea)!important;border-radius:3px!important;box-shadow:none!important}
+input:focus,select:focus,textarea:focus{border-color:var(--arcilla)!important;outline:none!important}
+label{color:var(--suave)!important}
+.badge,.tag,.esc-btn{border-radius:3px!important;background:transparent!important;border:1px solid var(--linea)!important;color:var(--tinta)!important}
+.tag.sel,.esc-btn.sel{background:var(--arcilla)!important;border-color:var(--arcilla)!important;color:#fff!important}
+.toast{background:var(--arcilla)!important;border-radius:3px!important}
+/* ningún bloque de marca negra: el negro queda reservado a vídeo/contenido externo */
+.card[style*="#1a1a1a"],.card[style*="background:#1a1a1a"]{background:var(--papel)!important;color:var(--tinta)!important;border-left:3px solid var(--arcilla)!important}
+.card[style*="#1a1a1a"] *{color:inherit}
+/* módulos que conservaban la estética antigua */
+details,details[style]{background:var(--papel)!important;border:1px solid var(--linea)!important;border-radius:3px!important}
+summary{color:var(--tinta)!important}
+.empty-ico{color:var(--arcilla)!important}
+@media(max-width:599px){header{padding:16px 18px!important}.tab{padding:24px 18px 50px!important}.card{padding:20px!important}}
 </style>
 </head>
 <body>
