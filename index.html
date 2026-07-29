@@ -360,6 +360,9 @@ input:focus,select:focus,textarea:focus{border-color:#b94735!important}
 .emoji-btn.sel{background:transparent!important;border-color:#b94735!important;color:#292623!important}
 .emoji-btn.sel::before{color:#b94735!important}
 .emoji-row{gap:9px!important}
+
+/* Rutina diaria de movimiento */
+.movement-routine{border-top:3px solid #b94735!important}.routine-intro{font-family:'Playfair Display',Georgia,serif;color:var(--texto-suave);font-size:16px;line-height:1.5;margin:-6px 0 18px}.routine-block{padding:14px 0;border-top:1px solid var(--borde);display:flex;flex-direction:column;gap:10px}.routine-time{font-size:10px;letter-spacing:.14em;color:#b94735;font-weight:700}.routine-block label{display:flex;align-items:flex-start;gap:10px;text-transform:none;letter-spacing:0;font-size:14px;color:var(--texto)}.routine-block input{accent-color:#b94735;margin-top:2px;width:16px;height:16px}.routine-note{margin-top:8px;padding-top:14px;border-top:1px solid var(--borde);font-size:12px;line-height:1.6;color:var(--texto-suave)}
 </style>
 </head>
 <body>
@@ -672,6 +675,24 @@ input:focus,select:focus,textarea:focus{border-color:#b94735!important}
       <button class="btn btn-outline btn-sm" onclick="abrirAlquimia('manos')">👐 Bolas Baoding</button>
     </div>
   </div>
+  <div class="card movement-routine">
+    <div class="card-title">Movimiento · volver al cuerpo</div>
+    <p class="routine-intro">Una práctica mínima diaria. No buscamos rendimiento: buscamos continuidad.</p>
+    <div class="routine-block"><span class="routine-time">AL DESPERTAR · 6 min</span>
+      <label><input type="checkbox" data-rutina="cama" onchange="toggleRutina(this)"> Estiramientos suaves en cama · respirar y desperezar</label>
+      <label><input type="checkbox" data-rutina="tapping" onchange="toggleRutina(this)"> Tapping breve · cara, clavículas, brazos y pecho</label>
+    </div>
+    <div class="routine-block"><span class="routine-time">DESPUÉS · 8–10 min</span>
+      <label><input type="checkbox" data-rutina="fascia" onchange="toggleRutina(this)"> Despertar fascial · pies, pantorrillas, caderas y columna</label>
+      <label><input type="checkbox" data-rutina="taizo" onchange="toggleRutina(this)"> Radio Taiso o Tai Chi · movilidad lenta, sin forzar</label>
+    </div>
+    <div class="routine-block"><span class="routine-time">PROGRESIÓN · 3 días/semana</span>
+      <label><input type="checkbox" data-rutina="fuerza" onchange="toggleRutina(this)"> Fuerza suave · sentarse/levantarse, pared y glúteos</label>
+      <label><input type="checkbox" data-rutina="paseo" onchange="toggleRutina(this)"> Paseo consciente · empezar con 10–15 min</label>
+    </div>
+    <div class="routine-note">Regla de Lore: <strong>terminar con ganas de hacer un poco más</strong>. Si el Aquiles o las manos dan dolor agudo, paras y adaptas.</div>
+  </div>
+
   <div class="card">
     <div class="card-title">👣 Pasos de hoy</div>
     <input type="number" id="salud-pasos" placeholder="ej. 8000" style="width:100%;border:1.5px solid var(--borde);border-radius:10px;padding:10px;font-size:16px;font-family:inherit">
@@ -1037,7 +1058,7 @@ function tab(id, btn) {
   if(id === 'plantas') renderPlantas();
   if(id === 'check') renderCheckHistorial();
   if(id === 'reflexiones') initReflexiones();
-  if(id === 'salud') initSalud();
+  if(id === 'salud') { initSalud(); initRutinaMovimiento(); }
   if(id === 'guia') initGuia();
   if(id === 'belleza') initBelleza();
   if(id === 'compra') renderCompra();
@@ -1794,6 +1815,18 @@ function renderReflexionesHistorial() {
       ${r.noche ? `<p style="font-size:13px">🌙 ${r.noche}</p>` : ''}
     </div>`;
   }).join('');
+}
+
+
+function toggleRutina(box) {
+  const key = 'rutina_movimiento_' + hoyStr();
+  const estado = cargar(key, {});
+  estado[box.dataset.rutina] = box.checked;
+  guardar(key, estado);
+}
+function initRutinaMovimiento() {
+  const estado = cargar('rutina_movimiento_' + hoyStr(), {});
+  document.querySelectorAll('[data-rutina]').forEach(b => { b.checked = !!estado[b.dataset.rutina]; });
 }
 
 // ════════════════════════════════════════════════════════
