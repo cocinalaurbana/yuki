@@ -258,12 +258,66 @@ label{font-size:15px;color:var(--texto-suave);display:block;margin-bottom:7px;fo
     max-width:none!important;width:calc(100% - 220px)!important;padding:24px 28px 60px!important}
   .tab.active{display:block!important}
 }
+
+/* YUKI — nueva dirección visual: tierra, silencio y ritual */
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600&display=swap');
+:root{
+  --negro:#24211f;--gris-oscuro:#282522;
+  --oro:#b7833f;--oro-claro:#f1e2cf;
+  --verde:#526b55;--verde-bg:#e7eee5;
+  --azul:#667b86;--azul-bg:#e9eff0;
+  --rojo:#a4493d;--rojo-bg:#f5e3df;
+  --naranja:#c56536;--naranja-bg:#f7e4d7;
+  --gris:#f2eee8;--gris-card:#fffdf9;
+  --texto:#292623;--texto-suave:#756d65;--borde:#ddd5ca;
+  --terracota:#bd5d3f;--marfil:#f5f1ea;
+}
+html{background:var(--marfil)}
+body{font-family:'DM Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--marfil);color:var(--texto);font-size:16px;letter-spacing:.01em}
+header{height:72px;background:var(--marfil);color:var(--texto);padding:18px 28px;border-bottom:1px solid var(--borde);box-shadow:none}
+header h1{font-family:'Playfair Display',Georgia,serif;font-size:25px;font-weight:600;letter-spacing:.02em;color:var(--texto)}
+.yuki-mark{color:var(--terracota);font-family:Georgia,serif;font-size:28px}
+header .fecha{font-size:12px;color:var(--texto-suave);letter-spacing:.04em}
+.theme-toggle{border:1px solid var(--borde);color:var(--texto-suave);border-radius:3px;padding:7px 10px;background:transparent;font-size:12px}
+.theme-toggle:hover{border-color:var(--terracota);color:var(--terracota)}
+.card{background:var(--gris-card);border:1px solid rgba(221,213,202,.8);border-radius:4px;padding:24px;margin-bottom:18px;box-shadow:none}
+.card-title{font-family:'Playfair Display',Georgia,serif;font-size:19px;font-weight:600;color:var(--texto);text-transform:none;letter-spacing:0;margin-bottom:18px}
+.sec-title{font-family:'Playfair Display',Georgia,serif;font-size:20px;font-weight:500;color:var(--texto);text-transform:none;letter-spacing:0}
+.btn{border-radius:3px;font-size:14px;font-weight:600;padding:11px 17px}
+.btn-primary{background:var(--terracota);color:#fff}.btn-oro{background:var(--oro);color:#fff}
+.btn-outline{border:1px solid var(--borde);background:transparent;color:var(--texto)}
+input[type=text],input[type=number],input[type=date],select,textarea{border:1px solid var(--borde);border-radius:3px;background:#fffdf9;color:var(--texto);font-size:15px;padding:12px 13px}
+input:focus,select:focus,textarea:focus{border-color:var(--terracota);background:#fffdf9}
+label{font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:var(--texto-suave)}
+.entrada,.planta-card{background:transparent;border:1px solid var(--borde);border-radius:3px;box-shadow:none;padding:16px}
+.entrada-fecha,.luna-sub{color:var(--texto-suave)}
+.tag,.esc-btn,.emoji-btn{border-radius:3px;background:var(--gris);border:1px solid var(--borde)}
+.tag.sel,.esc-btn.sel{background:var(--terracota);border-color:var(--terracota);color:#fff}
+.luna-dato,.planta-dato{background:var(--gris);border-radius:3px}
+.total-card{background:var(--texto);border-radius:3px}.total-card .t-val{color:#e1b56d}
+/* Menú: carbón, terracota y tipografía limpia */
+@media (min-width:600px){
+  nav{top:72px!important;height:calc(100vh - 72px)!important;width:228px!important;background:var(--gris-oscuro)!important;padding:24px 14px!important}
+  nav button{font-size:13px!important;letter-spacing:.02em;padding:12px 14px!important;border-radius:3px!important;color:#bdb5ad!important}
+  nav button.active{background:rgba(189,93,63,.22)!important;border-left:3px solid var(--terracota)!important;color:#fff!important;padding-left:11px!important}
+  nav button:hover{background:rgba(255,255,255,.07)!important;color:#fff!important}
+  .tab{margin-left:228px!important;width:calc(100% - 228px)!important;padding:34px 42px 70px!important}
+}
+/* En móvil, las pestañas también nacen desde la izquierda */
+@media (max-width:599px){
+  .side-tabs{left:0;right:auto}
+  .side-tab{border-left:none;border-right:1px solid var(--oro);border-radius:0 6px 6px 0}
+}
+body.dark-mode{--marfil:#191817;--gris-card:#242220;--gris:#302d2a;--texto:#f1ece5;--texto-suave:#b9afa5;--borde:#4a443e;background:#191817}
+body.dark-mode header{background:#191817;border-color:#4a443e;color:var(--texto)}
+body.dark-mode .card,body.dark-mode .entrada,body.dark-mode .planta-card{background:var(--gris-card);border-color:#4a443e}
+body.dark-mode input[type=text],body.dark-mode input[type=number],body.dark-mode input[type=date],body.dark-mode select,body.dark-mode textarea{background:#242220;color:var(--texto);border-color:#4a443e}
 </style>
 </head>
 <body>
 
 <header>
-  <h1>🌸 Yuki</h1>
+  <h1><span class="yuki-mark">◌</span> Yuki</h1>
   <span style="display:flex;align-items:center;gap:12px"><button class="theme-toggle" id="theme-toggle" onclick="toggleTema()" aria-label="Cambiar tema">☾ Oscuro</button><span class="fecha" id="header-fecha"></span></span>
 </header>
 
