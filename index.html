@@ -363,6 +363,8 @@ input:focus,select:focus,textarea:focus{border-color:#b94735!important}
 
 /* Rutina diaria de movimiento */
 .movement-routine{border-top:3px solid #b94735!important}.routine-intro{font-family:'Playfair Display',Georgia,serif;color:var(--texto-suave);font-size:16px;line-height:1.5;margin:-6px 0 18px}.routine-block{padding:14px 0;border-top:1px solid var(--borde);display:flex;flex-direction:column;gap:10px}.routine-time{font-size:10px;letter-spacing:.14em;color:#b94735;font-weight:700}.routine-block label{display:flex;align-items:flex-start;gap:10px;text-transform:none;letter-spacing:0;font-size:14px;color:var(--texto)}.routine-block input{accent-color:#b94735;margin-top:2px;width:16px;height:16px}.routine-note{margin-top:8px;padding-top:14px;border-top:1px solid var(--borde);font-size:12px;line-height:1.6;color:var(--texto-suave)}
+
+.routine-detail{margin-top:2px;font-size:12px;color:var(--texto-suave);line-height:1.6}.routine-detail summary{cursor:pointer;color:#b94735;font-weight:600;list-style:none}.routine-detail summary:before{content:'＋ ';font-size:13px}.routine-detail[open] summary:before{content:'− '}.routine-detail p{padding:8px 0 0 26px;max-width:650px}
 </style>
 </head>
 <body>
@@ -681,16 +683,19 @@ input:focus,select:focus,textarea:focus{border-color:#b94735!important}
     <div class="routine-block"><span class="routine-time">AL DESPERTAR · 6 min</span>
       <label><input type="checkbox" data-rutina="cama" onchange="toggleRutina(this)"> Estiramientos suaves en cama · respirar y desperezar</label>
       <label><input type="checkbox" data-rutina="tapping" onchange="toggleRutina(this)"> Tapping breve · cara, clavículas, brazos y pecho</label>
+      <details class="routine-detail"><summary>Cómo hacerlo</summary><p>Con las yemas, da golpecitos suaves y rítmicos. Recorre cejas, pómulos, mandíbula, clavículas, esternón y brazos. Respira sin buscar ningún resultado.</p></details>
     </div>
     <div class="routine-block"><span class="routine-time">DESPUÉS · 8–10 min</span>
       <label><input type="checkbox" data-rutina="fascia" onchange="toggleRutina(this)"> Despertar fascial · pies, pantorrillas, caderas y columna</label>
       <label><input type="checkbox" data-rutina="taizo" onchange="toggleRutina(this)"> Radio Taiso o Tai Chi · movilidad lenta, sin forzar</label>
+      <details class="routine-detail"><summary>Secuencia breve</summary><p>1 · Mueve los dedos de los pies y haz círculos de tobillo. 2 · Balancea el peso suavemente. 3 · Ondula las rodillas y la pelvis. 4 · Deja que la columna y los brazos acompañen. 5 · Termina de pie, sintiendo las plantas.</p></details>
     </div>
     <div class="routine-block"><span class="routine-time">PROGRESIÓN · 3 días/semana</span>
       <label><input type="checkbox" data-rutina="fuerza" onchange="toggleRutina(this)"> Fuerza suave · sentarse/levantarse, pared y glúteos</label>
       <label><input type="checkbox" data-rutina="paseo" onchange="toggleRutina(this)"> Paseo consciente · empezar con 10–15 min</label>
+      <details class="routine-detail"><summary>Progresión de cuatro semanas</summary><p><strong>Semana 1:</strong> 6–10 min diarios. <strong>Semana 2:</strong> añade 10 min de paseo tres días. <strong>Semana 3:</strong> añade dos rondas suaves de sentarte/levantarte y empuje en pared. <strong>Semana 4:</strong> amplía solo si el cuerpo lo recibe bien.</p></details>
     </div>
-    <div class="routine-note">Regla de Lore: <strong>terminar con ganas de hacer un poco más</strong>. Si el Aquiles o las manos dan dolor agudo, paras y adaptas.</div>
+    <div class="routine-note"><strong>La medida es la continuidad.</strong> Termina con ganas de hacer un poco más. Si el Aquiles o las manos dan dolor agudo, paras y adaptas; nada de saltos ni rebotes mientras haya dolor.</div>
   </div>
 
   <div class="card">
