@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#1a1a1a">
+<meta name="theme-color" content="#f5f1ea">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Yuki">
 <link rel="manifest" href="manifest.json">
 <title>Yuki</title>
@@ -335,6 +335,24 @@ nav button{display:block;width:100%;text-align:left!important}
 .emoji-row{display:flex;gap:8px;flex-wrap:wrap}
 .emoji-btn{min-width:64px!important;padding:12px 10px!important;font-size:12px!important;color:var(--texto)!important;background:transparent!important}
 .emoji-btn.sel{background:var(--terracota)!important;color:#fff!important;border-color:var(--terracota)!important}
+
+/* DIRECCIÓN FINAL — sin negro, con rojo arcilla visible */
+body,body.dark-mode{background:#f5f1ea!important;color:#292623!important}
+header,body.dark-mode header{background:#f5f1ea!important;color:#292623!important;border-bottom:1px solid #d8c9ba!important}
+header h1{color:#292623!important}.yuki-mark{color:#b94735!important}
+@media (min-width:600px){
+  nav,body.dark-mode nav{background:#e8ddd0!important;border-right:1px solid #d3c1b1!important;padding:28px 16px!important}
+  nav button,body.dark-mode nav button{color:#64574e!important;background:transparent!important}
+  nav button.active,body.dark-mode nav button.active{background:#b94735!important;color:#fff!important;border-left:0!important;border-radius:2px!important;padding-left:14px!important}
+  nav button:hover,body.dark-mode nav button:hover{background:#d9c5b5!important;color:#292623!important}
+  .nav-label{color:#9b6b59!important}
+}
+.card,.entrada,.planta-card,body.dark-mode .card,body.dark-mode .entrada,body.dark-mode .planta-card{background:#fffdf9!important;color:#292623!important}
+.btn-primary,#check-form>.btn-primary{background:#b94735!important;border-color:#b94735!important;color:#fff!important}
+.btn-primary:hover{background:#963a2d!important}
+.terracotta,.tag.sel,.esc-btn.sel,.emoji-btn.sel{background:#b94735!important;border-color:#b94735!important;color:#fff!important}
+.eyebrow,.quiet-link{color:#b94735!important}
+input:focus,select:focus,textarea:focus{border-color:#b94735!important}
 </style>
 </head>
 <body>
