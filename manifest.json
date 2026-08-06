@@ -1,11 +1,11 @@
 {
   "name": "Yuki — Agenda de Lore",
   "short_name": "Yuki",
-  "description": "Agenda personal de Lore: diario, hábitos, luna y alquimia de vida",
+  "description": "Cuaderno personal de Lore: climas, cuerpo, alimentación, cocina y vida consciente",
   "start_url": "/yuki/",
   "display": "standalone",
-  "background_color": "#1a1a1a",
-  "theme_color": "#1a1a1a",
+  "background_color": "#f5f1ea",
+  "theme_color": "#f5f1ea",
   "orientation": "any",
   "icons": [
     {
