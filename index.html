@@ -2295,6 +2295,13 @@ function informacionTemporada() {
   return {nombre:'Otoño', frase:'Volver al horno, las setas y los sabores más hondos.', ideas:[['Setas','Salteados, arroz y salsas'],['Boniato','Asado, crema y guarnición'],['Manzana y pera','Horno, ensaladas y postres'],['Coliflor y puerro','Cremas, gratinados y fondos']]};
 }
 
+const propuestasVerano = [
+  {nombre:'Tomate, pimiento y garbanzos con hierbas', tipo:'Base fresca · 20 min', texto:'Un plato completo para preparar una vez y comer también al día siguiente.', ingredientes:['tomates maduros','pimiento rojo','garbanzos cocidos','cebolla morada','perejil o albahaca','limón','aceite de oliva']},
+  {nombre:'Calabacín a la plancha con yogur y menta', tipo:'Ligero · 15 min', texto:'Calabacín dorado, una salsa fresca y algo crujiente por encima.', ingredientes:['calabacines','yogur natural','limón','menta','semillas o frutos secos','aceite de oliva']},
+  {nombre:'Ensalada de sandía, pepino y aceitunas', tipo:'Sin fuego · 10 min', texto:'Fresca, salina y sencilla para los días de calor.', ingredientes:['sandía','pepino','aceitunas','queso feta o tofu','hierbabuena','vinagre de Jerez o de arroz']},
+  {nombre:'Pescado azul con tomate y limón', tipo:'Plancha · 20 min', texto:'Una preparación corta para sardina, caballa o el pescado que encuentres mejor.', ingredientes:['sardinas o caballa','tomates','limón','ajo','perejil','pimiento','aceite de oliva']}
+];
+
 function renderCocina() {
   const stock = cargar('cocina_stock', STOCK_INICIAL.reduce((acc, x) => ({...acc, [x]: true}), {}));
   let recetas = cargar('recetas_propias', []);
@@ -2374,6 +2381,14 @@ function renderCocina() {
       <p class='season-lead'>${temporada.frase}</p>
       <div class='season-grid'>${temporada.ideas.map(i => `<div class='season-item'><strong>${i[0]}</strong><small>${i[1]}</small></div>`).join('')}</div>
     </div>
+    ${temporada.nombre === 'Verano' ? `<div class='card'>
+      <div class='card-title'>Esta semana · verano</div>
+      <p class='trial-intro'>Elige dos, repite una si te funciona y deja la receta especial para cuando te apetezca cocinar con calma.</p>
+      <div class='season-grid'>${propuestasVerano.map(r => `<div class='season-item'>
+        <strong>${r.nombre}</strong><small>${r.tipo}</small><small style='margin-top:7px'>${r.texto}</small>
+        <button class='btn btn-outline btn-sm mt-8' onclick='mandarACompra(${JSON.stringify(r.ingredientes)})'>Añadir ingredientes</button>
+      </div>`).join('')}</div>
+    </div>` : ''}
     <div class='card trial-recipes'>
       <div class='card-title'>Recetas para probar</div>
       <p class='trial-intro'>Un lugar para guardar ideas antes de convertirlas en platos de la carta o de casa.</p>
