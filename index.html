@@ -2372,7 +2372,7 @@ function renderCocina() {
   let html = `
     <div class='card'>
       <div class='card-title'>Alimentación</div>
-      <p class='trial-intro'>No es una dieta ni una lista de prohibiciones. Es una alimentación mayoritariamente vegetal, flexible y atenta a lo que te apetece, te sienta bien y te ayuda a vivir tu día.</p>
+      <p class='trial-intro'>No es una dieta ni una lista de prohibiciones. Es una alimentación de base vegetal, flexible y atenta a lo que te apetece, te sienta bien y te ayuda a vivir tu día. También caben el mar, la tradición y alguna receta de pollo cuando tenga sentido.</p>
       <div class='trial-meta'>Puedes registrar después cómo te ha sentado cada plato en tu diario.</div>
     </div>
     <div class='card season-card'>
@@ -2389,6 +2389,15 @@ function renderCocina() {
         <button class='btn btn-outline btn-sm mt-8' onclick='mandarACompra(${JSON.stringify(r.ingredientes)})'>Añadir ingredientes</button>
       </div>`).join('')}</div>
     </div>` : ''}
+    <div class='card'>
+      <div class='card-title'>Base vegetal · excepciones con sentido</div>
+      <p class='trial-intro'>La mayor parte será vegetal, pero no vamos a renunciar a un buen caldo, unos mejillones o unas sardinitas cuando te apetezcan.</p>
+      <div class='season-grid'>
+        <div class='season-item'><strong>Caldo gallego de verduras</strong><small>Grelos, patata y legumbre, con hueso de jamón o chorizo ahumado para dar fondo.</small><button class='btn btn-outline btn-sm mt-8' onclick='mandarACompra(["grelos","patatas","judías blancas","hueso de jamón","chorizo ahumado","cebolla","ajo"])'>Añadir ingredientes</button></div>
+        <div class='season-item'><strong>Mar sencillo</strong><small>Mejillones, sardinitas en aceite o sardinas a la parrilla cuando las encuentres.</small><button class='btn btn-outline btn-sm mt-8' onclick='mandarACompra(["mejillones","sardinas en aceite","limón","laurel","ajo","perejil"])'>Añadir ingredientes</button></div>
+        <div class='season-item'><strong>Pollo puntual</strong><small>A la plancha o asado, solo cuando la receta merezca la pena.</small><button class='btn btn-outline btn-sm mt-8' onclick='mandarACompra(["pollo","limón","ajo","hierbas frescas","patatas o verduras"])'>Añadir ingredientes</button></div>
+      </div>
+    </div>
     <div class='card trial-recipes'>
       <div class='card-title'>Recetas para probar</div>
       <p class='trial-intro'>Un lugar para guardar ideas antes de convertirlas en platos de la carta o de casa.</p>
