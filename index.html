@@ -495,7 +495,7 @@ summary{color:var(--tinta)!important}
       <div class="registro-row energia-row"><div class="registro-label">Presencia</div><div class="escala" id="energia-row">
         <button class="esc-btn" data-val="1" onclick="selEscala('energia',this)">Vacía</button><button class="esc-btn" data-val="2" onclick="selEscala('energia',this)">Baja</button><button class="esc-btn" data-val="3" onclick="selEscala('energia',this)">Disponible</button><button class="esc-btn" data-val="4" onclick="selEscala('energia',this)">Viva</button><button class="esc-btn" data-val="5" onclick="selEscala('energia',this)">Expansiva</button>
       </div></div>
-      <div class="registro-notas"><div class="form-group"><label>Qué necesito hoy</label><textarea id="check-intencion" placeholder="Más calma, movimiento, espacio, contacto…" rows="2"></textarea></div><div class="form-group" style="margin-bottom:0"><label>Una palabra para hoy</label><input type="text" id="check-palabra" placeholder="Solo una…"></div></div>
+      <div class="registro-notas"><div class="form-group" style="grid-column:1/-1;margin-bottom:0"><label>Qué necesito hoy</label><textarea id="check-intencion" placeholder="Más calma, movimiento, espacio, contacto…" rows="2"></textarea></div></div>
       <button class="btn btn-primary registro-save" onclick="guardarCheck()">Guardar mi clima</button>
     </section>
   </div>
@@ -1261,7 +1261,7 @@ function selEscala(campo, btn) {
 
 function guardarCheck() {
   checkState.intencion = document.getElementById('check-intencion').value.trim();
-  checkState.palabra = document.getElementById('check-palabra').value.trim();
+  checkState.palabra = '';
 
   if(!checkState.humor && !checkState.tiempo) { toast('Elige al menos el tiempo o tu clima interior'); return; }
 
@@ -1302,7 +1302,6 @@ function editarCheck() {
   // Restaurar estado
   checkState = {...hoy};
   document.getElementById('check-intencion').value = hoy.intencion || '';
-  document.getElementById('check-palabra').value = hoy.palabra || '';
   // Restaurar selecciones visuales
   document.querySelectorAll('#tiempo-row .emoji-btn').forEach(b => { if(b.dataset.val===hoy.tiempo) b.classList.add('sel'); });
   document.querySelectorAll('#humor-row .emoji-btn').forEach(b => { if(b.dataset.val===hoy.humor) b.classList.add('sel'); });
