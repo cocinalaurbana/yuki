@@ -410,6 +410,9 @@ summary{color:var(--tinta)!important}
 
 /* RECETAS PARA PROBAR */
 .trial-recipes{border-top:3px solid var(--dorado)!important}.trial-intro{font-family:'Playfair Display',Georgia,serif;color:var(--suave);font-size:15px;line-height:1.5}.trial-recipe{border-top:1px solid var(--linea);padding:16px 0}.trial-recipe:first-of-type{border-top:0}.trial-recipe-head{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}.trial-recipe h3{font-family:'Playfair Display',Georgia,serif;font-weight:500;font-size:20px;margin:0 0 5px}.trial-meta{font-size:11px;color:var(--suave);line-height:1.5}.trial-status{font-size:10px;letter-spacing:.08em;border:1px solid var(--dorado);color:var(--dorado);padding:6px 7px;white-space:nowrap}.trial-recipe details{margin-top:10px;padding:9px 0!important;border:0!important;border-top:1px solid var(--linea)!important;border-radius:0!important}.trial-recipe summary{font-size:12px;color:var(--arcilla)!important}.trial-recipe ul,.trial-recipe ol{font-size:12px;line-height:1.6;padding-left:20px}.trial-recipe p{font-size:12px;line-height:1.6}.trial-source{display:inline-block;margin-top:10px;color:var(--arcilla);font-size:12px;text-decoration:none}.trial-source:hover{text-decoration:underline}.trial-select{font:inherit;font-size:11px;padding:6px 8px;border:1px solid var(--linea);border-radius:3px;background:var(--papel);color:var(--tinta)}
+
+/* ALIMENTACIÓN DE TEMPORADA */
+.season-card{border-top:3px solid var(--dorado)!important}.season-kicker{font-size:10px;letter-spacing:.14em;color:var(--dorado);font-weight:700}.season-lead{font-family:'Playfair Display',Georgia,serif;font-size:16px;color:var(--suave);line-height:1.5;margin:6px 0 14px}.season-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.season-item{border:1px solid var(--linea);padding:10px;background:var(--papel)}.season-item strong{display:block;font-size:13px;font-weight:600}.season-item small{display:block;color:var(--suave);font-size:11px;line-height:1.4;margin-top:4px}@media(max-width:520px){.season-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -422,7 +425,7 @@ summary{color:var(--tinta)!important}
 
 <div class="side-tabs">
   <div class="side-tab active" onclick="tab('check',this)">DÍA</div>
-  <div class="side-tab" onclick="tab('cocina',this)">COCINA</div>
+  <div class="side-tab" onclick="tab('cocina',this)">ALIMENTACIÓN</div>
   <div class="side-tab" onclick="tab('casa',this)">CASA</div>
   <div class="side-tab" onclick="tab('diario',this)">DIARIO</div>
   <div class="side-tab" onclick="tab('luna',this)">LUNA</div>
@@ -440,7 +443,7 @@ summary{color:var(--tinta)!important}
   <div class="nav-group"><div class="nav-label">MI MUNDO</div>
     <button onclick="tab('casa',this)">Casa</button>
     <button onclick="tab('plantas',this)">Plantas</button>
-    <button onclick="tab('cocina',this)">Cocina</button>
+    <button onclick="tab('cocina',this)">Alimentación</button>
     <button onclick="tab('compra',this)">Compra</button>
     <button onclick="tab('gastos',this)">Gastos</button>
   </div>
@@ -2270,6 +2273,15 @@ function mandarACompra(ingredientes) {
   alert('¡Ingredientes añadidos a la lista de la compra! 🛒');
 }
 
+
+function informacionTemporada() {
+  const mes = new Date().getMonth() + 1;
+  if([12,1,2].includes(mes)) return {nombre:'Invierno', frase:'Cocina lenta, caldos y platos que dan calor.', ideas:[['Calabaza y raíces','Cremas, asados y guisos'],['Coles','Horno, salteados y fermentados'],['Legumbres','Cuchara, ensaladas templadas y hummus'],['Cítricos','Acidez y frescor para levantar los platos']]};
+  if([3,4,5].includes(mes)) return {nombre:'Primavera', frase:'Más verde, más fresco y sin complicar la cocina.', ideas:[['Guisantes y habas','Salteados, cremas y arroces'],['Espárragos','Plancha, horno o ensalada templada'],['Fresas y nísperos','Postres sencillos y aliños'],['Hojas tiernas','Ensaladas con algo crujiente']]};
+  if([6,7,8].includes(mes)) return {nombre:'Verano', frase:'Productos frescos, poco fuego y platos que apetecen fríos.', ideas:[['Tomate y pimiento','Ensaladas, sofritos y asados'],['Calabacín y berenjena','Plancha, horno y marinados'],['Sandía y melón','Entrantes frescos y contrastes salinos'],['Pescado azul','Plancha, escabeche y conservas caseras']]};
+  return {nombre:'Otoño', frase:'Volver al horno, las setas y los sabores más hondos.', ideas:[['Setas','Salteados, arroz y salsas'],['Boniato','Asado, crema y guarnición'],['Manzana y pera','Horno, ensaladas y postres'],['Coliflor y puerro','Cremas, gratinados y fondos']]};
+}
+
 function renderCocina() {
   const stock = cargar('cocina_stock', STOCK_INICIAL.reduce((acc, x) => ({...acc, [x]: true}), {}));
   let recetas = cargar('recetas_propias', []);
@@ -2307,6 +2319,7 @@ function renderCocina() {
     });
     guardar('recetas_prueba', recetasPrueba);
   }
+  const temporada = informacionTemporada();
   const recetasPruebaHtml = recetasPrueba.map(r => `
     <article class='trial-recipe'>
       <div class='trial-recipe-head'><div><h3>${r.nombre}</h3><div class='trial-meta'>${r.meta || ''}</div></div><span class='trial-status'>${r.estado || 'Para probar'}</span></div>
@@ -2337,6 +2350,17 @@ function renderCocina() {
     guardar('recetas_propias', recetas);
   }
   let html = `
+    <div class='card'>
+      <div class='card-title'>Alimentación</div>
+      <p class='trial-intro'>No es una dieta ni una lista de prohibiciones. Es observar qué te apetece, qué te sienta bien y qué te ayuda a vivir tu día.</p>
+      <div class='trial-meta'>Puedes registrar después cómo te ha sentado cada plato en tu diario.</div>
+    </div>
+    <div class='card season-card'>
+      <div class='season-kicker'>AHORA · ${temporada.nombre.toUpperCase()}</div>
+      <div class='card-title' style='margin-top:6px'>Recetas de temporada</div>
+      <p class='season-lead'>${temporada.frase}</p>
+      <div class='season-grid'>${temporada.ideas.map(i => `<div class='season-item'><strong>${i[0]}</strong><small>${i[1]}</small></div>`).join('')}</div>
+    </div>
     <div class='card trial-recipes'>
       <div class='card-title'>Recetas para probar</div>
       <p class='trial-intro'>Un lugar para guardar ideas antes de convertirlas en platos de la carta o de casa.</p>
@@ -2361,10 +2385,10 @@ function renderCocina() {
       </div>
     </div>
     <div class='card'>
-      <div class='card-title'>🥬 Pilares Antiinflamatorios</div>
+      <div class='card-title'>Base cotidiana</div>
       <div style='font-size:13px;line-height:1.6'>
         <details>
-          <summary><b>Recetas Sugeridas</b></summary>
+          <summary><b>Ideas sencillas para comer bien</b></summary>
           <div class='entrada mt-8'>
             <b>Kéfir Potenciado</b><br>
             <button class='btn btn-outline btn-sm mt-8' onclick=\"mandarACompra(['Kéfir de cabra', 'Semillas de lino', 'Arándanos'])\">🛒 Comprar ingredientes</button>
