@@ -407,6 +407,9 @@ summary{color:var(--tinta)!important}
 
 /* PLAN DE MOVIMIENTO · reentrada suave */
 .movement-plan{border-top:3px solid var(--musgo)!important}.movement-plan .plan-kicker{font-size:10px;letter-spacing:.14em;color:var(--musgo);font-weight:700}.plan-recommendation{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;padding:14px 0;border-bottom:1px solid var(--linea)}.plan-recommendation h3{font-family:'Playfair Display',Georgia,serif;font-size:22px;font-weight:500;margin:0 0 5px}.plan-recommendation p{margin:0;font-size:13px;color:var(--suave);line-height:1.5}.plan-badge{font-size:10px;letter-spacing:.08em;border:1px solid var(--musgo);color:var(--musgo);padding:6px 8px;white-space:nowrap}.plan-phase{padding:14px 0;border-bottom:1px solid var(--linea)}.plan-phase:last-child{border-bottom:0}.plan-phase-title{font-size:13px;font-weight:600;margin-bottom:8px}.plan-phase small{display:block;color:var(--suave);font-size:12px;line-height:1.5;margin-bottom:8px}.plan-check{display:flex;gap:9px;align-items:flex-start;font-size:13px;color:var(--tinta);margin:7px 0}.plan-check input{accent-color:var(--musgo);margin-top:2px;width:16px;height:16px}.plan-access{display:flex;flex-direction:column;gap:0;border-top:1px solid var(--linea);margin-top:4px}.plan-access a{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid var(--linea);text-decoration:none;color:var(--tinta);font-size:13px}.plan-access a:hover{color:var(--arcilla)}.plan-access small{display:block;color:var(--suave);font-size:11px;margin-top:3px}.plan-warning{font-size:11px;line-height:1.55;color:var(--suave);padding-top:12px}.plan-pain{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}.plan-pain button{font:inherit;font-size:11px;padding:8px 10px;border:1px solid var(--linea);background:transparent;color:var(--tinta);border-radius:3px;cursor:pointer}.plan-pain button.sel{background:var(--musgo);border-color:var(--musgo);color:#fff}
+
+/* RECETAS PARA PROBAR */
+.trial-recipes{border-top:3px solid var(--dorado)!important}.trial-intro{font-family:'Playfair Display',Georgia,serif;color:var(--suave);font-size:15px;line-height:1.5}.trial-recipe{border-top:1px solid var(--linea);padding:16px 0}.trial-recipe:first-of-type{border-top:0}.trial-recipe-head{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}.trial-recipe h3{font-family:'Playfair Display',Georgia,serif;font-weight:500;font-size:20px;margin:0 0 5px}.trial-meta{font-size:11px;color:var(--suave);line-height:1.5}.trial-status{font-size:10px;letter-spacing:.08em;border:1px solid var(--dorado);color:var(--dorado);padding:6px 7px;white-space:nowrap}.trial-recipe details{margin-top:10px;padding:9px 0!important;border:0!important;border-top:1px solid var(--linea)!important;border-radius:0!important}.trial-recipe summary{font-size:12px;color:var(--arcilla)!important}.trial-recipe ul,.trial-recipe ol{font-size:12px;line-height:1.6;padding-left:20px}.trial-recipe p{font-size:12px;line-height:1.6}.trial-source{display:inline-block;margin-top:10px;color:var(--arcilla);font-size:12px;text-decoration:none}.trial-source:hover{text-decoration:underline}.trial-select{font:inherit;font-size:11px;padding:6px 8px;border:1px solid var(--linea);border-radius:3px;background:var(--papel);color:var(--tinta)}
 </style>
 </head>
 <body>
@@ -2230,6 +2233,23 @@ const STOCK_INICIAL = [
 ];
 
 
+
+function agregarRecetaParaProbar() {
+  const nombre = prompt('Nombre de la receta:');
+  if(!nombre) return;
+  const enlace = prompt('Enlace original (opcional):') || '';
+  const descripcion = prompt('Descripción breve (opcional):') || '';
+  const recetas = cargar('recetas_prueba', []);
+  recetas.push({id: Date.now(), slug: 'receta-' + Date.now(), nombre, enlace, descripcion, ingredientes: [], pasos: [], estado: 'Para probar'});
+  guardar('recetas_prueba', recetas);
+  renderCocina();
+}
+function cambiarEstadoRecetaPrueba(slug, estado) {
+  const recetas = cargar('recetas_prueba', []);
+  const receta = recetas.find(r => r.slug === slug);
+  if(receta) { receta.estado = estado; guardar('recetas_prueba', recetas); toast('Estado guardado'); }
+}
+
 // --- GESTIÓN DE RECETAS Y COMPRA ---
 function agregarRecetaPropia() {
   const nombre = prompt('Nombre de la receta:');
@@ -2253,6 +2273,53 @@ function mandarACompra(ingredientes) {
 function renderCocina() {
   const stock = cargar('cocina_stock', STOCK_INICIAL.reduce((acc, x) => ({...acc, [x]: true}), {}));
   let recetas = cargar('recetas_propias', []);
+  let recetasPrueba = cargar('recetas_prueba', []);
+  if (!recetasPrueba.some(r => r.slug === 'sandia-otoro-vegana')) {
+    recetasPrueba.unshift({
+      id: 'sandia-otoro-vegana',
+      slug: 'sandia-otoro-vegana',
+      nombre: 'Sandía «toro» vegana con aguacate, rabanito y dashi frío',
+      estado: 'Para probar',
+      enlace: 'https://chefalexisgauthier.substack.com/p/watermelon-otoro-avocado-radish-and',
+      descripcion: 'Reinterpretación vegana de un plato japonés de atún: la sandía hace de toro, la parte grasa y melosa del atún. Se marina, se deshidrata y se sirve con aguacate, rabanitos, vinagreta de jengibre y dashi de kombu frío.',
+      meta: 'Marinado 18 h · horno 90 ºC / 2 h · vegana · producción La Urbana',
+      ingredientes: [
+        '1 bloque de sandía sin semillas, de unos 5 cm de grosor',
+        '400 ml de dashi de kombu', '20 g de jengibre fresco en láminas', '1 hoja de kombu', '40 g de wakame', '2 hojas de nori partidas', '1 cucharadita de salsa de soja ligera (opcional)',
+        'Para el dashi frío: 500 ml de dashi de kombu, 30 ml de mirin, 20 ml de soja ligera, 15 ml de zumo de jengibre y el zumo de ½ lima',
+        'Para la vinagreta: 60 ml de AOVE, 20 ml de vinagre de arroz, 10 ml de lima, 10 ml de zumo de jengibre, 1 cucharadita de sirope de arce, sal y pimienta',
+        'Aguacate, rabanitos, perifollo, brotes de cilantro o shiso, aceite, sal y pimienta'
+      ],
+      pasos: [
+        'Cortar la sandía en un bloque regular de unos 5 cm, sin semillas.',
+        'Meter en una bolsa de vacío la sandía, el dashi, el jengibre, el kombu, el wakame, el nori y la soja opcional.',
+        'Colocar la bolsa plana, con el líquido lejos de la zona de sellado. Hacer un vacío no excesivamente agresivo y sellar.',
+        'Dejar en la nevera 18 horas.',
+        'Abrir, retirar la sandía y presionarla suavemente para que pierda parte del líquido, sin aplastarla.',
+        'Colocarla sobre una rejilla y hornear a 90 ºC durante 2 horas.',
+        'Enfriar, pintar ligeramente con aceite, salpimentar y guardar en frío.',
+        'Preparar el dashi frío y la vinagreta. Mantener ambos bien fríos.',
+        'Cortar la sandía en láminas finas justo antes de emplatar.',
+        'Montar con aguacate, rabanito crujiente y hierbas; añadir 100–120 ml de dashi frío alrededor y servir inmediatamente.'
+      ],
+      adaptacion: 'Con la máquina de La Urbana, hacer primero una prueba con un trozo pequeño para comprobar cuánto comprime la sandía y cómo responde el horno. Si no hay máquina, usar una bolsa zip resistente sacando el aire por inmersión parcial o un recipiente pequeño bien tapado. Todo debe estar muy frío y, si la máquina es de campana, mejor para trabajar con marinadas.',
+      punto: 'La clave es quitar agua sin aplastar: el resultado debe quedar denso y carnoso, no como fruta cruda. El dashi debe ser ligero, salino y fresco; el jengibre debe aparecer al final.'
+    });
+    guardar('recetas_prueba', recetasPrueba);
+  }
+  const recetasPruebaHtml = recetasPrueba.map(r => `
+    <article class='trial-recipe'>
+      <div class='trial-recipe-head'><div><h3>${r.nombre}</h3><div class='trial-meta'>${r.meta || ''}</div></div><span class='trial-status'>${r.estado || 'Para probar'}</span></div>
+      ${r.descripcion ? `<p>${r.descripcion}</p>` : ''}
+      <label class='trial-meta'>Estado <select class='trial-select' onchange="cambiarEstadoRecetaPrueba('${r.slug}', this.value)"><option ${r.estado==='Para probar'?'selected':''}>Para probar</option><option ${r.estado==='Probada'?'selected':''}>Probada</option><option ${r.estado==='Repetir'?'selected':''}>Repetir</option><option ${r.estado==='Descartada'?'selected':''}>Descartada</option></select></label>
+      ${r.ingredientes && r.ingredientes.length ? `<details><summary><b>Ingredientes</b></summary><ul>${r.ingredientes.map(x => `<li>${x}</li>`).join('')}</ul></details>` : ''}
+      ${r.pasos && r.pasos.length ? `<details><summary><b>Proceso completo</b></summary><ol>${r.pasos.map(x => `<li>${x}</li>`).join('')}</ol></details>` : ''}
+      ${r.adaptacion ? `<details><summary><b>Adaptación para La Urbana</b></summary><p>${r.adaptacion}</p></details>` : ''}
+      ${r.punto ? `<div class='trial-meta' style='margin-top:10px;padding-top:10px;border-top:1px solid var(--linea)'><b>Punto de control:</b> ${r.punto}</div>` : ''}
+      ${r.enlace ? `<a class='trial-source' href='${r.enlace}' target='_blank' rel='noopener'>Ver receta original ↗</a>` : ''}
+      ${r.ingredientes && r.ingredientes.length ? `<br><button class='btn btn-outline btn-sm mt-8' onclick='mandarACompra(${JSON.stringify(r.ingredientes)})'>🛒 Añadir ingredientes a Compra</button>` : ''}
+    </article>
+  `).join('');
   // Receta inicial guardada para que aparezca también en otros dispositivos/perfiles.
   if (!recetas.some(r => r.slug === 'lentejas-manzana-canela')) {
     recetas.push({
@@ -2270,6 +2337,12 @@ function renderCocina() {
     guardar('recetas_propias', recetas);
   }
   let html = `
+    <div class='card trial-recipes'>
+      <div class='card-title'>Recetas para probar</div>
+      <p class='trial-intro'>Un lugar para guardar ideas antes de convertirlas en platos de la carta o de casa.</p>
+      <button class='btn btn-primary btn-sm mt-12 mb-12' onclick='agregarRecetaParaProbar()'>+ Nueva receta para probar</button>
+      ${recetasPruebaHtml}
+    </div>
     <div class='card'>
       <div class='card-title'>🍲 Mis Recetas & Menús</div>
       <button class='btn btn-primary btn-sm mt-12 mb-12' onclick='agregarRecetaPropia()'>+ Nueva Receta</button>
