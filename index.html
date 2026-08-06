@@ -2291,7 +2291,7 @@ function informacionTemporada() {
   const mes = new Date().getMonth() + 1;
   if([12,1,2].includes(mes)) return {nombre:'Invierno', frase:'Cocina lenta, caldos y platos que dan calor.', ideas:[['Calabaza y raíces','Cremas, asados y guisos'],['Coles','Horno, salteados y fermentados'],['Legumbres','Cuchara, ensaladas templadas y hummus'],['Cítricos','Acidez y frescor para levantar los platos']]};
   if([3,4,5].includes(mes)) return {nombre:'Primavera', frase:'Más verde, más fresco y sin complicar la cocina.', ideas:[['Guisantes y habas','Salteados, cremas y arroces'],['Espárragos','Plancha, horno o ensalada templada'],['Fresas y nísperos','Postres sencillos y aliños'],['Hojas tiernas','Ensaladas con algo crujiente']]};
-  if([6,7,8].includes(mes)) return {nombre:'Verano', frase:'Productos frescos, poco fuego y platos que apetecen fríos.', ideas:[['Tomate y pimiento','Ensaladas, sofritos y asados'],['Calabacín y berenjena','Plancha, horno y marinados'],['Sandía y melón','Entrantes frescos y contrastes salinos'],['Pescado azul','Plancha, escabeche y conservas caseras']]};
+  if([6,7,8].includes(mes)) return {nombre:'Verano', frase:'Productos frescos, poco fuego y platos que apetecen fríos.', ideas:[['Tomate y pimiento','Ensaladas, sofritos y asados'],['Calabacín y berenjena','Plancha, horno y marinados'],['Sandía y melón','Entrantes frescos y contrastes salinos'],['Legumbres y tofu','Ensaladas templadas, marinados y platos completos']]};
   return {nombre:'Otoño', frase:'Volver al horno, las setas y los sabores más hondos.', ideas:[['Setas','Salteados, arroz y salsas'],['Boniato','Asado, crema y guarnición'],['Manzana y pera','Horno, ensaladas y postres'],['Coliflor y puerro','Cremas, gratinados y fondos']]};
 }
 
@@ -2299,7 +2299,7 @@ const propuestasVerano = [
   {nombre:'Tomate, pimiento y garbanzos con hierbas', tipo:'Base fresca · 20 min', texto:'Un plato completo para preparar una vez y comer también al día siguiente.', ingredientes:['tomates maduros','pimiento rojo','garbanzos cocidos','cebolla morada','perejil o albahaca','limón','aceite de oliva']},
   {nombre:'Calabacín a la plancha con yogur y menta', tipo:'Ligero · 15 min', texto:'Calabacín dorado, una salsa fresca y algo crujiente por encima.', ingredientes:['calabacines','yogur natural','limón','menta','semillas o frutos secos','aceite de oliva']},
   {nombre:'Ensalada de sandía, pepino y aceitunas', tipo:'Sin fuego · 10 min', texto:'Fresca, salina y sencilla para los días de calor.', ingredientes:['sandía','pepino','aceitunas','queso feta o tofu','hierbabuena','vinagre de Jerez o de arroz']},
-  {nombre:'Pescado azul con tomate y limón', tipo:'Plancha · 20 min', texto:'Una preparación corta para sardina, caballa o el pescado que encuentres mejor.', ingredientes:['sardinas o caballa','tomates','limón','ajo','perejil','pimiento','aceite de oliva']}
+  {nombre:'Berenjena asada con garbanzos y tahini', tipo:'Horno · 30 min', texto:'Un plato vegetal completo, sabroso y fácil de dejar preparado.', ingredientes:['berenjenas','garbanzos cocidos','tahini','limón','ajo','perejil o cilantro','comino','aceite de oliva']}
 ];
 
 function renderCocina() {
@@ -2372,7 +2372,7 @@ function renderCocina() {
   let html = `
     <div class='card'>
       <div class='card-title'>Alimentación</div>
-      <p class='trial-intro'>No es una dieta ni una lista de prohibiciones. Es observar qué te apetece, qué te sienta bien y qué te ayuda a vivir tu día.</p>
+      <p class='trial-intro'>No es una dieta ni una lista de prohibiciones. Es una alimentación mayoritariamente vegetal, flexible y atenta a lo que te apetece, te sienta bien y te ayuda a vivir tu día.</p>
       <div class='trial-meta'>Puedes registrar después cómo te ha sentado cada plato en tu diario.</div>
     </div>
     <div class='card season-card'>
