@@ -403,6 +403,9 @@ summary{color:var(--tinta)!important}
 /* SALUD · herramientas en cuadrícula y estrategia separada abajo */
 #tab-salud{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;align-items:start}
 #tab-salud>.card{margin-bottom:0;min-width:0}
+.health-options-card{border-top:3px solid var(--musgo)!important}
+.health-options-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.health-options-grid button{text-align:left;min-height:44px}
 #tab-salud>.practice-videos,#tab-salud>.movement-week,#tab-salud>.movement-plan,#tab-salud>.movement-routine,#tab-salud>.health-strategy-heading{grid-column:1/-1}
 #tab-salud>.health-strategy-heading{order:9;margin-top:12px;padding:10px 0 0;border-top:1px solid var(--linea);font-size:10px;letter-spacing:.14em;color:var(--musgo);font-weight:700}
 #tab-salud>.movement-week{order:10}
@@ -414,7 +417,7 @@ summary{color:var(--tinta)!important}
 #tab-salud .video-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;border-top:0}
 #tab-salud .video-item{border:1px solid var(--linea);padding:14px 12px;min-height:74px}
 @media(max-width:650px){#tab-salud{grid-template-columns:1fr}#tab-salud>.card{grid-column:1/-1}#tab-salud .video-list{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:430px){#tab-salud .video-list{grid-template-columns:1fr}}
+@media(max-width:430px){#tab-salud .video-list,.health-options-grid{grid-template-columns:1fr}}
 
 /* Refinamiento de Hoy: un solo gesto de registro */
 .registro-hoy{max-width:820px;border-top:1px solid var(--linea);border-bottom:1px solid var(--linea);padding:22px 0 28px}.registro-heading{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}.registro-hint{font-size:11px;color:var(--suave);font-style:italic}.registro-row{padding:18px 0;border-top:1px solid var(--linea)}.registro-label{font-family:'Playfair Display',Georgia,serif;font-size:19px;margin-bottom:12px}.registro-row .emoji-row{gap:7px}.registro-row .emoji-btn{min-width:70px!important;min-height:60px!important}.escala{display:flex;gap:7px;flex-wrap:wrap}.escala .esc-btn{flex:1;min-width:90px!important;padding:12px 8px!important;font-size:12px!important}.registro-notas{border-top:1px solid var(--linea);padding-top:20px;margin-top:8px;display:grid;grid-template-columns:1fr 1fr;gap:18px}.registro-notas .form-group:last-child{grid-column:1/-1;max-width:50%}.registro-save{margin-top:4px;padding:13px 24px!important}.summary-line{font-size:13px;color:var(--suave);margin-top:9px}.summary-line span{display:block;font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--arcilla);margin-bottom:3px}@media(max-width:650px){.registro-notas{grid-template-columns:1fr}.registro-notas .form-group:last-child{grid-column:auto;max-width:none}.registro-row .emoji-btn{min-width:62px!important}.escala .esc-btn{min-width:80px!important}}
@@ -723,11 +726,15 @@ summary{color:var(--tinta)!important}
 
 <!-- TAB SALUD -->
 <div id="tab-salud" class="tab">
-  <div class="card">
-    <div class="card-title">⚗️ Alquimia Somática</div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-      <button class="btn btn-outline btn-sm" onclick="abrirAlquimia('morton')">👣 SOS Morton</button>
-      <button class="btn btn-outline btn-sm" onclick="abrirAlquimia('manos')">👐 Bolas Baoding</button>
+  <div class="card health-options-card">
+    <div class="card-title">Opcional · aliviar y desbloquear</div>
+    <p class="routine-intro">No es una rutina que tengas que completar. Entra aquí solo si hoy hay dolor, tensión o una zona bloqueada.</p>
+    <div class="health-options-grid">
+      <button class="btn btn-outline btn-sm" onclick="abrirAlquimia('morton')">Pie · neuroma de Morton</button>
+      <button class="btn btn-outline btn-sm" onclick="abrirAlquimia('juanete')">Pie · juanete</button>
+      <button class="btn btn-outline btn-sm" onclick="abrirAlquimia('cabeza')">Cabeza · tensión o bloqueo</button>
+      <button class="btn btn-outline btn-sm" onclick="abrirAlquimia('lumbares')">Espalda · lumbares</button>
+      <button class="btn btn-outline btn-sm" onclick="abrirAlquimia('manos')">Manos · bolas Baoding</button>
     </div>
   </div>
   <div class="card practice-videos">
@@ -2058,7 +2065,7 @@ function abrirAlquimia(tipo) {
   modal.style.display = 'flex';
   
   if(tipo === 'morton') {
-    titulo.innerText = '👣 Alivio Neuroma de Morton';
+    titulo.innerText = 'Pie · neuroma de Morton';
     contenido.innerHTML = `
       <div style="margin-bottom:15px">
         <p style="font-size:14px"><strong>SOS:</strong> El nervio está comprimido. Necesitas "abrir" el pie.</p>
@@ -2072,10 +2079,28 @@ function abrirAlquimia(tipo) {
         </ul>
       </div>
     `;
-  } else if(tipo === 'manos') {
-    titulo.innerText = '👐 Bolas Baoding (Manos)';
+  } else if(tipo === 'juanete') {
+    titulo.innerText = 'Pie · juanete';
     contenido.innerHTML = `
-      <p style="font-size:14px">Ejercicios circulares para recuperar la movilidad tras el turno en cocina.</p>
+      <p style="font-size:14px;line-height:1.6">Para un juanete: nada de forzar el dedo ni intentar corregirlo a la fuerza. Empieza por calzado amplio, descanso y movilidad muy suave de los dedos.</p>
+      <p style="font-size:12px;line-height:1.6;color:var(--suave)">Si hay inflamación intensa, dolor persistente o dificultad para caminar, mejor consultarlo con fisioterapia o podología.</p>
+    `;
+  } else if(tipo === 'cabeza') {
+    titulo.innerText = 'Cabeza · tensión o bloqueo';
+    contenido.innerHTML = `
+      <p style="font-size:14px;line-height:1.6">Prueba primero con golpecitos muy suaves en clavículas, esternón, brazos y mandíbula, acompañados de una exhalación larga. No hagas movimientos fuertes de cuello.</p>
+      <p style="font-size:12px;line-height:1.6;color:var(--suave)">Si el dolor de cabeza es repentino, muy intenso o diferente a lo habitual, no lo trates como una simple tensión.</p>
+    `;
+  } else if(tipo === 'lumbares') {
+    titulo.innerText = 'Espalda · lumbares';
+    contenido.innerHTML = `
+      <p style="font-size:14px;line-height:1.6">Para desbloquear sin forzar: respiración amplia, caminar despacio y movilidad pequeña de pelvis. Evita rebotes, torsiones intensas y estiramientos que aumenten el dolor.</p>
+      <p style="font-size:12px;line-height:1.6;color:var(--suave)">Si el dolor baja por la pierna, aparece hormigueo o notas debilidad, consulta con tu fisioterapeuta.</p>
+    `;
+  } else if(tipo === 'manos') {
+    titulo.innerText = 'Manos · bolas Baoding';
+    contenido.innerHTML = `
+      <p style="font-size:14px">Opcional para recuperar movilidad y descargar las manos después del turno en cocina.</p>
       <div style="position:relative;padding-bottom:56.25%;height:0;margin:15px 0;background:#000;border-radius:8px;overflow:hidden">
         <iframe src="https://www.youtube.com/embed/n4p_fD-uUog" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allowfullscreen></iframe>
       </div>
