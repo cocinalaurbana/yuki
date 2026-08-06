@@ -404,6 +404,9 @@ summary{color:var(--tinta)!important}
 .registro-hoy{max-width:820px;border-top:1px solid var(--linea);border-bottom:1px solid var(--linea);padding:22px 0 28px}.registro-heading{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}.registro-hint{font-size:11px;color:var(--suave);font-style:italic}.registro-row{padding:18px 0;border-top:1px solid var(--linea)}.registro-label{font-family:'Playfair Display',Georgia,serif;font-size:19px;margin-bottom:12px}.registro-row .emoji-row{gap:7px}.registro-row .emoji-btn{min-width:70px!important;min-height:60px!important}.escala{display:flex;gap:7px;flex-wrap:wrap}.escala .esc-btn{flex:1;min-width:90px!important;padding:12px 8px!important;font-size:12px!important}.registro-notas{border-top:1px solid var(--linea);padding-top:20px;margin-top:8px;display:grid;grid-template-columns:1fr 1fr;gap:18px}.registro-notas .form-group:last-child{grid-column:1/-1;max-width:50%}.registro-save{margin-top:4px;padding:13px 24px!important}.summary-line{font-size:13px;color:var(--suave);margin-top:9px}.summary-line span{display:block;font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--arcilla);margin-bottom:3px}@media(max-width:650px){.registro-notas{grid-template-columns:1fr}.registro-notas .form-group:last-child{grid-column:auto;max-width:none}.registro-row .emoji-btn{min-width:62px!important}.escala .esc-btn{min-width:80px!important}}
 
 .practice-videos{border-top:3px solid var(--arcilla)!important}.video-list{display:flex;flex-direction:column;border-top:1px solid var(--linea)}.video-item{display:flex;align-items:center;gap:13px;padding:14px 2px;border-bottom:1px solid var(--linea);text-decoration:none;color:var(--tinta)!important}.video-item:hover{background:#f7eee7}.video-symbol{width:30px;height:30px;display:grid;place-items:center;border:1px solid var(--linea);border-radius:50%;font-family:Georgia,serif;font-size:19px;color:var(--arcilla);flex:none}.video-item span:nth-child(2){display:flex;flex-direction:column;gap:3px;flex:1}.video-item strong{font-size:14px;font-weight:600}.video-item small{font-size:11px;color:var(--suave)}.video-item>b{font-size:17px;font-weight:400;color:var(--arcilla)}.video-caution{font-size:11px;line-height:1.55;color:var(--suave);margin-top:15px}
+
+/* PLAN DE MOVIMIENTO · reentrada suave */
+.movement-plan{border-top:3px solid var(--musgo)!important}.movement-plan .plan-kicker{font-size:10px;letter-spacing:.14em;color:var(--musgo);font-weight:700}.plan-recommendation{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;padding:14px 0;border-bottom:1px solid var(--linea)}.plan-recommendation h3{font-family:'Playfair Display',Georgia,serif;font-size:22px;font-weight:500;margin:0 0 5px}.plan-recommendation p{margin:0;font-size:13px;color:var(--suave);line-height:1.5}.plan-badge{font-size:10px;letter-spacing:.08em;border:1px solid var(--musgo);color:var(--musgo);padding:6px 8px;white-space:nowrap}.plan-phase{padding:14px 0;border-bottom:1px solid var(--linea)}.plan-phase:last-child{border-bottom:0}.plan-phase-title{font-size:13px;font-weight:600;margin-bottom:8px}.plan-phase small{display:block;color:var(--suave);font-size:12px;line-height:1.5;margin-bottom:8px}.plan-check{display:flex;gap:9px;align-items:flex-start;font-size:13px;color:var(--tinta);margin:7px 0}.plan-check input{accent-color:var(--musgo);margin-top:2px;width:16px;height:16px}.plan-access{display:flex;flex-direction:column;gap:0;border-top:1px solid var(--linea);margin-top:4px}.plan-access a{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid var(--linea);text-decoration:none;color:var(--tinta);font-size:13px}.plan-access a:hover{color:var(--arcilla)}.plan-access small{display:block;color:var(--suave);font-size:11px;margin-top:3px}.plan-warning{font-size:11px;line-height:1.55;color:var(--suave);padding-top:12px}.plan-pain{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}.plan-pain button{font:inherit;font-size:11px;padding:8px 10px;border:1px solid var(--linea);background:transparent;color:var(--tinta);border-radius:3px;cursor:pointer}.plan-pain button.sel{background:var(--musgo);border-color:var(--musgo);color:#fff}
 </style>
 </head>
 <body>
@@ -692,6 +695,45 @@ summary{color:var(--tinta)!important}
       <a class="video-item" href="https://www.instagram.com/reel/DXUYUyWgEVX/?hl=es" target="_blank" rel="noopener"><span class="video-symbol">⌣</span><span><strong>Tapping</strong><small>Calma · práctica breve</small></span><b>↗</b></a>
     </div>
     <p class="video-caution">Abre un vídeo y síguelo sin añadir nada más. Si aparece dolor agudo, paras. En especial, nada de saltos mientras el Aquiles esté sensible.</p>
+  </div>
+
+
+  <div class="card movement-plan">
+    <div class="plan-kicker">REENTRADA · 4 SEMANAS</div>
+    <div class="plan-recommendation">
+      <div><h3>Power Start</h3><p>Tu punto de partida en El Método Funcional. Primero continuidad; después intensidad.</p></div>
+      <span class="plan-badge">FASE 1</span>
+    </div>
+    <div class="plan-phase">
+      <div class="plan-phase-title">Días 1–7 · despertar</div>
+      <small>Dos o tres prácticas muy suaves de 10–15 minutos. Puedes elegir Salud o Relajar antes de probar fuerza.</small>
+      <label class="plan-check"><input type="checkbox" data-plan="semana1-salud" onchange="togglePlanMovimiento(this)"> Hice una práctica suave de Salud o Relajar</label>
+      <label class="plan-check"><input type="checkbox" data-plan="semana1-paseo" onchange="togglePlanMovimiento(this)"> Paseo tranquilo de 10–15 minutos</label>
+    </div>
+    <div class="plan-phase">
+      <div class="plan-phase-title">Semanas 2–4 · Power Start</div>
+      <small>Dos sesiones semanales de 10–20 minutos, en casa y sin añadir ejercicios por tu cuenta.</small>
+      <label class="plan-check"><input type="checkbox" data-plan="powerstart-1" onchange="togglePlanMovimiento(this)"> Sesión Power Start 1</label>
+      <label class="plan-check"><input type="checkbox" data-plan="powerstart-2" onchange="togglePlanMovimiento(this)"> Sesión Power Start 2</label>
+      <label class="plan-check"><input type="checkbox" data-plan="powerstart-paseo" onchange="togglePlanMovimiento(this)"> Paseo suave o movilidad sin impacto</label>
+    </div>
+    <div class="plan-phase">
+      <div class="plan-phase-title">Cómo está el Aquiles hoy</div>
+      <small>Registra la sensación antes de empezar. Si hay dolor claro o empeoras al día siguiente, paras y reduces.</small>
+      <div class="plan-pain" id="plan-pain">
+        <button type="button" data-pain="tranquilo" onclick="seleccionarDolor(this)">Tranquilo</button>
+        <button type="button" data-pain="sensible" onclick="seleccionarDolor(this)">Sensible</button>
+        <button type="button" data-pain="dolor" onclick="seleccionarDolor(this)">Con dolor</button>
+      </div>
+    </div>
+    <div class="plan-phase">
+      <div class="plan-phase-title">Tus accesos</div>
+      <div class="plan-access">
+        <a href="https://campus.yogaprogresivo.com/campus/" target="_blank" rel="noopener"><span><strong>Yoga miofascial</strong><small>Campus del Instituto de Yoga Progresivo</small></span><b>↗</b></a>
+        <a href="https://www.elmetodofuncional.com/quien-soy/" target="_blank" rel="noopener"><span><strong>El Método Funcional</strong><small>Referencia del método · la aplicación se abre desde tu móvil</small></span><b>↗</b></a>
+      </div>
+    </div>
+    <p class="plan-warning">No empezamos todavía con Transformación corporal, Power Fit ni Power Fit 2. Mientras el Aquiles esté inflamado: nada de saltos, carreras, rebotes ni ejercicios que provoquen dolor.</p>
   </div>
 
   <div class="card movement-routine">
@@ -1080,7 +1122,7 @@ function tab(id, btn) {
   if(id === 'plantas') renderPlantas();
   if(id === 'check') renderCheckHistorial();
   if(id === 'reflexiones') initReflexiones();
-  if(id === 'salud') { initSalud(); initRutinaMovimiento(); }
+  if(id === 'salud') { initSalud(); initRutinaMovimiento(); initPlanMovimiento(); }
   if(id === 'guia') initGuia();
   if(id === 'belleza') initBelleza();
   if(id === 'compra') renderCompra();
@@ -1840,6 +1882,25 @@ function renderReflexionesHistorial() {
 }
 
 
+
+function togglePlanMovimiento(box) {
+  const key = 'plan_movimiento_' + hoyStr();
+  const estado = cargar(key, {});
+  estado[box.dataset.plan] = box.checked;
+  guardar(key, estado);
+}
+function seleccionarDolor(btn) {
+  document.querySelectorAll('#plan-pain button').forEach(b => b.classList.remove('sel'));
+  btn.classList.add('sel');
+  guardar('plan_dolor_' + hoyStr(), btn.dataset.pain);
+}
+function initPlanMovimiento() {
+  const estado = cargar('plan_movimiento_' + hoyStr(), {});
+  document.querySelectorAll('[data-plan]').forEach(b => { b.checked = !!estado[b.dataset.plan]; });
+  const dolor = cargar('plan_dolor_' + hoyStr(), '');
+  if(dolor) { const btn = document.querySelector('#plan-pain [data-pain="' + dolor + '"]'); if(btn) btn.classList.add('sel'); }
+}
+
 function toggleRutina(box) {
   const key = 'rutina_movimiento_' + hoyStr();
   const estado = cargar(key, {});
@@ -2339,3 +2400,4 @@ function renderCasa() {
 </script>
 </body>
 </html>
+
