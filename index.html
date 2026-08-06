@@ -734,6 +734,8 @@ summary{color:var(--tinta)!important}
       <button class="btn btn-outline btn-sm" onclick="abrirAlquimia('juanete')">Pie · juanete</button>
       <button class="btn btn-outline btn-sm" onclick="abrirAlquimia('cabeza')">Cabeza · tensión o bloqueo</button>
       <button class="btn btn-outline btn-sm" onclick="abrirAlquimia('lumbares')">Espalda · lumbares</button>
+      <button class="btn btn-outline btn-sm" onclick="abrirAlquimia('cadera')">Cadera · rigidez o tensión</button>
+      <button class="btn btn-outline btn-sm" onclick="abrirAlquimia('aquiles')">Tendón de Aquiles</button>
       <button class="btn btn-outline btn-sm" onclick="abrirAlquimia('manos')">Manos · bolas Baoding</button>
     </div>
   </div>
@@ -2096,6 +2098,18 @@ function abrirAlquimia(tipo) {
     contenido.innerHTML = `
       <p style="font-size:14px;line-height:1.6">Para desbloquear sin forzar: respiración amplia, caminar despacio y movilidad pequeña de pelvis. Evita rebotes, torsiones intensas y estiramientos que aumenten el dolor.</p>
       <p style="font-size:12px;line-height:1.6;color:var(--suave)">Si el dolor baja por la pierna, aparece hormigueo o notas debilidad, consulta con tu fisioterapeuta.</p>
+    `;
+  } else if(tipo === 'cadera') {
+    titulo.innerText = 'Cadera · rigidez o tensión';
+    contenido.innerHTML = `
+      <p style="font-size:14px;line-height:1.6">Empieza con movimientos pequeños: respiración, balanceo suave de la pelvis y caminar unos minutos. La cadera no necesita que la fuerces para “abrirse”.</p>
+      <p style="font-size:12px;line-height:1.6;color:var(--suave)">Si el dolor es fuerte, aparece de repente o baja por la pierna, mejor parar y consultarlo.</p>
+    `;
+  } else if(tipo === 'aquiles') {
+    titulo.innerText = 'Tendón de Aquiles';
+    contenido.innerHTML = `
+      <p style="font-size:14px;line-height:1.6">Aquí no buscamos estirar ni rebotar. Empieza por descargar, caminar solo dentro de lo cómodo y observar cómo responde durante el día y al día siguiente.</p>
+      <p style="font-size:12px;line-height:1.6;color:var(--suave)">Nada de saltos, carreras ni estiramientos intensos mientras esté inflamado. Si aumenta el dolor, reduce y consulta con tu fisioterapeuta.</p>
     `;
   } else if(tipo === 'manos') {
     titulo.innerText = 'Manos · bolas Baoding';
