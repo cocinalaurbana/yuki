@@ -437,9 +437,6 @@ summary{color:var(--tinta)!important}
 /* PLAN DE MOVIMIENTO · reentrada suave */
 .movement-plan{border-top:3px solid var(--musgo)!important}.movement-plan .plan-kicker{font-size:10px;letter-spacing:.14em;color:var(--musgo);font-weight:700}.plan-recommendation{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;padding:14px 0;border-bottom:1px solid var(--linea)}.plan-recommendation h3{font-family:'Playfair Display',Georgia,serif;font-size:22px;font-weight:500;margin:0 0 5px}.plan-recommendation p{margin:0;font-size:13px;color:var(--suave);line-height:1.5}.plan-badge{font-size:10px;letter-spacing:.08em;border:1px solid var(--musgo);color:var(--musgo);padding:6px 8px;white-space:nowrap}.plan-phase{padding:14px 0;border-bottom:1px solid var(--linea)}.plan-phase:last-child{border-bottom:0}.plan-phase-title{font-size:13px;font-weight:600;margin-bottom:8px}.plan-phase small{display:block;color:var(--suave);font-size:12px;line-height:1.5;margin-bottom:8px}.plan-check{display:flex;gap:9px;align-items:flex-start;font-size:13px;color:var(--tinta);margin:7px 0}.plan-check input{accent-color:var(--musgo);margin-top:2px;width:16px;height:16px}.plan-access{display:flex;flex-direction:column;gap:0;border-top:1px solid var(--linea);margin-top:4px}.plan-access a{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid var(--linea);text-decoration:none;color:var(--tinta);font-size:13px}.plan-access a:hover{color:var(--arcilla)}.plan-access small{display:block;color:var(--suave);font-size:11px;margin-top:3px}.plan-warning{font-size:11px;line-height:1.55;color:var(--suave);padding-top:12px}.plan-pain{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}.plan-pain button{font:inherit;font-size:11px;padding:8px 10px;border:1px solid var(--linea);background:transparent;color:var(--tinta);border-radius:3px;cursor:pointer}.plan-pain button.sel{background:var(--musgo);border-color:var(--musgo);color:#fff}
 
-/* GUIÓN DE ORDEN DEL ALMACÉN */
-.warehouse-script{border-top:3px solid var(--musgo)!important}.warehouse-script details{margin-top:10px;padding:10px 0!important;border:0!important;border-top:1px solid var(--linea)!important;border-radius:0!important}.warehouse-script summary{font-size:13px;color:var(--tinta)!important}.warehouse-script .plan-check{font-size:12px;line-height:1.45;margin:9px 0}.warehouse-script .plan-check input{accent-color:var(--musgo)}
-
 /* RECETAS PARA PROBAR */
 .trial-recipes{border-top:3px solid var(--dorado)!important}.trial-intro{font-family:'Playfair Display',Georgia,serif;color:var(--suave);font-size:15px;line-height:1.5}.trial-recipe{border-top:1px solid var(--linea);padding:16px 0}.trial-recipe:first-of-type{border-top:0}.trial-recipe-head{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}.trial-recipe h3{font-family:'Playfair Display',Georgia,serif;font-weight:500;font-size:20px;margin:0 0 5px}.trial-meta{font-size:11px;color:var(--suave);line-height:1.5}.trial-status{font-size:10px;letter-spacing:.08em;border:1px solid var(--dorado);color:var(--dorado);padding:6px 7px;white-space:nowrap}.trial-recipe details{margin-top:10px;padding:9px 0!important;border:0!important;border-top:1px solid var(--linea)!important;border-radius:0!important}.trial-recipe summary{font-size:12px;color:var(--arcilla)!important}.trial-recipe ul,.trial-recipe ol{font-size:12px;line-height:1.6;padding-left:20px}.trial-recipe p{font-size:12px;line-height:1.6}.trial-source{display:inline-block;margin-top:10px;color:var(--arcilla);font-size:12px;text-decoration:none}.trial-source:hover{text-decoration:underline}.trial-select{font:inherit;font-size:11px;padding:6px 8px;border:1px solid var(--linea);border-radius:3px;background:var(--papel);color:var(--tinta)}
 
@@ -1001,40 +998,6 @@ summary{color:var(--tinta)!important}
 
 <!-- TAB TAREAS -->
 <div id="tab-tareas" class="tab">
-  <div class="card warehouse-script">
-    <div class="plan-kicker">GUIÓN DE ORDEN · MAÑANA 12:00</div>
-    <div class="card-title">Almacén · la cocinita</div>
-    <p class="routine-intro">Primero despejar y decidir; después colocar. No intentéis ordenar cada objeto a la vez.</p>
-    <details open>
-      <summary><b>1 · Mirar antes de mover</b></summary>
-      <label class="plan-check"><input type="checkbox" data-almacen="recorrido" onchange="toggleAlmacen(this)"> Recorrer la habitación y marcar puertas, ventana, enchufes y pasos</label>
-      <label class="plan-check"><input type="checkbox" data-almacen="foto" onchange="toggleAlmacen(this)"> Hacer una foto del estado inicial</label>
-    </details>
-    <details>
-      <summary><b>2 · Sacar lo que no pertenece a la cocinita</b></summary>
-      <label class="plan-check"><input type="checkbox" data-almacen="vajilla" onchange="toggleAlmacen(this)"> Separar la vajilla sin sitio fijo</label>
-      <label class="plan-check"><input type="checkbox" data-almacen="ollas" onchange="toggleAlmacen(this)"> Sacar las ollas y objetos que no se usan</label>
-      <label class="plan-check"><input type="checkbox" data-almacen="tres_destinos" onchange="toggleAlmacen(this)"> Crear tres destinos: se queda · va a otro sitio · sale</label>
-    </details>
-    <details>
-      <summary><b>3 · Resolver primero la seguridad</b></summary>
-      <label class="plan-check"><input type="checkbox" data-almacen="bombonas" onchange="toggleAlmacen(this)"> Buscar un lugar exterior, estable, ventilado y protegido para las bombonas de butano</label>
-      <label class="plan-check"><input type="checkbox" data-almacen="bombonas_confirmar" onchange="toggleAlmacen(this)"> Confirmar con César el lugar definitivo antes de moverlas</label>
-    </details>
-    <details>
-      <summary><b>4 · Montar la zona de cocina y salida</b></summary>
-      <label class="plan-check"><input type="checkbox" data-almacen="frio" onchange="toggleAlmacen(this)"> Comprobar la distribución de congeladores y de la nevera transparente de verduras</label>
-      <label class="plan-check"><input type="checkbox" data-almacen="paso" onchange="toggleAlmacen(this)"> Dejar libre el paso entre puerta, ventana y zona de trabajo</label>
-      <label class="plan-check"><input type="checkbox" data-almacen="mesa_trabajo" onchange="toggleAlmacen(this)"> Colocar la mesa alta de 55 × 55 cm y la máquina de vacío para trabajar con comodidad</label>
-    </details>
-    <details>
-      <summary><b>5 · Almacenar fuera por familias</b></summary>
-      <label class="plan-check"><input type="checkbox" data-almacen="secos" onchange="toggleAlmacen(this)"> Buscar un sitio estable para huevos, aceite, mayonesa y garrafas</label>
-      <label class="plan-check"><input type="checkbox" data-almacen="mesa_exterior" onchange="toggleAlmacen(this)"> Dejar la mesa exterior para alimentos y materiales, nunca para las bombonas</label>
-      <label class="plan-check"><input type="checkbox" data-almacen="etiquetas" onchange="toggleAlmacen(this)"> Etiquetar solo cuando la distribución ya esté decidida</label>
-    </details>
-    <p class="plan-warning">La cocinita debe quedar cómoda para preparar y sacar cosas, no convertirse en otro trastero. Si una decisión requiere instalación, peso o seguridad, se para y se consulta.</p>
-  </div>
   <div class="card">
     <div class="card-title">✅ Tareas pendientes</div>
     <div style="display:flex;gap:8px;margin-bottom:12px">
@@ -1244,7 +1207,7 @@ function tab(id, btn) {
   if(id === 'guia') initGuia();
   if(id === 'belleza') initBelleza();
   if(id === 'compra') renderCompra();
-  if(id === 'tareas') { renderTareas(); initAlmacenGuion(); }
+  if(id === 'tareas') renderTareas();
   if(id === 'cocina') renderCocina();
   if(id === 'casa') renderCasa();
 }
@@ -2374,16 +2337,6 @@ function filtroTarea(f) {
   document.querySelectorAll('[id^="ft-"]').forEach(b => b.style.borderColor = '');
   document.getElementById('ft-' + f).style.borderColor = 'var(--oro)';
   renderTareas();
-}
-
-function toggleAlmacen(el) {
-  const estado = cargar('almacen_guion', {});
-  estado[el.dataset.almacen] = el.checked;
-  guardar('almacen_guion', estado);
-}
-function initAlmacenGuion() {
-  const estado = cargar('almacen_guion', {});
-  document.querySelectorAll('#tab-tareas [data-almacen]').forEach(el => { el.checked = !!estado[el.dataset.almacen]; });
 }
 
 function renderTareas() {
