@@ -442,6 +442,28 @@ summary{color:var(--tinta)!important}
 
 /* ALIMENTACIÓN DE TEMPORADA */
 .season-card{border-top:3px solid var(--dorado)!important}.season-kicker{font-size:10px;letter-spacing:.14em;color:var(--dorado);font-weight:700}.season-lead{font-family:'Playfair Display',Georgia,serif;font-size:16px;color:var(--suave);line-height:1.5;margin:6px 0 14px}.season-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.season-item{border:1px solid var(--linea);padding:10px;background:var(--papel)}.season-item strong{display:block;font-size:13px;font-weight:600}.season-item small{display:block;color:var(--suave);font-size:11px;line-height:1.4;margin-top:4px}@media(max-width:520px){.season-grid{grid-template-columns:1fr}}
+
+/* SALUD · orden y densidad: primero lo de hoy, después las opciones */
+#tab-salud>.movement-routine{order:1!important;grid-column:1/-1}
+#tab-salud>.practice-videos{order:2!important}
+#tab-salud>.health-options-card{order:3!important}
+#tab-salud>.health-strategy-heading{order:4!important}
+#tab-salud>.movement-week{order:5!important}
+#tab-salud>.movement-plan{order:6!important}
+
+@media(min-width:700px) and (orientation:landscape){
+  #tab-salud>.movement-routine{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+  #tab-salud>.movement-routine>.card-title,#tab-salud>.movement-routine>.routine-intro{grid-column:1/-1}
+  #tab-salud>.movement-routine>.routine-intro{margin-bottom:0}
+  #tab-salud>.movement-routine .routine-block{border:1px solid var(--linea);padding:13px;min-width:0}
+  #tab-salud>.movement-plan{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+  #tab-salud>.movement-plan>.plan-kicker,#tab-salud>.movement-plan>.plan-recommendation,#tab-salud>.movement-plan>.plan-warning{grid-column:1/-1}
+  #tab-salud>.movement-plan>.plan-phase{border:1px solid var(--linea);padding:13px;min-width:0}
+  #tab-salud>.movement-plan>.plan-phase:last-of-type{grid-column:1/-1}
+  #tab-salud>.movement-plan .plan-access{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;border-top:0}
+  #tab-salud>.movement-plan .plan-access a{border:1px solid var(--linea);padding:10px;min-height:64px}
+}
+@media(max-width:650px){#tab-salud>.movement-routine .routine-block{padding:12px 0}}
 </style>
 </head>
 <body>
@@ -750,8 +772,8 @@ summary{color:var(--tinta)!important}
     </div>
   </div>
   <div class="card practice-videos">
-    <div class="card-title">Prácticas · solo pulsar y hacer</div>
-    <p class="routine-intro">Elige una. No necesitas decidir más.</p>
+    <div class="card-title">Prácticas para elegir</div>
+    <p class="routine-intro">Después de tu práctica de hoy, si te apetece, elige una de estas.</p>
     <div class="video-list">
       <a class="video-item" href="https://www.youtube.com/watch?v=NZUba83gbEo" target="_blank" rel="noopener"><span class="video-symbol">◌</span><span><strong>Despertar suave</strong><small>Estiramientos · 7 min</small></span><b>↗</b></a>
       <a class="video-item" href="https://youtu.be/db6QiRQ3S3w?is=U9hXVyaTTuomoGm5" target="_blank" rel="noopener"><span class="video-symbol">◒</span><span><strong>Radio Taiso</strong><small>Ritual japonés · 3 min</small></span><b>↗</b></a>
@@ -763,11 +785,11 @@ summary{color:var(--tinta)!important}
     <p class="video-caution">Empieza viendo la explicación y hazlo sentada si lo necesitas. Toca con suavidad, sin rebotes ni saltos y sin insistir sobre el Aquiles o el neuroma. Si aparece dolor, mareo o más nerviosismo, paras.</p>
   </div>
 
-  <div class="health-strategy-heading">PLAN APARTE · FIN DE VERANO / SEPTIEMBRE</div>
+  <div class="health-strategy-heading">MÁS ADELANTE · SEPTIEMBRE</div>
   <div class="card movement-week">
-    <div class="plan-kicker">TU MAPA · A PARTIR DE SEPTIEMBRE</div>
-    <div class="card-title" style="margin-top:6px">Movimiento como placer</div>
-    <p class="routine-intro">Una práctica principal al día. No hace falta completarlo todo: Yuki te ayuda a elegir lo que hoy te viene bien.</p>
+    <div class="plan-kicker">CUANDO LLEGUE SEPTIEMBRE</div>
+    <div class="card-title" style="margin-top:6px">Elige una base, no todo</div>
+    <p class="routine-intro">Una práctica principal. Lo demás queda como posibilidad, no como tarea.</p>
     <div class="plan-access">
       <div><span><strong>Yoga miofascial</strong><small>Base semanal · alrededor de 4 horas</small></span><b>∿</b></div>
       <div><span><strong>Power Start</strong><small>Fuerza suave · 2 sesiones al principio</small></span><b>◇</b></div>
@@ -779,7 +801,7 @@ summary{color:var(--tinta)!important}
   </div>
 
   <div class="card movement-plan">
-    <div class="plan-kicker">REENTRADA · 4 SEMANAS</div>
+    <div class="plan-kicker">SI QUIERES UNA GUÍA</div>
     <div class="plan-recommendation">
       <div><h3>Power Start</h3><p>Tu punto de partida en El Método Funcional. Primero continuidad; después intensidad.</p></div>
       <span class="plan-badge">FASE 1</span>
@@ -817,8 +839,8 @@ summary{color:var(--tinta)!important}
   </div>
 
   <div class="card movement-routine">
-    <div class="card-title">Movimiento · volver al cuerpo</div>
-    <p class="routine-intro">Una práctica mínima diaria. No buscamos rendimiento: buscamos continuidad.</p>
+    <div class="card-title">Práctica de hoy</div>
+    <p class="routine-intro">Una práctica mínima. No buscamos rendimiento: buscamos continuidad.</p>
     <div class="routine-block"><span class="routine-time">AL DESPERTAR · 6 min</span>
       <label><input type="checkbox" data-rutina="cama" onchange="toggleRutina(this)"> Estiramientos suaves en cama · respirar y desperezar</label>
       <label><input type="checkbox" data-rutina="tapping" onchange="toggleRutina(this)"> Tapping breve · cara, clavículas, brazos y pecho</label>
