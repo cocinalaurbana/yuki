@@ -467,6 +467,16 @@ summary{color:var(--tinta)!important}
 .routine-video-link{display:inline-block;margin:-4px 0 5px 26px;color:var(--arcilla)!important;font-size:11px;text-decoration:none}
 .routine-video-link:hover{text-decoration:underline}
 .health-meditation-choice .routine-video-link{margin:12px 0 0;color:var(--arcilla)!important}
+.today-choice-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;margin-top:6px}
+.today-choice-grid a,.today-choice-grid label{display:flex;flex-direction:column;gap:3px;border:1px solid var(--linea);padding:9px 10px;text-decoration:none;color:var(--tinta)!important;font-size:12px;line-height:1.25}
+.today-choice-grid a:hover{border-color:var(--arcilla);color:var(--arcilla)!important}
+.today-choice-grid label{cursor:pointer;position:relative;padding-left:30px}
+.today-choice-grid label input{position:absolute;left:10px;top:11px;accent-color:var(--arcilla)}
+.today-choice-grid strong{font-size:12px;font-weight:600}
+.today-choice-grid small{font-size:10px;color:var(--suave)}
+.choice-note{font-size:11px;color:var(--suave);margin:9px 0 0;font-style:italic}
+@media(min-width:900px){.today-choice-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:430px){.today-choice-grid{grid-template-columns:1fr}}
 
 @media(min-width:600px){
   #tab-salud>.movement-routine{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
@@ -879,10 +889,15 @@ summary{color:var(--tinta)!important}
       <a class="routine-video-link" href="https://www.youtube.com/watch?v=lmqG2qU6-xg" target="_blank" rel="noopener">Ver tapping ↗</a>
       <details class="routine-detail"><summary>Cómo hacerlo</summary><p>Antes de levantarte, nota tres respiraciones y el peso del cuerpo en la cama. Después, si te apetece, da golpecitos suaves y rítmicos por cejas, pómulos, mandíbula, clavículas, esternón y brazos.</p></details>
     </div>
-    <div class="routine-block"><span class="routine-time">DESPUÉS · 8–10 min</span>
-      <label><input type="checkbox" data-rutina="fascia" onchange="toggleRutina(this)"> Despertar fascial · pies, pantorrillas, caderas y columna</label>
-      <label><input type="checkbox" data-rutina="taizo" onchange="toggleRutina(this)"> Radio Taiso o Tai Chi · movilidad lenta, sin forzar</label>
-      <details class="routine-detail"><summary>Secuencia breve</summary><p>1 · Mueve los dedos de los pies y haz círculos de tobillo. 2 · Balancea el peso suavemente. 3 · Ondula las rodillas y la pelvis. 4 · Deja que la columna y los brazos acompañen. 5 · Termina de pie, sintiendo las plantas.</p></details>
+    <div class="routine-block routine-choice-block"><span class="routine-time">DESPUÉS · ELIGE UNA PRÁCTICA</span>
+      <div class="today-choice-grid">
+        <a href="https://campus.yogaprogresivo.com/product/programa-de-movilidad-y-liberacion-fascial-con-marina-jaquete-especial-superpack/" target="_blank" rel="noopener"><strong>Yoga miofascial</strong><small>Abrir práctica</small></a>
+        <a href="https://play.google.com/store/apps/details?id=com.elmtodofuncional.app&hl=es" target="_blank" rel="noopener"><strong>Power Start</strong><small>Abrir app</small></a>
+        <label><input type="checkbox" data-rutina="paseo-eleccion" onchange="toggleRutina(this)"><strong>Caminar</strong><small>10–20 min</small></label>
+        <a href="https://youtube.com/playlist?list=PLQrAIBFp_iv10yybHxF7-e9cEi-X1PkJI&si=McyRDUs3bKs4eVj-" target="_blank" rel="noopener"><strong>Tai Chi / Qigong</strong><small>Elegir sesión</small></a>
+        <label><input type="checkbox" data-rutina="piscina" onchange="toggleRutina(this)"><strong>Piscina</strong><small>Cuando toque</small></label>
+      </div>
+      <p class="choice-note">Solo una opción. Lo demás puede esperar.</p>
     </div>
     <div class="routine-block"><span class="routine-time">PROGRESIÓN · 3 días/semana</span>
       <label><input type="checkbox" data-rutina="fuerza" onchange="toggleRutina(this)"> Fuerza suave · sentarse/levantarse, pared y glúteos</label>
