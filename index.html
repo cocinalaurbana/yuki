@@ -1422,9 +1422,10 @@ function guardarCierre() {
     mejor: document.getElementById('cierre-mejor').value.trim(),
     atencion: document.getElementById('cierre-atencion').value.trim(),
     palabra: document.getElementById('cierre-palabra').value.trim(),
+    pasos: document.getElementById('salud-pasos').value.trim(),
     ts: Date.now()
   };
-  if(!cierre.mejor && !cierre.atencion && !cierre.palabra) { toast('Escribe al menos una cosa del cierre'); return; }
+  if(!cierre.mejor && !cierre.atencion && !cierre.palabra && !cierre.pasos) { toast('Escribe al menos una cosa del cierre'); return; }
   const cierres = cargar('cierres', {});
   cierres[hoyStr()] = cierre;
   guardar('cierres', cierres);
@@ -1437,18 +1438,21 @@ function mostrarCierre() {
   document.getElementById('cierre-resumen-content').innerHTML = `
     ${cierre.mejor ? `<p class="summary-line"><span>Lo que estuvo bien</span>${cierre.mejor}</p>` : ''}
     ${cierre.atencion ? `<p class="summary-line"><span>Lo que pide atención</span>${cierre.atencion}</p>` : ''}
-    ${cierre.palabra ? `<p class="summary-line"><span>Una palabra</span>“${cierre.palabra}”</p>` : ''}`;
+    ${cierre.palabra ? `<p class="summary-line"><span>Una palabra</span>“${cierre.palabra}”</p>` : ''}
+    ${cierre.pasos ? `<p class="summary-line"><span>Pasos del día</span>${cierre.pasos}</p>` : ''}`;
   document.getElementById('cierre-resumen').style.display = 'block';
-  document.querySelector('#tab-cierre .card:not(#cierre-resumen)').style.display = 'none';
+  document.querySelectorAll('#tab-cierre .card:not(#cierre-resumen)').forEach(c => c.style.display = 'none');
 }
 function editarCierre() {
   const cierres = cargar('cierres', {}), cierre = cierres[hoyStr()];
   document.getElementById('cierre-resumen').style.display = 'none';
   document.querySelector('#tab-cierre .card:not(#cierre-resumen)').style.display = 'block';
   if(!cierre) return;
+  document.querySelectorAll('#tab-cierre .card:not(#cierre-resumen)').forEach(c => c.style.display = 'block');
   document.getElementById('cierre-mejor').value = cierre.mejor || '';
   document.getElementById('cierre-atencion').value = cierre.atencion || '';
   document.getElementById('cierre-palabra').value = cierre.palabra || '';
+  document.getElementById('salud-pasos').value = cierre.pasos || '';
 }
 function initCierre() { mostrarCierre(); }
 
