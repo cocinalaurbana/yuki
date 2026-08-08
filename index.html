@@ -2651,6 +2651,23 @@ function renderCasa() {
   `;
   document.getElementById('tab-casa').innerHTML = html;
 }
+
+// En Android, intenta abrir los enlaces externos directamente en Firefox.
+// Si Firefox no está disponible, conserva la apertura normal del enlace.
+function abrirEnFirefox(event, url) {
+  if (!/Android/i.test(navigator.userAgent)) return true;
+  event.preventDefault();
+  const limpia = url.replace(/^https?:\/\//, '');
+  const intent = 'intent://' + limpia + '#Intent;scheme=https;package=org.mozilla.firefox;S.browser_fallback_url=' + encodeURIComponent(url) + ';end';
+  window.location.href = intent;
+  return false;
+}
+
+document.addEventListener('click', function(event) {
+  const enlace = event.target.closest('a[target="_blank"]');
+  if (!enlace || !/^https?:/.test(enlace.href)) return;
+  abrirEnFirefox(event, enlace.href);
+});
 </script>
 </body>
 </html>
