@@ -464,6 +464,11 @@ summary{color:var(--tinta)!important}
 .health-meditation-choice{border-top:3px solid var(--dorado)!important}
 @media(max-width:599px){.health-data-row{grid-template-columns:1fr}}
 .atardecer-pasos{border-top:3px solid var(--dorado)!important}
+.atardecer-meditacion{border-top:3px solid var(--arcilla)!important}
+.health-video-link{text-decoration:none!important;text-align:left;display:flex!important;align-items:center;justify-content:space-between}
+.future-walk{display:grid!important;grid-template-columns:1fr auto;align-content:start}
+.future-walk .walk-fields{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px}
+.future-walk .walk-fields input{width:100%;min-width:0;padding:7px;border:1px solid var(--linea);border-radius:3px;background:var(--papel);color:var(--tinta);font:inherit;font-size:11px}
 
 @media(min-width:600px){
   #tab-salud>.movement-routine{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
@@ -587,6 +592,12 @@ summary{color:var(--tinta)!important}
     <h2>¿Qué queda de hoy?</h2>
     <p class="today-lead">No es otro registro completo. Solo una pausa para recoger lo vivido y dejar el día un poco más ordenado.</p>
   </section>
+  <div class="card atardecer-meditacion">
+    <div class="card-title">Meditación en cama</div>
+    <p class="routine-intro">Antes de dormir, sin levantarte ni hacer nada más.</p>
+    <label class="plan-check"><input type="checkbox" data-rutina="meditacion-acostar" onchange="toggleRutina(this)"> Soltar el día · 5 min</label>
+    <details class="routine-detail"><summary>Cómo hacerlo</summary><p>Deja que el peso caiga sobre el colchón. Sigue cinco exhalaciones largas y recorre el cuerpo sin corregir nada. Si te duermes, la práctica ha terminado.</p></details>
+  </div>
   <div class="card">
     <div class="card-title">Cierre del día</div>
     <div class="form-group"><label>Lo que hoy estuvo bien</label><textarea id="cierre-mejor" placeholder="Un momento, una persona, algo pequeño…" rows="3"></textarea></div>
@@ -787,15 +798,15 @@ summary{color:var(--tinta)!important}
 <div id="tab-salud" class="tab">
   <div class="card health-options-card">
     <div class="card-title">Opcional · aliviar y desbloquear</div>
-    <p class="routine-intro">No es una rutina que tengas que completar. Entra aquí solo si hoy hay dolor, tensión o una zona bloqueada.</p>
+    <p class="routine-intro">No es una rutina que tengas que completar. Entra solo si hoy hay dolor o tensión: cada zona abre su vídeo. En el Aquiles, nada de saltos ni estiramientos intensos.</p>
     <div class="health-options-grid">
-      <button class="btn btn-outline btn-sm" onclick="abrirAlquimia('morton')">Pie · neuroma de Morton</button>
-      <button class="btn btn-outline btn-sm" onclick="abrirAlquimia('juanete')">Pie · juanete</button>
-      <button class="btn btn-outline btn-sm" onclick="abrirAlquimia('cabeza')">Cabeza · tensión o bloqueo</button>
-      <button class="btn btn-outline btn-sm" onclick="abrirAlquimia('lumbares')">Espalda · lumbares</button>
-      <button class="btn btn-outline btn-sm" onclick="abrirAlquimia('cadera')">Cadera · rigidez o tensión</button>
-      <button class="btn btn-outline btn-sm" onclick="abrirAlquimia('aquiles')">Tendón de Aquiles</button>
-      <button class="btn btn-outline btn-sm" onclick="abrirAlquimia('manos')">Manos · bolas Baoding</button>
+      <a class="btn btn-outline btn-sm health-video-link" href="https://www.youtube.com/watch?v=DqgSkjQph4E" target="_blank" rel="noopener">Pie · neuroma de Morton ↗</a>
+      <a class="btn btn-outline btn-sm health-video-link" href="https://www.youtube.com/watch?v=_byPyrTvcLw" target="_blank" rel="noopener">Pie · juanete ↗</a>
+      <a class="btn btn-outline btn-sm health-video-link" href="https://www.youtube.com/watch?v=-HnM-uuZkjQ" target="_blank" rel="noopener">Cabeza · tensión o bloqueo ↗</a>
+      <a class="btn btn-outline btn-sm health-video-link" href="https://www.youtube.com/watch?v=LmWkf4HJGPI" target="_blank" rel="noopener">Espalda · lumbares ↗</a>
+      <a class="btn btn-outline btn-sm health-video-link" href="https://www.youtube.com/watch?v=cIRT0DbbpjE" target="_blank" rel="noopener">Cadera · rigidez o tensión ↗</a>
+      <a class="btn btn-outline btn-sm health-video-link" href="https://www.youtube.com/watch?v=10LzEljN0FQ" target="_blank" rel="noopener">Tendón de Aquiles ↗</a>
+      <a class="btn btn-outline btn-sm health-video-link" href="https://www.youtube.com/watch?v=n4p_fD-uUog" target="_blank" rel="noopener">Manos · bolas Baoding ↗</a>
     </div>
   </div>
   <div class="card practice-videos">
@@ -807,6 +818,7 @@ summary{color:var(--tinta)!important}
       <a class="video-item" href="https://youtu.be/oHMpC-mR6qU?is=qlFl_FwMnWYNjdir" target="_blank" rel="noopener"><span class="video-symbol">⌁</span><span><strong>Pilates</strong><small>Bajo impacto · 10 min</small></span><b>↗</b></a>
       <a class="video-item" href="https://campus.yogaprogresivo.com/product/programa-de-movilidad-y-liberacion-fascial-con-marina-jaquete-especial-superpack/" target="_blank" rel="noopener"><span class="video-symbol">╱</span><span><strong>Movilidad y liberación fascial</strong><small>Programa de Marina Jaquete · Campus Yoga Progresivo</small></span><b>↗</b></a>
       <a class="video-item" href="https://www.youtube.com/watch?v=lmqG2qU6-xg" target="_blank" rel="noopener"><span class="video-symbol">⌣</span><span><strong>Tapping corporal · despertar todo el cuerpo</strong><small>Qi Gong · 12 min · Vitalista / Belén Mendoza</small></span><b>↗</b></a>
+      <div class="video-item video-meditation-option"><span class="video-symbol">◌</span><span><strong>Meditación breve · 5 min</strong><small>Para elegir en cualquier momento del día</small></span><button class="btn btn-outline btn-sm" data-val="Meditación breve" onclick="togglePractica(this)">Elegir</button></div>
     </div>
     <p class="video-caution">Empieza viendo la explicación y hazlo sentada si lo necesitas. Toca con suavidad, sin rebotes ni saltos y sin insistir sobre el Aquiles o el neuroma. Si aparece dolor, mareo o más nerviosismo, paras.</p>
   </div>
@@ -819,7 +831,7 @@ summary{color:var(--tinta)!important}
     <div class="plan-access">
       <div><span><strong>Yoga miofascial</strong><small>Base semanal · alrededor de 4 horas</small></span><b>∿</b></div>
       <div><span><strong>Power Start</strong><small>Fuerza suave · cuando el Aquiles esté preparado</small></span><b>◇</b></div>
-      <div><span><strong>Meditación en movimiento</strong><small>Práctica para explorar dentro de El Método Funcional</small></span><b>◌</b></div>
+      <div class="future-walk"><span><strong>Salir a caminar</strong><small>Un paseo tranquilo también cuenta</small></span><b>○</b><div class="walk-fields"><input type="number" id="movimiento-pasos" placeholder="pasos" min="0" onchange="guardarPaseo()"><input type="number" id="movimiento-km" placeholder="km" min="0" step="0.1" onchange="guardarPaseo()"></div></div>
       <div><span><strong>Tai Chi / Qigong</strong><small>Prácticas breves para entrar en el cuerpo</small></span><b>≋</b></div>
       <div><span><strong>Piscina</strong><small>Retomar con calma · empezar con 1 día</small></span><b>≈</b></div>
     </div>
@@ -878,24 +890,9 @@ summary{color:var(--tinta)!important}
       <label><input type="checkbox" data-rutina="taizo" onchange="toggleRutina(this)"> Radio Taiso o Tai Chi · movilidad lenta, sin forzar</label>
       <details class="routine-detail"><summary>Secuencia breve</summary><p>1 · Mueve los dedos de los pies y haz círculos de tobillo. 2 · Balancea el peso suavemente. 3 · Ondula las rodillas y la pelvis. 4 · Deja que la columna y los brazos acompañen. 5 · Termina de pie, sintiendo las plantas.</p></details>
     </div>
-    <div class="routine-block"><span class="routine-time">PROGRESIÓN · 3 días/semana</span>
-      <label><input type="checkbox" data-rutina="fuerza" onchange="toggleRutina(this)"> Fuerza suave · sentarse/levantarse, pared y glúteos</label>
-      <label><input type="checkbox" data-rutina="paseo" onchange="toggleRutina(this)"> Paseo consciente · empezar con 10–15 min</label>
-      <details class="routine-detail"><summary>Progresión de cuatro semanas</summary><p><strong>Semana 1:</strong> 6–10 min diarios. <strong>Semana 2:</strong> añade 10 min de paseo tres días. <strong>Semana 3:</strong> añade dos rondas suaves de sentarte/levantarte y empuje en pared. <strong>Semana 4:</strong> amplía solo si el cuerpo lo recibe bien.</p></details>
-    </div>
-    <div class="routine-block"><span class="routine-time">ATARDECER · EN CAMA · 5 min</span>
-      <label><input type="checkbox" data-rutina="meditacion-acostar" onchange="toggleRutina(this)"> Meditación en cama · soltar el día</label>
-      <details class="routine-detail"><summary>Cómo hacerlo</summary><p>Ya acostada, deja que el peso caiga sobre el colchón. Sigue cinco exhalaciones largas y recorre el cuerpo sin corregir nada. Si te duermes, la práctica ha terminado.</p></details>
-    </div>
     <div class="routine-note"><strong>La medida es la continuidad.</strong> Termina con ganas de hacer un poco más. Si el Aquiles o las manos dan dolor agudo, paras y adaptas; nada de saltos ni rebotes mientras haya dolor.</div>
   </div>
 
-  <div class="card health-meditation-choice">
-    <div class="card-title">Meditación para elegir durante el día</div>
-    <p class="routine-intro">Una pausa breve, sentada o tumbada. No tienes que esperar a la noche.</p>
-    <button class="btn btn-outline btn-sm salud-pr" data-val="Meditación breve" onclick="togglePractica(this)">◌ Meditación breve · 5 min</button>
-    <details class="routine-detail"><summary>Práctica</summary><p>Apoya los pies o túmbate. Nota el contacto del cuerpo, sigue cinco exhalaciones y deja que la atención vuelva al cuerpo cada vez que se vaya.</p></details>
-  </div>
   <div class="health-data-row">
   <div class="card health-measures">
     <div class="card-title">Mis medidas</div>
@@ -1249,7 +1246,7 @@ function tab(id, btn) {
   if(id === 'check') renderCheckHistorial();
   if(id === 'cierre') initCierre();
   if(id === 'reflexiones') initReflexiones();
-  if(id === 'salud') { initSalud(); initRutinaMovimiento(); initPlanMovimiento(); }
+  if(id === 'salud') { initSalud(); initRutinaMovimiento(); initPlanMovimiento(); cargarPaseo(); }
   if(id === 'guia') initGuia();
   if(id === 'belleza') initBelleza();
   if(id === 'compra') renderCompra();
@@ -2143,30 +2140,35 @@ function abrirAlquimia(tipo) {
     titulo.innerText = 'Pie · juanete';
     contenido.innerHTML = `
       <p style="font-size:14px;line-height:1.6">Para un juanete: nada de forzar el dedo ni intentar corregirlo a la fuerza. Empieza por calzado amplio, descanso y movilidad muy suave de los dedos.</p>
+      <a href="https://www.youtube.com/watch?v=_byPyrTvcLw" target="_blank" rel="noopener" class="btn btn-outline btn-sm" style="display:inline-block;margin:15px 0">Ver vídeo suave en Firefox ↗</a>
       <p style="font-size:12px;line-height:1.6;color:var(--suave)">Si hay inflamación intensa, dolor persistente o dificultad para caminar, mejor consultarlo con fisioterapia o podología.</p>
     `;
   } else if(tipo === 'cabeza') {
     titulo.innerText = 'Cabeza · tensión o bloqueo';
     contenido.innerHTML = `
       <p style="font-size:14px;line-height:1.6">Prueba primero con golpecitos muy suaves en clavículas, esternón, brazos y mandíbula, acompañados de una exhalación larga. No hagas movimientos fuertes de cuello.</p>
+      <a href="https://www.youtube.com/watch?v=-HnM-uuZkjQ" target="_blank" rel="noopener" class="btn btn-outline btn-sm" style="display:inline-block;margin:15px 0">Ver vídeo suave en Firefox ↗</a>
       <p style="font-size:12px;line-height:1.6;color:var(--suave)">Si el dolor de cabeza es repentino, muy intenso o diferente a lo habitual, no lo trates como una simple tensión.</p>
     `;
   } else if(tipo === 'lumbares') {
     titulo.innerText = 'Espalda · lumbares';
     contenido.innerHTML = `
       <p style="font-size:14px;line-height:1.6">Para desbloquear sin forzar: respiración amplia, caminar despacio y movilidad pequeña de pelvis. Evita rebotes, torsiones intensas y estiramientos que aumenten el dolor.</p>
+      <a href="https://www.youtube.com/watch?v=LmWkf4HJGPI" target="_blank" rel="noopener" class="btn btn-outline btn-sm" style="display:inline-block;margin:15px 0">Ver vídeo de movilidad en Firefox ↗</a>
       <p style="font-size:12px;line-height:1.6;color:var(--suave)">Si el dolor baja por la pierna, aparece hormigueo o notas debilidad, consulta con tu fisioterapeuta.</p>
     `;
   } else if(tipo === 'cadera') {
     titulo.innerText = 'Cadera · rigidez o tensión';
     contenido.innerHTML = `
       <p style="font-size:14px;line-height:1.6">Empieza con movimientos pequeños: respiración, balanceo suave de la pelvis y caminar unos minutos. La cadera no necesita que la fuerces para “abrirse”.</p>
+      <a href="https://www.youtube.com/watch?v=cIRT0DbbpjE" target="_blank" rel="noopener" class="btn btn-outline btn-sm" style="display:inline-block;margin:15px 0">Ver vídeo de movilidad en Firefox ↗</a>
       <p style="font-size:12px;line-height:1.6;color:var(--suave)">Si el dolor es fuerte, aparece de repente o baja por la pierna, mejor parar y consultarlo.</p>
     `;
   } else if(tipo === 'aquiles') {
     titulo.innerText = 'Tendón de Aquiles';
     contenido.innerHTML = `
       <p style="font-size:14px;line-height:1.6">Aquí no buscamos estirar ni rebotar. Empieza por descargar, caminar solo dentro de lo cómodo y observar cómo responde durante el día y al día siguiente.</p>
+      <a href="https://www.youtube.com/watch?v=10LzEljN0FQ" target="_blank" rel="noopener" class="btn btn-outline btn-sm" style="display:inline-block;margin:15px 0">Ver vídeo en Firefox ↗</a>
       <p style="font-size:12px;line-height:1.6;color:var(--suave)">Nada de saltos, carreras ni estiramientos intensos mientras esté inflamado. Si aumenta el dolor, reduce y consulta con tu fisioterapeuta.</p>
     `;
   } else if(tipo === 'manos') {
@@ -2180,6 +2182,19 @@ function abrirAlquimia(tipo) {
 
 function cerrarAlquimia() {
   document.getElementById('modal-alquimia').style.display = 'none';
+}
+
+function guardarPaseo() {
+  guardar('movimiento_paseo_' + hoyStr(), {
+    pasos: document.getElementById('movimiento-pasos')?.value || '',
+    km: document.getElementById('movimiento-km')?.value || ''
+  });
+}
+function cargarPaseo() {
+  const p = cargar('movimiento_paseo_' + hoyStr(), {});
+  const pasos = document.getElementById('movimiento-pasos'), km = document.getElementById('movimiento-km');
+  if(pasos) pasos.value = p.pasos || '';
+  if(km) km.value = p.km || '';
 }
 
 function guardarSalud() {
