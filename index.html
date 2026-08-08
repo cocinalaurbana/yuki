@@ -406,6 +406,7 @@ summary{color:var(--tinta)!important}
 .health-options-card{border-top:3px solid var(--musgo)!important}
 .health-options-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
 .health-options-grid button{text-align:left;min-height:44px}
+.movement-picker{border-top:3px solid var(--oro)!important}.movement-picker-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.movement-picker-grid label{font-size:11px;color:var(--texto-suave);text-transform:uppercase;letter-spacing:.05em}.movement-picker-grid select{display:block;width:100%;margin-top:5px;padding:9px;border:1px solid var(--borde);border-radius:9px;background:var(--marfil);font:inherit;color:var(--texto)}.movement-recommendation{margin-top:14px;padding:13px;border:1px solid var(--linea);border-radius:10px;background:rgba(199,155,71,.08);font-size:13px;line-height:1.55}.movement-recommendation a{color:var(--arcilla);font-weight:600}
 #tab-salud>.practice-videos,#tab-salud>.movement-week,#tab-salud>.movement-plan,#tab-salud>.movement-routine,#tab-salud>.health-strategy-heading{grid-column:1/-1}
 #tab-salud>.health-strategy-heading{order:9;margin-top:12px;padding:10px 0 0;border-top:1px solid var(--linea);font-size:10px;letter-spacing:.14em;color:var(--musgo);font-weight:700}
 #tab-salud>.movement-week{order:10}
@@ -417,7 +418,7 @@ summary{color:var(--tinta)!important}
 #tab-salud .video-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;border-top:0}
 #tab-salud .video-item{border:1px solid var(--linea);padding:14px 12px;min-height:74px}
 @media(max-width:650px){#tab-salud{grid-template-columns:1fr}#tab-salud>.card{grid-column:1/-1}#tab-salud .video-list{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:430px){#tab-salud .video-list,.health-options-grid{grid-template-columns:1fr}}
+@media(max-width:430px){#tab-salud .video-list,.health-options-grid,.movement-picker-grid{grid-template-columns:1fr}}
 
 /* INICIO · cuadrícula compacta en tablet horizontal */
 @media(min-width:700px) and (orientation:landscape){
@@ -763,9 +764,20 @@ summary{color:var(--tinta)!important}
     <p class="video-caution">Empieza viendo la explicación y hazlo sentada si lo necesitas. Toca con suavidad, sin rebotes ni saltos y sin insistir sobre el Aquiles o el neuroma. Si aparece dolor, mareo o más nerviosismo, paras.</p>
   </div>
 
-  <div class="health-strategy-heading">PLAN APARTE · FIN DE VERANO / SEPTIEMBRE</div>
+  <div class="card movement-picker">
+    <div class="card-title">Elegir movimiento</div>
+    <p class="routine-intro">Tres preguntas y una sola propuesta. No tienes que decidir entre veinte vídeos.</p>
+    <div class="movement-picker-grid">
+      <label>Tiempo<select id="mov-tiempo" onchange="recomendarMovimiento()"><option value="">Elige</option><option value="5">5 min</option><option value="10">10–15 min</option><option value="20">20 min o más</option></select></label>
+      <label>Energía<select id="mov-energia" onchange="recomendarMovimiento()"><option value="">Elige</option><option value="vacia">Vacía</option><option value="disponible">Disponible</option><option value="expansiva">Expansiva</option></select></label>
+      <label>Necesidad<select id="mov-necesidad" onchange="recomendarMovimiento()"><option value="">Elige</option><option value="calmar">Calmar</option><option value="despertar">Despertar</option><option value="soltar">Soltar tensión</option><option value="fortalecer">Fortalecer</option></select></label>
+    </div>
+    <div id="mov-recomendacion" class="movement-recommendation">Cuando respondas a las tres preguntas, Yuki te ofrecerá una práctica.</div>
+  </div>
+
+  <div class="health-strategy-heading">PLAN APARTE · FIN DE VERANO / OTOÑO</div>
   <div class="card movement-week">
-    <div class="plan-kicker">TU MAPA · A PARTIR DE SEPTIEMBRE</div>
+    <div class="plan-kicker">TU MAPA · A PARTIR DE OTOÑO</div>
     <div class="card-title" style="margin-top:6px">Movimiento como placer</div>
     <p class="routine-intro">Una práctica principal al día. No hace falta completarlo todo: Yuki te ayuda a elegir lo que hoy te viene bien.</p>
     <div class="plan-access">
@@ -773,7 +785,7 @@ summary{color:var(--tinta)!important}
       <div><span><strong>Power Start</strong><small>Fuerza suave · 2 sesiones al principio</small></span><b>◇</b></div>
       <div><span><strong>Caminar</strong><small>Movimiento cotidiano · aunque sean 10–20 minutos</small></span><b>○</b></div>
       <div><span><strong>Tai Chi / Qigong</strong><small>Prácticas breves para entrar en el cuerpo</small></span><b>≋</b></div>
-      <div><span><strong>Piscina</strong><small>Retomar en septiembre · empezar con 1 día</small></span><b>≈</b></div>
+      <div><span><strong>Piscina</strong><small>Retomar en otoño · empezar con 1 día</small></span><b>≈</b></div>
     </div>
     <p class="plan-warning">El plan se adapta al Aquiles y al neuroma. Si el cuerpo pide menos, menos también cuenta.</p>
   </div>
@@ -1995,6 +2007,26 @@ function renderReflexionesHistorial() {
 }
 
 
+
+function recomendarMovimiento() {
+  const tiempo = document.getElementById('mov-tiempo')?.value;
+  const energia = document.getElementById('mov-energia')?.value;
+  const necesidad = document.getElementById('mov-necesidad')?.value;
+  const out = document.getElementById('mov-recomendacion');
+  if (!out) return;
+  if (!tiempo || !energia || !necesidad) { out.textContent = 'Cuando respondas a las tres preguntas, Yuki te ofrecerá una práctica.'; return; }
+  const opciones = {
+    calmar: {vacia:['Tapping corporal','5 min · golpecitos suaves y respiración','https://youtu.be/I6ZZ2uw0QYw?is=CNIvIgTf2kMW_bEg'],disponible:['Radio Taiso','3 min · despertar sin impacto','https://youtu.be/db6QiRQ3S3w?is=U9hXVyaTTuomoGm5'],expansiva:['Tai Chi en casa','Curso de Luis Duarte · empieza por la primera sesión','https://youtube.com/playlist?list=PLQrAIBFp_iv10yybHxF7-e9cEi-X1PkJI&si=McyRDUs3bKs4eVj-']},
+    despertar: {vacia:['Radio Taiso','3 min · activar sin exigirte','https://youtu.be/db6QiRQ3S3w?is=U9hXVyaTTuomoGm5'],disponible:['Tai Chi en casa','Movimientos lentos · empieza por la primera sesión','https://youtube.com/playlist?list=PLQrAIBFp_iv10yybHxF7-e9cEi-X1PkJI&si=McyRDUs3bKs4eVj-'],expansiva:['Tai Chi en casa','Curso progresivo de Luis Duarte','https://youtube.com/playlist?list=PLQrAIBFp_iv10yybHxF7-e9cEi-X1PkJI&si=McyRDUs3bKs4eVj-']},
+    soltar: {vacia:['Despertar suave','7 min · movilidad muy ligera','https://www.youtube.com/watch?v=NZUba83gbEo'],disponible:['Movilidad y liberación fascial','Programa de Marina Jaquete · Campus Yoga Progresivo','https://campus.yogaprogresivo.com/product/programa-de-movilidad-y-liberacion-fascial-con-marina-jaquete-especial-superpack/'],expansiva:['Pilates bajo impacto','10 min · control y movilidad','https://youtu.be/oHMpC-mR6qU?is=qlFl_FwMnWYNjdir']},
+    fortalecer: {vacia:['Despertar suave','7 min · hoy no toca fuerza','https://www.youtube.com/watch?v=NZUba83gbEo'],disponible:['Pilates bajo impacto','10 min · controlado y sin saltos','https://youtu.be/oHMpC-mR6qU?is=qlFl_FwMnWYNjdir'],expansiva:['Power Start','Fuerza suave · solo si el Aquiles está tranquilo','']}
+  };
+  let item = opciones[necesidad]?.[energia] || opciones.soltar.vacia;
+  if (tiempo === '5' && necesidad === 'calmar') item = opciones.calmar.vacia;
+  if (tiempo === '20' && necesidad === 'soltar' && energia !== 'vacia') item = opciones.soltar.disponible;
+  const enlace = item[2] ? ` <a href="${item[2]}" target="_blank" rel="noopener">Abrir práctica ↗</a>` : '';
+  out.innerHTML = `<strong>Hoy:</strong> ${item[0]}<br><span>${item[1]}</span>${enlace}`;
+}
 
 function togglePlanMovimiento(box) {
   const key = 'plan_movimiento_' + hoyStr();
