@@ -450,10 +450,23 @@ summary{color:var(--tinta)!important}
 #tab-salud>.health-strategy-heading{order:3!important}
 #tab-salud>.movement-week{order:4!important}
 #tab-salud>.movement-plan{order:5!important}
-#tab-salud>.health-options-card{order:6!important}
+#tab-salud>.health-meditation-choice{order:3!important}
+#tab-salud>.health-strategy-heading{order:4!important}
+#tab-salud>.movement-week{order:5!important}
+#tab-salud>.movement-plan{order:6!important}
+#tab-salud>.health-data-row{order:7!important}
+#tab-salud>.health-save{order:8!important}
+#tab-salud>.health-history-title{order:9!important}
+#tab-salud>.health-history{order:10!important}
+#tab-salud>.health-options-card{order:11!important}
+.health-data-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.health-data-row>.card{margin:0;min-width:0}
+.health-meditation-choice{border-top:3px solid var(--dorado)!important}
+@media(max-width:599px){.health-data-row{grid-template-columns:1fr}}
+.atardecer-pasos{border-top:3px solid var(--dorado)!important}
 
 @media(min-width:600px){
-  #tab-salud>.movement-routine{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+  #tab-salud>.movement-routine{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
   #tab-salud>.movement-routine>.card-title,#tab-salud>.movement-routine>.routine-intro{grid-column:1/-1}
   #tab-salud>.movement-routine>.routine-intro{margin-bottom:0}
   #tab-salud>.movement-routine .routine-block{border:1px solid var(--linea);padding:13px;min-width:0}
@@ -537,6 +550,12 @@ summary{color:var(--tinta)!important}
     <button class="btn btn-outline btn-sm mt-12" onclick="editarCheck()">Editar</button>
   </div>
 
+  <div class="card inicio-despertar">
+    <div class="card-title">Despertar suave</div>
+    <p class="routine-intro">Para abrir el día sin levantarte de golpe.</p>
+    <a class="video-item" href="https://www.youtube.com/watch?v=NZUba83gbEo" target="_blank" rel="noopener"><span class="video-symbol">◌</span><span><strong>Despertar suave · 7 min</strong><small>En Firefox</small></span><b>↗</b></a>
+  </div>
+
   <div id="check-form">
     <section class="registro-hoy">
       <div class="registro-heading"><span class="eyebrow">REGISTRO ÍNTIMO</span><span class="registro-hint">elige sin analizar</span></div>
@@ -574,6 +593,11 @@ summary{color:var(--tinta)!important}
     <div class="form-group"><label>Lo que pide atención</label><textarea id="cierre-atencion" placeholder="Sin juicio. Solo observar qué necesita cuidado…" rows="3"></textarea></div>
     <div class="form-group"><label>Una palabra</label><input type="text" id="cierre-palabra" placeholder="La palabra que resume el día…"></div>
     <button class="btn btn-primary" style="width:100%" onclick="guardarCierre()">Guardar cierre</button>
+  </div>
+  <div class="card atardecer-pasos">
+    <div class="card-title">Pasos del día</div>
+    <p class="routine-intro">Los miramos al cerrar, sin convertirlos en una meta.</p>
+    <input type="number" id="salud-pasos" placeholder="Pasos aproximados" style="width:100%;border:1px solid var(--linea);border-radius:3px;padding:10px;font-size:16px;font-family:inherit">
   </div>
   <div class="card" id="cierre-resumen" style="display:none">
     <div class="card-title">Mi atardecer</div>
@@ -778,7 +802,6 @@ summary{color:var(--tinta)!important}
     <div class="card-title">Prácticas para elegir</div>
     <p class="routine-intro">Después de tu práctica de hoy, si te apetece, elige una de estas.</p>
     <div class="video-list">
-      <a class="video-item" href="https://www.youtube.com/watch?v=NZUba83gbEo" target="_blank" rel="noopener"><span class="video-symbol">◌</span><span><strong>Despertar suave</strong><small>Estiramientos · 7 min</small></span><b>↗</b></a>
       <a class="video-item" href="https://youtu.be/db6QiRQ3S3w?is=U9hXVyaTTuomoGm5" target="_blank" rel="noopener"><span class="video-symbol">◒</span><span><strong>Radio Taiso</strong><small>Ritual japonés · 3 min</small></span><b>↗</b></a>
       <a class="video-item" href="https://youtube.com/playlist?list=PLQrAIBFp_iv10yybHxF7-e9cEi-X1PkJI&si=McyRDUs3bKs4eVj-" target="_blank" rel="noopener"><span class="video-symbol">∿</span><span><strong>Tai Chi en casa · curso</strong><small>Luis Duarte · 8 sesiones · fundamentos, 10 movimientos y Qigong</small></span><b>↗</b></a>
       <a class="video-item" href="https://youtu.be/oHMpC-mR6qU?is=qlFl_FwMnWYNjdir" target="_blank" rel="noopener"><span class="video-symbol">⌁</span><span><strong>Pilates</strong><small>Bajo impacto · 10 min</small></span><b>↗</b></a>
@@ -788,19 +811,19 @@ summary{color:var(--tinta)!important}
     <p class="video-caution">Empieza viendo la explicación y hazlo sentada si lo necesitas. Toca con suavidad, sin rebotes ni saltos y sin insistir sobre el Aquiles o el neuroma. Si aparece dolor, mareo o más nerviosismo, paras.</p>
   </div>
 
-  <div class="health-strategy-heading">MÁS ADELANTE · SEPTIEMBRE</div>
+  <div class="health-strategy-heading">PARA MÁS ADELANTE</div>
   <div class="card movement-week">
-    <div class="plan-kicker">CUANDO LLEGUE SEPTIEMBRE</div>
+    <div class="plan-kicker">CUANDO TE APETEZCA DAR UN PASO MÁS</div>
     <div class="card-title" style="margin-top:6px">Elige una base, no todo</div>
-    <p class="routine-intro">Una práctica principal. Lo demás queda como posibilidad, no como tarea.</p>
+    <p class="routine-intro">Aquí quedan las prácticas de más recorrido. No son para hoy ni una obligación.</p>
     <div class="plan-access">
       <div><span><strong>Yoga miofascial</strong><small>Base semanal · alrededor de 4 horas</small></span><b>∿</b></div>
-      <div><span><strong>Power Start</strong><small>Fuerza suave · 2 sesiones al principio</small></span><b>◇</b></div>
-      <div><span><strong>Caminar</strong><small>Movimiento cotidiano · aunque sean 10–20 minutos</small></span><b>○</b></div>
+      <div><span><strong>Power Start</strong><small>Fuerza suave · cuando el Aquiles esté preparado</small></span><b>◇</b></div>
+      <div><span><strong>Meditación en movimiento</strong><small>Práctica para explorar dentro de El Método Funcional</small></span><b>◌</b></div>
       <div><span><strong>Tai Chi / Qigong</strong><small>Prácticas breves para entrar en el cuerpo</small></span><b>≋</b></div>
-      <div><span><strong>Piscina</strong><small>Retomar en septiembre · empezar con 1 día</small></span><b>≈</b></div>
+      <div><span><strong>Piscina</strong><small>Retomar con calma · empezar con 1 día</small></span><b>≈</b></div>
     </div>
-    <p class="plan-warning">El plan se adapta al Aquiles y al neuroma. Si el cuerpo pide menos, menos también cuenta.</p>
+    <p class="plan-warning">Esto queda aparcado hasta que te resulte claro y amable. Si el cuerpo pide menos, menos también cuenta.</p>
   </div>
 
   <div class="card movement-plan">
@@ -846,8 +869,9 @@ summary{color:var(--tinta)!important}
     <p class="routine-intro">Una práctica mínima. No buscamos rendimiento: buscamos continuidad.</p>
     <div class="routine-block"><span class="routine-time">AL DESPERTAR · 6 min</span>
       <label><input type="checkbox" data-rutina="cama" onchange="toggleRutina(this)"> Estiramientos suaves en cama · respirar y desperezar</label>
+      <label><input type="checkbox" data-rutina="meditacion-despertar" onchange="toggleRutina(this)"> Meditación en cama · despertar despacio</label>
       <label><input type="checkbox" data-rutina="tapping" onchange="toggleRutina(this)"> Tapping breve · cara, clavículas, brazos y pecho</label>
-      <details class="routine-detail"><summary>Cómo hacerlo</summary><p>Con las yemas, da golpecitos suaves y rítmicos. Recorre cejas, pómulos, mandíbula, clavículas, esternón y brazos. Respira sin buscar ningún resultado.</p></details>
+      <details class="routine-detail"><summary>Cómo hacerlo</summary><p>Antes de levantarte, nota tres respiraciones y el peso del cuerpo en la cama. Después, si te apetece, da golpecitos suaves y rítmicos por cejas, pómulos, mandíbula, clavículas, esternón y brazos.</p></details>
     </div>
     <div class="routine-block"><span class="routine-time">DESPUÉS · 8–10 min</span>
       <label><input type="checkbox" data-rutina="fascia" onchange="toggleRutina(this)"> Despertar fascial · pies, pantorrillas, caderas y columna</label>
@@ -859,26 +883,22 @@ summary{color:var(--tinta)!important}
       <label><input type="checkbox" data-rutina="paseo" onchange="toggleRutina(this)"> Paseo consciente · empezar con 10–15 min</label>
       <details class="routine-detail"><summary>Progresión de cuatro semanas</summary><p><strong>Semana 1:</strong> 6–10 min diarios. <strong>Semana 2:</strong> añade 10 min de paseo tres días. <strong>Semana 3:</strong> añade dos rondas suaves de sentarte/levantarte y empuje en pared. <strong>Semana 4:</strong> amplía solo si el cuerpo lo recibe bien.</p></details>
     </div>
+    <div class="routine-block"><span class="routine-time">ATARDECER · EN CAMA · 5 min</span>
+      <label><input type="checkbox" data-rutina="meditacion-acostar" onchange="toggleRutina(this)"> Meditación en cama · soltar el día</label>
+      <details class="routine-detail"><summary>Cómo hacerlo</summary><p>Ya acostada, deja que el peso caiga sobre el colchón. Sigue cinco exhalaciones largas y recorre el cuerpo sin corregir nada. Si te duermes, la práctica ha terminado.</p></details>
+    </div>
     <div class="routine-note"><strong>La medida es la continuidad.</strong> Termina con ganas de hacer un poco más. Si el Aquiles o las manos dan dolor agudo, paras y adaptas; nada de saltos ni rebotes mientras haya dolor.</div>
   </div>
 
-  <div class="card">
-    <div class="card-title">👣 Pasos de hoy</div>
-    <input type="number" id="salud-pasos" placeholder="ej. 8000" style="width:100%;border:1.5px solid var(--borde);border-radius:10px;padding:10px;font-size:16px;font-family:inherit">
+  <div class="card health-meditation-choice">
+    <div class="card-title">Meditación para elegir durante el día</div>
+    <p class="routine-intro">Una pausa breve, sentada o tumbada. No tienes que esperar a la noche.</p>
+    <button class="btn btn-outline btn-sm salud-pr" data-val="Meditación breve" onclick="togglePractica(this)">◌ Meditación breve · 5 min</button>
+    <details class="routine-detail"><summary>Práctica</summary><p>Apoya los pies o túmbate. Nota el contacto del cuerpo, sigue cinco exhalaciones y deja que la atención vuelva al cuerpo cada vez que se vaya.</p></details>
   </div>
-  <div class="card">
-    <div class="card-title">🏃 Práctica de hoy</div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px" id="salud-practicas">
-      <button class="btn btn-outline btn-sm salud-pr" data-val="Pilates" onclick="togglePractica(this)">🧘 Pilates</button>
-      <button class="btn btn-outline btn-sm salud-pr" data-val="Natación" onclick="togglePractica(this)">🏊 Natación</button>
-      <button class="btn btn-outline btn-sm salud-pr" data-val="Yoga" onclick="togglePractica(this)">🌿 Yoga</button>
-      <button class="btn btn-outline btn-sm salud-pr" data-val="Caminata" onclick="togglePractica(this)">🚶 Caminata</button>
-      <button class="btn btn-outline btn-sm salud-pr" data-val="Fuerza" onclick="togglePractica(this)">💪 Fuerza</button>
-      <button class="btn btn-outline btn-sm salud-pr" data-val="Otro" onclick="togglePractica(this)">✨ Otro</button>
-    </div>
-  </div>
-  <div class="card">
-    <div class="card-title">📏 Mis medidas</div>
+  <div class="health-data-row">
+  <div class="card health-measures">
+    <div class="card-title">Mis medidas</div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
       <div><label style="font-size:12px;color:var(--texto-suave)">Peso (kg)</label><input type="number" id="salud-peso" step="0.1" style="width:100%;border:1.5px solid var(--borde);border-radius:10px;padding:8px;font-family:inherit"></div>
       <div><label style="font-size:12px;color:var(--texto-suave)">Cintura (cm)</label><input type="number" id="salud-cintura" style="width:100%;border:1.5px solid var(--borde);border-radius:10px;padding:8px;font-family:inherit"></div>
@@ -886,13 +906,14 @@ summary{color:var(--tinta)!important}
       <div><label style="font-size:12px;color:var(--texto-suave)">Pecho (cm)</label><input type="number" id="salud-pecho" style="width:100%;border:1.5px solid var(--borde);border-radius:10px;padding:8px;font-family:inherit"></div>
     </div>
   </div>
-  <div class="card">
-    <div class="card-title">📝 Notas de salud</div>
+  <div class="card health-notes">
+    <div class="card-title">Notas de salud</div>
     <textarea id="salud-notas" rows="3" placeholder="Cómo te sientes, síntomas, energía..." style="width:100%;border:1.5px solid var(--borde);border-radius:10px;padding:10px;font-family:inherit;font-size:14px;resize:vertical"></textarea>
   </div>
-  <button class="btn btn-primary" style="width:100%" onclick="guardarSalud()">Guardar</button>
-  <div class="sec-title" style="margin-top:18px">Historial semanal</div>
-  <div id="salud-historial"></div>
+  </div>
+  <button class="btn btn-primary health-save" style="width:100%" onclick="guardarSalud()">Guardar salud</button>
+  <div class="sec-title health-history-title" style="margin-top:18px">Historial semanal</div>
+  <div id="salud-historial" class="health-history"></div>
 </div>
 
 <!-- TAB GUÍA -->
