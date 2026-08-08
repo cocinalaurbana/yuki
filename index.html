@@ -444,18 +444,21 @@ summary{color:var(--tinta)!important}
 .season-card{border-top:3px solid var(--dorado)!important}.season-kicker{font-size:10px;letter-spacing:.14em;color:var(--dorado);font-weight:700}.season-lead{font-family:'Playfair Display',Georgia,serif;font-size:16px;color:var(--suave);line-height:1.5;margin:6px 0 14px}.season-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.season-item{border:1px solid var(--linea);padding:10px;background:var(--papel)}.season-item strong{display:block;font-size:13px;font-weight:600}.season-item small{display:block;color:var(--suave);font-size:11px;line-height:1.4;margin-top:4px}@media(max-width:520px){.season-grid{grid-template-columns:1fr}}
 
 /* SALUD · orden y densidad: primero lo de hoy, después las opciones */
-#tab-salud>.movement-routine{order:1!important;grid-column:1/-1}
+#tab-salud{display:flex!important;flex-direction:column!important;gap:16px!important}
+#tab-salud>.movement-routine{order:1!important}
 #tab-salud>.practice-videos{order:2!important}
-#tab-salud>.health-options-card{order:3!important}
-#tab-salud>.health-strategy-heading{order:4!important}
-#tab-salud>.movement-week{order:5!important}
-#tab-salud>.movement-plan{order:6!important}
+#tab-salud>.health-strategy-heading{order:3!important}
+#tab-salud>.movement-week{order:4!important}
+#tab-salud>.movement-plan{order:5!important}
+#tab-salud>.health-options-card{order:6!important}
 
-@media(min-width:700px) and (orientation:landscape){
+@media(min-width:600px){
   #tab-salud>.movement-routine{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
   #tab-salud>.movement-routine>.card-title,#tab-salud>.movement-routine>.routine-intro{grid-column:1/-1}
   #tab-salud>.movement-routine>.routine-intro{margin-bottom:0}
   #tab-salud>.movement-routine .routine-block{border:1px solid var(--linea);padding:13px;min-width:0}
+  #tab-salud>.practice-videos .video-list{grid-template-columns:repeat(3,minmax(0,1fr))}
+  #tab-salud>.health-options-card .health-options-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
   #tab-salud>.movement-plan{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
   #tab-salud>.movement-plan>.plan-kicker,#tab-salud>.movement-plan>.plan-recommendation,#tab-salud>.movement-plan>.plan-warning{grid-column:1/-1}
   #tab-salud>.movement-plan>.plan-phase{border:1px solid var(--linea);padding:13px;min-width:0}
