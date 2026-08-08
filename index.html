@@ -832,7 +832,7 @@ summary{color:var(--tinta)!important}
       <div class="plan-phase-title">Tus accesos</div>
       <div class="plan-access">
         <a href="https://campus.yogaprogresivo.com/campus/" target="_blank" rel="noopener"><span><strong>Yoga miofascial</strong><small>Campus del Instituto de Yoga Progresivo</small></span><b>↗</b></a>
-        <a href="https://play.google.com/store/apps/details?id=com.elmtodofuncional.app&hl=es" target="_blank" rel="noopener" data-no-firefox><span><strong>Abrir la app · El Método Funcional</strong><small>Google Play · si ya está instalada, aparecerá «Abrir»</small></span><b>↗</b></a>
+        <a href="https://play.google.com/store/apps/details?id=com.elmtodofuncional.app&hl=es" target="_blank" rel="noopener"><span><strong>Abrir la app · El Método Funcional</strong><small>Se abre en Firefox · desde ahí pulsa «Abrir» si ya está instalada</small></span><b>↗</b></a>
       </div>
     </div>
     <p class="plan-warning">No empezamos todavía con Transformación corporal, Power Fit ni Power Fit 2. Mientras el Aquiles esté inflamado: nada de saltos, carreras, rebotes ni ejercicios que provoquen dolor.</p>
@@ -2687,7 +2687,7 @@ function abrirEnFirefox(event, url) {
 
 document.addEventListener('click', function(event) {
   const enlace = event.target.closest('a[target="_blank"]');
-  if (!enlace || enlace.hasAttribute('data-no-firefox') || !/^https?:/.test(enlace.href)) return;
+  if (!enlace || !/^https?:/.test(enlace.href)) return;
   abrirEnFirefox(event, enlace.href);
 });
 </script>
