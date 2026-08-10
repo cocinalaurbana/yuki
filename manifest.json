@@ -2,12 +2,12 @@
   "name": "Yuki — Agenda de Lore",
   "short_name": "Yuki",
   "description": "Cuaderno personal de Lore: climas, cuerpo, alimentación, cocina y vida consciente",
-  "start_url": "/yuki/?v=21",
-  "id": "/yuki/",
+  "start_url": "/?v=39",
+  "id": "/",
   "display": "standalone",
   "background_color": "#f5f1ea",
   "theme_color": "#f5f1ea",
-  "orientation": "landscape",
+  "orientation": "any",
   "icons": [
     {
       "src": "icon-192.png?v=2",
@@ -22,5 +22,5 @@
       "purpose": "any maskable"
     }
   ],
-  "scope": "/yuki/"
+  "scope": "/"
 }
