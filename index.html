@@ -2811,8 +2811,52 @@ function renderCasa() {
         El orden externo es el reflejo del orden interno. Limpia con intención.
       </p>
     </div>
+    <div class="card" style="border-top:3px solid var(--musgo)!important">
+      <div class="card-title">🧺 Orden de casa · una cosa cada vez</div>
+      <p style="font-size:13px;color:var(--suave);line-height:1.5;margin-bottom:12px">
+        Una pequeña acción por vez. No es una limpieza general: es ir aligerando la casa con calma y preparando espacio para lo que venga.
+      </p>
+      <div id="orden-casa-lista"></div>
+      <button class="btn btn-outline btn-sm" style="margin-top:12px" onclick="reiniciarOrdenCasa()">Reiniciar lista</button>
+    </div>
   `;
   document.getElementById('tab-casa').innerHTML = html;
+  renderOrdenCasa();
+}
+
+const ORDEN_CASA = [
+  'Despejar una superficie pequeña',
+  'Ordenar un cajón',
+  'Revisar un estante del baño',
+  'Elegir una bolsa de ropa para donar o sacar',
+  'Revisar una balda de la cocina',
+  'Hacer una pila de documentos para revisar',
+  'Ordenar una caja o rincón de almacenaje',
+  'Observar una zona de la casa pensando en la futura mudanza'
+];
+
+function renderOrdenCasa() {
+  const hechos = cargar('ordenCasa', []);
+  const el = document.getElementById('orden-casa-lista');
+  if (!el) return;
+  el.innerHTML = ORDEN_CASA.map((texto, i) => `
+    <label style="display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--linea);font-size:14px;color:var(--tinta);cursor:pointer">
+      <input type="checkbox" ${hechos.includes(i)?'checked':''} onchange="toggleOrdenCasa(${i})" style="width:18px;height:18px;flex:none;margin-top:1px;accent-color:var(--musgo)">
+      <span style="${hechos.includes(i)?'text-decoration:line-through;color:var(--suave)':''}">${texto}</span>
+    </label>`).join('');
+}
+
+function toggleOrdenCasa(i) {
+  const hechos = cargar('ordenCasa', []);
+  const pos = hechos.indexOf(i);
+  if (pos >= 0) hechos.splice(pos, 1); else hechos.push(i);
+  guardar('ordenCasa', hechos);
+  renderOrdenCasa();
+}
+
+function reiniciarOrdenCasa() {
+  guardar('ordenCasa', []);
+  renderOrdenCasa();
 }
 
 // Enlaces externos: se dejan abrir con el navegador del dispositivo.
