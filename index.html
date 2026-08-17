@@ -2821,7 +2821,7 @@ document.addEventListener('click', function(event) {
   const enlace = event.target.closest('a[target="_blank"]');
   if (!enlace || !/^https?:/.test(enlace.href)) return;
   event.preventDefault();
-  window.open(enlace.href, '_blank', 'noopener,noreferrer');
+  window.location.href = enlace.href;
 });
 </script>
 </body>
