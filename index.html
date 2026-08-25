@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Yuki">
-<link rel="manifest" href="manifest-v51.json">
+<link rel="manifest" href="manifest-v52.json">
 <title>Yuki</title>
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 <link rel="apple-touch-icon" href="icon-192.png">
@@ -647,13 +647,6 @@ label{font-size:17px}
 .tab .choice-note,.tab .choice-no-link,.tab .trial-meta,.tab .trial-source{font-size:15px!important}
 .tab [style*="font-size:10px"],.tab [style*="font-size:11px"],.tab [style*="font-size:12px"],.tab [style*="font-size:13px"],.tab [style*="font-size:14px"]{font-size:16px!important}
 .tab .card-title,.tab .sec-title{font-size:21px!important}
-
-/* Subpáginas dentro de las rutinas largas */
-.inner-book-controls{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:10px 0 14px;padding:9px 0;border-bottom:1px solid var(--linea)}
-.inner-book-controls button{border:1px solid var(--linea);background:transparent;color:var(--tinta);border-radius:4px;padding:8px 11px;font:inherit;font-size:15px;cursor:pointer}
-.inner-book-controls button:disabled{opacity:.35;cursor:default}
-.inner-book-controls span{font-size:14px;color:var(--suave);font-weight:600}
-.inner-book-hidden{display:none!important}
 
 /* HOBBIES · gestión, ejecución y propuestas */
 .hobby-lead{font-size:17px!important;color:var(--suave);line-height:1.5;margin:-5px 0 16px}
@@ -3072,10 +3065,33 @@ initBook();
 
 
 // ── PESTAÑAS LARGAS COMO PÁGINAS DE LIBRO ─────────────
+
+function splitHealthRoutine(tabEl) {
+  if (tabEl.dataset.routineSplit === 'yes') return;
+  const routine = tabEl.querySelector(':scope > .movement-routine');
+  if (!routine) return;
+  const blocks = Array.from(routine.children).filter(n => n.classList.contains('routine-block'));
+  if (blocks.length < 2) return;
+  const title = routine.querySelector(':scope > .card-title')?.cloneNode(true);
+  const intro = routine.querySelector(':scope > .routine-intro')?.cloneNode(true);
+  const note = routine.querySelector(':scope > .routine-note')?.cloneNode(true);
+  blocks.forEach((block, i) => {
+    const page = document.createElement('div');
+    page.className = 'card movement-routine health-book-routine';
+    if (title) page.appendChild(title.cloneNode(true));
+    if (intro) page.appendChild(intro.cloneNode(true));
+    page.appendChild(block);
+    if (i === blocks.length - 1 && note) page.appendChild(note);
+    tabEl.insertBefore(page, routine);
+  });
+  routine.remove();
+  tabEl.dataset.routineSplit = 'yes';
+}
 function prepareTabBook(id) {
   if (id === 'check') return;
   const tabEl = document.getElementById('tab-' + id);
   if (!tabEl || tabEl.querySelector('.tab-book-controls')) return;
+  if (id === 'salud') splitHealthRoutine(tabEl);
   const nodes = Array.from(tabEl.children).filter(n => !n.classList.contains('tab-book-controls'));
   if (nodes.length < 3 && id !== 'salud') return;
 
@@ -3083,16 +3099,14 @@ function prepareTabBook(id) {
   if (id === 'hobbies') {
     groups = nodes.map(node => [node]);
   } else if (id === 'salud') {
-    const selectors = [
-      ['.health-options-card', '.health-strategy-heading', '.movement-week'],
-      ['.movement-plan'],
-      ['.movement-routine', '.practice-videos', '.health-meditation-choice'],
-      ['.health-data-row', '.health-save', '.health-history-title', '.health-history']
-    ];
-    groups = selectors.map(list => nodes.filter(n => list.some(sel => n.matches(sel)))).filter(g => g.length);
+    groups.push(nodes.filter(n => n.matches('.health-options-card, .health-strategy-heading, .movement-week')));
+    groups.push(nodes.filter(n => n.matches('.movement-plan')));
+    nodes.filter(n => n.matches('.health-book-routine')).forEach(n => groups.push([n]));
+    groups.push(nodes.filter(n => n.matches('.health-meditation-choice, .health-data-row, .health-save, .health-history-title, .health-history')));
     const used = groups.flat();
     const rest = nodes.filter(n => !used.includes(n));
     if (rest.length) groups.unshift(rest);
+    groups = groups.filter(g => g.length);
   } else {
     for (let i = 0; i < nodes.length; i += 2) groups.push(nodes.slice(i, i + 2));
   }
@@ -3105,10 +3119,6 @@ function prepareTabBook(id) {
   tabEl.dataset.bookPage = '0';
   groups.forEach((group, page) => group.forEach(node => { node.dataset.bookPage = String(page); }));
   showTabBook(id, 0, groups.length);
-  if (id === 'salud') {
-    addInnerBook(tabEl.querySelector('.movement-routine'), '.routine-block', 'Rutina');
-    addInnerBook(tabEl.querySelector('.movement-plan'), '.plan-phase', 'Parte');
-  }
 }
 function showTabBook(id, page, total) {
   const tabEl = document.getElementById('tab-' + id);
