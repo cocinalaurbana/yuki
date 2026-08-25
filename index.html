@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Yuki">
-<link rel="manifest" href="manifest-v46.json">
+<link rel="manifest" href="manifest-v47.json">
 <title>Yuki</title>
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 <link rel="apple-touch-icon" href="icon-192.png">
@@ -628,6 +628,14 @@ label{font-size:17px}
   .book-nav span{font-size:14px}
   .book-page{min-height:220px}
 }
+
+/* Paginación tipo libro para las pestañas largas */
+.tab-book-controls{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 0 18px;padding:10px 0;border-bottom:1px solid var(--linea);order:-1000}
+.tab-book-controls button{border:1px solid var(--linea);background:transparent;color:var(--tinta);border-radius:4px;padding:10px 14px;font:inherit;font-size:16px;cursor:pointer}
+.tab-book-controls button:disabled{opacity:.35;cursor:default}
+.tab-book-controls span{font-size:15px;color:var(--suave);font-weight:600}
+.tab-book-hidden{display:none!important}
+@media(max-width:520px){.tab-book-controls button{font-size:15px;padding:9px 10px}.tab-book-controls span{font-size:14px}}
 </style>
 </head>
 <body>
@@ -696,7 +704,7 @@ label{font-size:17px}
       <div><span>Energía</span><b>—</b></div>
       <div><span>Necesidad</span><b>—</b></div>
     </div>
-    <button class="quiet-link" onclick="document.getElementById('check-form').scrollIntoView({behavior:'smooth'})">Abrir mi inicio <span>↓</span></button>
+    <button class="quiet-link" onclick="bookShow(1)">Abrir mi inicio <span>↓</span></button>
   </section>
 
 
@@ -1493,6 +1501,7 @@ function tab(id, btn) {
   if(id === 'tareas') renderTareas();
   if(id === 'cocina') renderCocina();
   if(id === 'casa') renderCasa();
+  if(id !== 'check') prepareTabBook(id);
 }
 
 // ════════════════════════════════════════════════════════
@@ -2998,6 +3007,64 @@ function bookCloseDay() {
 }
 
 initBook();
+
+
+// ── PESTAÑAS LARGAS COMO PÁGINAS DE LIBRO ─────────────
+function prepareTabBook(id) {
+  if (id === 'check') return;
+  const tabEl = document.getElementById('tab-' + id);
+  if (!tabEl || tabEl.querySelector('.tab-book-controls')) return;
+  const nodes = Array.from(tabEl.children).filter(n => !n.classList.contains('tab-book-controls'));
+  if (nodes.length < 3 && id !== 'salud') return;
+
+  let groups = [];
+  if (id === 'salud') {
+    const selectors = [
+      ['.movement-routine', '.practice-videos', '.health-meditation-choice'],
+      ['.movement-week', '.movement-plan'],
+      ['.health-data-row', '.health-save', '.health-history-title', '.health-history'],
+      ['.health-options-card']
+    ];
+    groups = selectors.map(list => nodes.filter(n => list.some(sel => n.matches(sel)))).filter(g => g.length);
+    const used = groups.flat();
+    const rest = nodes.filter(n => !used.includes(n));
+    if (rest.length) groups.unshift(rest);
+  } else {
+    for (let i = 0; i < nodes.length; i += 2) groups.push(nodes.slice(i, i + 2));
+  }
+  if (groups.length < 2) return;
+
+  const controls = document.createElement('div');
+  controls.className = 'tab-book-controls';
+  controls.innerHTML = `<button type="button" class="tab-book-prev" onclick="moveTabBook('${id}',-1)">← Anterior</button><span class="tab-book-indicator"></span><button type="button" class="tab-book-next" onclick="moveTabBook('${id}',1)">Siguiente →</button>`;
+  tabEl.insertBefore(controls, tabEl.firstChild);
+  tabEl.dataset.bookPage = '0';
+  groups.forEach((group, page) => group.forEach(node => { node.dataset.bookPage = String(page); }));
+  showTabBook(id, 0, groups.length);
+}
+function showTabBook(id, page, total) {
+  const tabEl = document.getElementById('tab-' + id);
+  if (!tabEl) return;
+  const nodes = Array.from(tabEl.children).filter(n => !n.classList.contains('tab-book-controls'));
+  nodes.forEach(node => node.classList.toggle('tab-book-hidden', node.dataset.bookPage !== String(page)));
+  tabEl.dataset.bookPage = String(page);
+  const controls = tabEl.querySelector('.tab-book-controls');
+  if (!controls) return;
+  controls.querySelector('.tab-book-indicator').textContent = `Página ${page + 1} de ${total}`;
+  controls.querySelector('.tab-book-prev').disabled = page === 0;
+  controls.querySelector('.tab-book-next').disabled = false;
+  controls.querySelector('.tab-book-next').textContent = page === total - 1 ? 'Última página' : 'Siguiente →';
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+function moveTabBook(id, direction) {
+  const tabEl = document.getElementById('tab-' + id);
+  if (!tabEl) return;
+  const pages = [...tabEl.querySelectorAll('[data-book-page]')].map(n => Number(n.dataset.bookPage));
+  const total = pages.length ? Math.max(...pages) + 1 : 1;
+  const current = Number(tabEl.dataset.bookPage || 0);
+  const next = Math.max(0, Math.min(total - 1, current + direction));
+  showTabBook(id, next, total);
+}
 
 // ── SERVICE WORKER (PWA offline) ──────────────────────
 if ('serviceWorker' in navigator) {
