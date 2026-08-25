@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Yuki">
-<link rel="manifest" href="manifest-v54.json">
+<link rel="manifest" href="manifest-v55.json">
 <title>Yuki</title>
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 <link rel="apple-touch-icon" href="icon-192.png">
@@ -669,6 +669,8 @@ label{font-size:17px}
 
 /* La página de libro debe ocultar de verdad las páginas que esperan */
 #tab-salud>.tab-book-hidden{display:none!important}
+
+.book-video-jump{margin-top:12px;color:var(--arcilla)!important}
 </style>
 </head>
 <body>
@@ -1089,6 +1091,7 @@ label{font-size:17px}
       <div><span><strong>Piscina</strong><small>Retomar con calma · empezar con 1 día</small></span><b>≈</b></div>
     </div>
     <p class="plan-warning">Esto queda aparcado hasta que te resulte claro y amable. Si el cuerpo pide menos, menos también cuenta.</p>
+    <button type="button" class="btn btn-outline btn-sm book-video-jump" onclick="showTabBook('salud',2,4)">Ir a vídeos y prácticas de hoy →</button>
   </div>
 
   <div class="card movement-plan">
