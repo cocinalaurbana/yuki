@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Yuki">
-<link rel="manifest" href="manifest-v48.json">
+<link rel="manifest" href="manifest-v49.json">
 <title>Yuki</title>
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 <link rel="apple-touch-icon" href="icon-192.png">
@@ -636,6 +636,17 @@ label{font-size:17px}
 .tab-book-controls span{font-size:15px;color:var(--suave);font-weight:600}
 .tab-book-hidden{display:none!important}
 @media(max-width:520px){.tab-book-controls button{font-size:15px;padding:9px 10px}.tab-book-controls span{font-size:14px}}
+
+/* Último ajuste de accesibilidad: ningún texto esencial queda diminuto */
+.tab p:not(.today-lead),.tab li{font-size:17px!important;line-height:1.55}
+.tab small{font-size:15px!important}
+.tab a{font-size:17px!important}
+.tab input,.tab select,.tab textarea{font-size:18px!important}
+.tab .routine-time,.tab .plan-kicker,.tab .health-strategy-heading{font-size:15px!important}
+.tab .routine-video-link{font-size:16px!important}
+.tab .choice-note,.tab .choice-no-link,.tab .trial-meta,.tab .trial-source{font-size:15px!important}
+.tab [style*="font-size:10px"],.tab [style*="font-size:11px"],.tab [style*="font-size:12px"],.tab [style*="font-size:13px"],.tab [style*="font-size:14px"]{font-size:16px!important}
+.tab .card-title,.tab .sec-title{font-size:21px!important}
 </style>
 </head>
 <body>
