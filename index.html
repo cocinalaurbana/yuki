@@ -627,7 +627,7 @@ summary{color:var(--tinta)!important}
   <div class="card inicio-despertar">
     <div class="card-title">Despertar suave</div>
     <p class="routine-intro">Para abrir el día sin levantarte de golpe.</p>
-    <a class="video-item" href="https://www.youtube.com/watch?v=NZUba83gbEo" target="_blank" rel="noopener"><span class="video-symbol">◌</span><span><strong>Despertar suave · 7 min</strong><small>Vídeo guiado</small></span><b>↗</b></a>
+    <a class="video-item" href="https://youtu.be/ANFB6yu0HIE?si=3zVwRuGi9g6Pdkm8" target="_blank" rel="noopener"><span class="video-symbol">◌</span><span><strong>Despertar suave · 7 min</strong><small>Vídeo guiado</small></span><b>↗</b></a>
   </div>
 
   <div id="check-form">
@@ -1006,7 +1006,7 @@ summary{color:var(--tinta)!important}
     <p class="routine-intro">Una práctica mínima. No buscamos rendimiento: buscamos continuidad.</p>
     <div class="routine-block"><span class="routine-time">AL DESPERTAR · 6 min</span>
       <label><input type="checkbox" data-rutina="cama" onchange="toggleRutina(this)"> Estiramientos suaves en cama · respirar y desperezar</label>
-      <a class="routine-video-link" href="https://www.youtube.com/watch?v=NZUba83gbEo" target="_blank" rel="noopener">Ver estiramientos ↗</a>
+      <a class="routine-video-link" href="https://youtu.be/ANFB6yu0HIE?si=3zVwRuGi9g6Pdkm8" target="_blank" rel="noopener">Ver estiramientos ↗</a>
       <label><input type="checkbox" data-rutina="meditacion-despertar" onchange="toggleRutina(this)"> Meditación en cama · despertar despacio</label>
       <a class="routine-video-link" id="meditacion-despertar-link" href="https://www.youtube.com/watch?v=UBhfSvSSThg" target="_blank" rel="noopener">Ver meditación de hoy ↗</a>
       <label><input type="checkbox" data-rutina="tapping" onchange="toggleRutina(this)"> Tapping breve · cara, clavículas, brazos y pecho</label>
@@ -2695,38 +2695,6 @@ function renderCocina() {
       ],
       adaptacion: 'Con la máquina de La Urbana, hacer primero una prueba con un trozo pequeño para comprobar cuánto comprime la sandía y cómo responde el horno. Si no hay máquina, usar una bolsa zip resistente sacando el aire por inmersión parcial o un recipiente pequeño bien tapado. Todo debe estar muy frío y, si la máquina es de campana, mejor para trabajar con marinadas.',
       punto: 'La clave es quitar agua sin aplastar: el resultado debe quedar denso y carnoso, no como fruta cruda. El dashi debe ser ligero, salino y fresco; el jengibre debe aparecer al final.'
-    });
-    guardar('recetas_prueba', recetasPrueba);
-  }
-  const glaceVegetalId = 'glace-vegetal-mediterranea-20260824';
-  if (!recetasPrueba.some(r => r.slug === glaceVegetalId)) {
-    recetasPrueba.unshift({
-      id: glaceVegetalId,
-      slug: glaceVegetalId,
-      nombre: 'Glace vegetal mediterránea · base madre para tomate y salmorreta',
-      estado: 'Para probar',
-      meta: 'Sin horno · fondo vegetal + reducción · receta base versátil',
-      descripcion: 'Una base vegetal profunda pero limpia: primero fondo oscuro, después dos reducciones posibles. La idea es poder llevarla hacia una salsa de tomate intensa, una salmorreta o un arroz vegetal sin que todo sepa a seta ni a caldo oscuro.',
-      ingredientes: [
-        '500 g de cebolla', '300 g de puerro', '250 g de zanahoria', '150 g de apio',
-        '250–300 g de champiñones o tallos de setas', '1 cabeza de ajo partida',
-        '150 g de tomate maduro o triturado', '50–60 g de concentrado de tomate',
-        '3 cucharadas de aceite de oliva', '4 litros de agua fría',
-        '1 hoja de laurel', 'tomillo', 'tallos de perejil', '6–8 granos de pimienta negra',
-        'Opcional: 10 g de kombu o 10–15 g de setas secas'
-      ],
-      pasos: [
-        'Cortar las verduras en trozos irregulares.',
-        'Dorar cebolla, puerro, zanahoria, apio, ajo y setas en una olla ancha durante 30–40 minutos, sin quemarlas.',
-        'Añadir el concentrado de tomate y cocinar 4–5 minutos. Incorporar el tomate y reducir 8–10 minutos.',
-        'Cubrir con el agua fría, raspar el fondo y añadir los aromáticos. Retirar el kombu a los 20–25 minutos si se utiliza.',
-        'Cocer a fuego muy suave durante 1,5–2 horas.',
-        'Colar sin apretar demasiado las verduras y reservar el fondo sin sal o con muy poca sal.',
-        'Reducir una parte hasta obtener un fondo concentrado de unos 750 ml y otra hasta 250–300 ml para una glace intensa.',
-        'Enfriar rápidamente, guardar en recipientes pequeños y etiquetar fecha y concentración.'
-      ],
-      adaptacion: 'Para tomate: probar 1–2 cucharaditas de glace por cada 500 g de tomate, cuando ya esté reducido. Para salmorreta: usar el fondo ligero para ajustar textura y profundidad. Para arroz vegetal: elegir el fondo ligero y reservar la glace oscura para corregir al final.',
-      punto: 'Debe aportar profundidad, no tapar el ingrediente principal. Registrar color, dulzor, acidez, intensidad de setas, textura en frío y rendimiento final. No añadir sal definitiva hasta saber para qué preparación se utiliza.'
     });
     guardar('recetas_prueba', recetasPrueba);
   }
