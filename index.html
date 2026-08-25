@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Yuki">
-<link rel="manifest" href="manifest-v50.json">
+<link rel="manifest" href="manifest-v51.json">
 <title>Yuki</title>
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 <link rel="apple-touch-icon" href="icon-192.png">
@@ -654,6 +654,18 @@ label{font-size:17px}
 .inner-book-controls button:disabled{opacity:.35;cursor:default}
 .inner-book-controls span{font-size:14px;color:var(--suave);font-weight:600}
 .inner-book-hidden{display:none!important}
+
+/* HOBBIES · gestión, ejecución y propuestas */
+.hobby-lead{font-size:17px!important;color:var(--suave);line-height:1.5;margin:-5px 0 16px}
+.hobby-row{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr) auto;gap:10px;align-items:center;padding:13px 0;border-top:1px solid var(--linea)}
+.hobby-row strong{font-size:17px}.hobby-row small{display:block;font-size:15px;color:var(--suave);margin-top:3px}
+.hobby-row button{font:inherit;font-size:15px;padding:7px 10px;border:1px solid var(--linea);background:transparent;border-radius:4px;cursor:pointer;color:var(--tinta)}
+.hobby-add{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}.hobby-add input{flex:1 1 220px;min-width:0}
+.hobby-exec-row{display:flex;align-items:flex-start;gap:10px;padding:12px 0;border-top:1px solid var(--linea);font-size:17px}
+.hobby-exec-row input{width:20px;height:20px;flex:none;margin-top:2px;accent-color:var(--musgo)}
+.hobby-proposal-row{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;padding:12px 0;border-top:1px solid var(--linea);font-size:17px}
+.hobby-proposal-row button{border:0;background:none;color:var(--arcilla);font:inherit;font-size:15px;cursor:pointer}
+@media(max-width:600px){.hobby-row{grid-template-columns:1fr}.hobby-row button{justify-self:start}}
 </style>
 </head>
 <body>
@@ -697,6 +709,7 @@ label{font-size:17px}
   </div>
   <div class="nav-group"><div class="nav-label">CREAR</div>
     <button onclick="tab('tareas',this)">Tareas</button>
+    <button onclick="tab('hobbies',this)">Hobbies</button>
   </div>
 </nav>
 
@@ -1324,6 +1337,36 @@ label{font-size:17px}
   </div>
 </div>
 
+<!-- TAB HOBBIES -->
+<div id="tab-hobbies" class="tab">
+  <div class="card hobby-management">
+    <div class="card-title">🎨 Gestión de hobbies</div>
+    <p class="hobby-lead">Lo que quieres cuidar con continuidad, sin convertirlo en una obligación.</p>
+    <div id="hobbies-activos"></div>
+    <div class="hobby-add">
+      <input type="text" id="hobby-nombre" placeholder="Nuevo hobby o interés">
+      <input type="text" id="hobby-paso" placeholder="Siguiente paso pequeño">
+      <button class="btn btn-primary btn-sm" onclick="addHobby()">Añadir</button>
+    </div>
+  </div>
+  <div class="card hobby-execution">
+    <div class="card-title">▶ Ejecución · elegir una cosa</div>
+    <p class="hobby-lead">Hoy no tienes que avanzar en todos. Elige uno y dale entre 10 y 30 minutos.</p>
+    <div id="hobbies-ejecucion"></div>
+    <textarea id="hobby-nota" rows="3" placeholder="Qué he hecho, qué he descubierto o qué me apetece continuar..."></textarea>
+    <button class="btn btn-primary btn-sm" onclick="saveHobbyExecution()">Guardar sesión</button>
+  </div>
+  <div class="card hobby-proposals">
+    <div class="card-title">＋ Propuestas · algún día</div>
+    <p class="hobby-lead">Ideas que pueden esperar. Guardarlas no significa comprometerte.</p>
+    <div class="hobby-add">
+      <input type="text" id="hobby-propuesta" placeholder="Una idea, curso, libro, película o proyecto">
+      <button class="btn btn-outline btn-sm" onclick="addHobbyProposal()">Guardar propuesta</button>
+    </div>
+    <div id="hobbies-propuestas"></div>
+  </div>
+</div>
+
 <!-- TAB COCINA -->
 <div id="tab-cocina" class="tab">
   <div class="card">
@@ -1519,6 +1562,7 @@ function tab(id, btn) {
   if(id === 'tareas') renderTareas();
   if(id === 'cocina') renderCocina();
   if(id === 'casa') renderCasa();
+  if(id === 'hobbies') renderHobbies();
   if(id !== 'check') prepareTabBook(id);
 }
 
@@ -3017,7 +3061,7 @@ function bookMove(direction) {
 function bookCloseDay() {
   const check = document.getElementById('book-cierre-listo');
   if (check && !check.checked) {
-    mostrarToast('Marca el cierre cuando hayas terminado de recoger el día.');
+    toast('Marca el cierre cuando hayas terminado de recoger el día.');
     return;
   }
   const button = Array.from(document.querySelectorAll('nav button')).find(b => b.textContent.trim() === 'Atardecer');
@@ -3036,7 +3080,9 @@ function prepareTabBook(id) {
   if (nodes.length < 3 && id !== 'salud') return;
 
   let groups = [];
-  if (id === 'salud') {
+  if (id === 'hobbies') {
+    groups = nodes.map(node => [node]);
+  } else if (id === 'salud') {
     const selectors = [
       ['.health-options-card', '.health-strategy-heading', '.movement-week'],
       ['.movement-plan'],
@@ -3123,6 +3169,58 @@ function moveTabBook(id, direction) {
   const next = Math.max(0, Math.min(total - 1, current + direction));
   showTabBook(id, next, total);
 }
+
+
+// ── HOBBIES ────────────────────────────────────────────
+const HOBBIES_BASE = [
+  {id:'fotografia', nombre:'Fotografía', paso:'Elegir una imagen y mirarla con calma'},
+  {id:'upcycling', nombre:'Upcycling textil', paso:'Escoger una prenda o material'},
+  {id:'domestika', nombre:'Domestika / manualidades', paso:'Retomar una lección corta'},
+  {id:'musica', nombre:'Música', paso:'Escuchar una propuesta sin saltar de una a otra'},
+  {id:'lectura-cine', nombre:'Lectura y cine', paso:'Elegir un libro, película o serie'}
+];
+function getHobbies() { return cargar('hobbies', HOBBIES_BASE); }
+function renderHobbies() {
+  const activos = getHobbies();
+  const lista = document.getElementById('hobbies-activos');
+  const ejec = document.getElementById('hobbies-ejecucion');
+  const props = document.getElementById('hobbies-propuestas');
+  if (!lista || !ejec || !props) return;
+  lista.innerHTML = activos.map(h => `<div class="hobby-row"><div><strong>${h.nombre}</strong><small>Activo</small></div><div><small>Siguiente paso: ${h.paso}</small></div><button type="button" onclick="removeHobby('${h.id}')">Quitar</button></div>`).join('');
+  const hecho = cargar('hobbies_ejecucion_' + hoyStr(), []);
+  ejec.innerHTML = activos.map(h => `<label class="hobby-exec-row"><input type="checkbox" data-hobby-exec="${h.id}" ${hecho.includes(h.id)?'checked':''}><span><strong>${h.nombre}</strong><br><small>${h.paso} · 10–30 min</small></span></label>`).join('');
+  const propuestas = cargar('hobby_propuestas', []);
+  props.innerHTML = propuestas.length ? propuestas.map((x,i) => `<div class="hobby-proposal-row"><span>${x}</span><button type="button" onclick="removeHobbyProposal(${i})">Quitar</button></div>`).join('') : '<p class="book-note">Todavía no hay propuestas guardadas.</p>';
+}
+function addHobby() {
+  const nombre = document.getElementById('hobby-nombre').value.trim();
+  const paso = document.getElementById('hobby-paso').value.trim() || 'Dar un paso pequeño';
+  if (!nombre) return;
+  const hobbies = getHobbies();
+  hobbies.push({id:'hobby-' + Date.now(), nombre, paso});
+  guardar('hobbies', hobbies);
+  document.getElementById('hobby-nombre').value = '';
+  document.getElementById('hobby-paso').value = '';
+  renderHobbies();
+}
+function removeHobby(id) { guardar('hobbies', getHobbies().filter(h => h.id !== id)); renderHobbies(); }
+function saveHobbyExecution() {
+  const hechos = [...document.querySelectorAll('[data-hobby-exec]:checked')].map(x => x.dataset.hobbyExec);
+  guardar('hobbies_ejecucion_' + hoyStr(), hechos);
+  guardar('hobby_nota_' + hoyStr(), document.getElementById('hobby-nota').value.trim());
+  toast('Sesión de hobby guardada');
+}
+function addHobbyProposal() {
+  const input = document.getElementById('hobby-propuesta');
+  const value = input.value.trim();
+  if (!value) return;
+  const propuestas = cargar('hobby_propuestas', []);
+  propuestas.push(value);
+  guardar('hobby_propuestas', propuestas);
+  input.value = '';
+  renderHobbies();
+}
+function removeHobbyProposal(i) { const p = cargar('hobby_propuestas', []); p.splice(i,1); guardar('hobby_propuestas',p); renderHobbies(); }
 
 // ── SERVICE WORKER (PWA offline) ──────────────────────
 if ('serviceWorker' in navigator) {
