@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Yuki">
-<link rel="manifest" href="manifest-v47.json">
+<link rel="manifest" href="manifest-v48.json">
 <title>Yuki</title>
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 <link rel="apple-touch-icon" href="icon-192.png">
@@ -3020,10 +3020,10 @@ function prepareTabBook(id) {
   let groups = [];
   if (id === 'salud') {
     const selectors = [
+      ['.health-options-card', '.health-strategy-heading', '.movement-week'],
+      ['.movement-plan'],
       ['.movement-routine', '.practice-videos', '.health-meditation-choice'],
-      ['.movement-week', '.movement-plan'],
-      ['.health-data-row', '.health-save', '.health-history-title', '.health-history'],
-      ['.health-options-card']
+      ['.health-data-row', '.health-save', '.health-history-title', '.health-history']
     ];
     groups = selectors.map(list => nodes.filter(n => list.some(sel => n.matches(sel)))).filter(g => g.length);
     const used = groups.flat();
