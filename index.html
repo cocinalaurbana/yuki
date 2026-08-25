@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Yuki">
-<link rel="manifest" href="manifest-v42.json">
+<link rel="manifest" href="manifest-v43.json">
 <title>Yuki</title>
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 <link rel="apple-touch-icon" href="icon-192.png">
@@ -593,6 +593,21 @@ label{font-size:17px}
 .today-choice-grid a,.today-choice-grid label{font-size:15px}
 .today-choice-grid strong{font-size:15px}
 .today-choice-grid small{font-size:13px}
+
+/* Controles de lectura cómoda: ocupan todo el ancho disponible */
+.registro-label{font-size:21px}
+.registro-row .emoji-row{display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px!important;width:100%}
+.registro-row .emoji-btn{width:100%!important;min-width:0!important;flex:1 1 0!important;min-height:66px!important;padding:13px 6px!important;font-size:16px!important;line-height:1.2}
+.escala{display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px!important;width:100%}
+.escala .esc-btn{width:100%!important;min-width:0!important;padding:14px 6px!important;font-size:16px!important;line-height:1.2}
+@media(max-width:520px){
+  .registro-row .emoji-row,.escala{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+}
+/* En horizontal: cuaderno abierto, con dos páginas de lectura */
+@media(min-width:700px) and (orientation:landscape){
+  .tab.active#tab-check{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;align-items:start}
+  #tab-check>.today-hero,#tab-check>.inicio-despertar,#tab-check>#check-form,#tab-check>.sec-title,#tab-check>#check-historial{grid-column:1/-1}
+}
 </style>
 </head>
 <body>
