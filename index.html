@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Yuki">
-<link rel="manifest" href="manifest-v52.json">
+<link rel="manifest" href="manifest-v53.json">
 <title>Yuki</title>
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 <link rel="apple-touch-icon" href="icon-192.png">
@@ -659,6 +659,13 @@ label{font-size:17px}
 .hobby-proposal-row{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;padding:12px 0;border-top:1px solid var(--linea);font-size:17px}
 .hobby-proposal-row button{border:0;background:none;color:var(--arcilla);font:inherit;font-size:15px;cursor:pointer}
 @media(max-width:600px){.hobby-row{grid-template-columns:1fr}.hobby-row button{justify-self:start}}
+
+/* Salud · la página de práctica se abre como cuadrícula cuando hay ancho */
+@media(min-width:560px){
+  #tab-salud>.movement-routine{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px!important}
+  #tab-salud>.movement-routine>.card-title,#tab-salud>.movement-routine>.routine-intro,#tab-salud>.movement-routine>.routine-note{grid-column:1/-1}
+  #tab-salud>.movement-routine .routine-block{border:1px solid var(--linea)!important;padding:14px!important;min-width:0}
+}
 </style>
 </head>
 <body>
@@ -3091,7 +3098,6 @@ function prepareTabBook(id) {
   if (id === 'check') return;
   const tabEl = document.getElementById('tab-' + id);
   if (!tabEl || tabEl.querySelector('.tab-book-controls')) return;
-  if (id === 'salud') splitHealthRoutine(tabEl);
   const nodes = Array.from(tabEl.children).filter(n => !n.classList.contains('tab-book-controls'));
   if (nodes.length < 3 && id !== 'salud') return;
 
@@ -3101,7 +3107,7 @@ function prepareTabBook(id) {
   } else if (id === 'salud') {
     groups.push(nodes.filter(n => n.matches('.health-options-card, .health-strategy-heading, .movement-week')));
     groups.push(nodes.filter(n => n.matches('.movement-plan')));
-    nodes.filter(n => n.matches('.health-book-routine')).forEach(n => groups.push([n]));
+    groups.push(nodes.filter(n => n.matches('.movement-routine')));
     groups.push(nodes.filter(n => n.matches('.health-meditation-choice, .health-data-row, .health-save, .health-history-title, .health-history')));
     const used = groups.flat();
     const rest = nodes.filter(n => !used.includes(n));
