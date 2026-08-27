@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Yuki">
-<link rel="manifest" href="manifest-v55.json">
+<link rel="manifest" href="manifest-v56.json">
 <title>Yuki</title>
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 <link rel="apple-touch-icon" href="icon-192.png">
@@ -2861,6 +2861,18 @@ function renderCocina() {
     });
     guardar('recetas_prueba', recetasPrueba);
   }
+  if (!recetasPrueba.some(r => r.slug === 'pepinos-crujientes-asiaticos')) {
+    recetasPrueba.unshift({
+      id: 'pepinos-crujientes-asiaticos', slug: 'pepinos-crujientes-asiaticos',
+      nombre: 'Pepinos crujientes al estilo asiático', estado: 'Para probar',
+      enlace: 'https://www.instagram.com/reel/DcY4BajtpNp/?igsi=MTBmZDBsZnozOXZmNw==',
+      meta: '5 min aprox. · receta para probar en casa',
+      descripcion: 'Pepino crujiente, fresco y ligeramente picante. El vídeo indica ajo, chile, sésamo y cacahuete, con aceite muy caliente vertido por encima. Las cantidades exactas quedan pendientes de consultar en la receta original.',
+      ingredientes: ['Pepino', 'Ajo', 'Chile o guindilla', 'Sésamo', 'Cacahuete', 'Aceite caliente'],
+      pasos: ['Preparar el pepino para que quede crujiente; en los comentarios del vídeo se recomienda romperlo en lugar de cortarlo.', 'Disponer ajo, chile, sésamo y cacahuete sobre el pepino.', 'Verter el aceite muy caliente para despertar los aromas y mezclar.', 'Probar y ajustar el punto picante siguiendo el vídeo original; no se fijan cantidades hasta tener la receta detallada.']
+    });
+    guardar('recetas_prueba', recetasPrueba);
+  }
   const temporada = informacionTemporada();
   const recetasPruebaHtml = recetasPrueba.map(r => `
     <article class='trial-recipe'>
@@ -2891,6 +2903,34 @@ function renderCocina() {
     });
     guardar('recetas_propias', recetas);
   }
+  // Recetas domésticas de Lore: se guardan una sola vez en Yuki, sin mezclar con La Urbana.
+  const recetasCasaYuki = [
+    {
+      id: 'judias-lorelo', slug: 'judias-lorelo',
+      nombre: 'Judías verdes crujientes a la Lorelo',
+      descripcion: 'Judías verdes con ajo, panceta o guanciale, cachelo, huevo, limón y almendras tostadas.',
+      raciones: '2', tiempo: '45 min aprox.',
+      ingredientes: ['400 g de judías verdes', '100–120 g de panceta ibérica o guanciale, no ahumado', 'Cachelos o patatas', '1 diente de ajo', 'Guindilla cayena opcional', '2 huevos', 'Almendras tostadas', 'Limón', 'Aceite de oliva y sal'],
+      pasos: ['Pon la panceta en trocitos en una sartén fría y deja que se haga despacio hasta quedar crujiente. Reserva parte de su grasa.', 'Escalda las judías unos 3 minutos en agua hirviendo, enfríalas en agua con hielo y escúrrelas muy bien.', 'Cuece los cachelos hasta que estén tiernos y dóralos después en la grasa de la panceta.', 'Aromatiza brevemente la grasa con el ajo y, si te apetece, una pizca de cayena. Saltea las judías en wok a fuego fuerte; reincorpora la panceta al final.', 'Sirve con huevo frito o a la plancha, almendras tostadas y unas gotas de limón.'],
+      punto: 'La versión real de Lore lleva almendras tostadas. La cayena queda opcional hasta confirmar si formaba parte de la receta original.',
+      etiquetas: ['casa', 'judías', 'en prueba']
+    },
+    {
+      id: 'repollo-tostado-caldo-kimchi', slug: 'repollo-tostado-caldo-kimchi',
+      nombre: 'Repollo tostado con garbanzos, patata y chorizo',
+      descripcion: 'Versión desmontada y casera del caldo de repollo: repollo marcado y terminado al horno, patata fina, garbanzos y chorizo jugoso.',
+      raciones: '2', tiempo: '60–65 min aprox.',
+      ingredientes: ['Repollo', 'Garbanzos cocidos', 'Patatas en rodajas de unos 5 mm', 'Chorizo ahumado', 'Hueso de jamón', 'Un poco de unto ibérico', 'Ajo', 'Kimchi', 'Una pizca de cayena o guindilla opcional', 'Limón o vinagre solo si hace falta', 'Aceite y sal'],
+      pasos: ['Prepara un caldo con agua, hueso de jamón y un poco de unto. Incorpora el chorizo durante los últimos 12–15 minutos para que quede jugoso y sírvelo en rodajas.', 'Marca los gajos de repollo en sartén y termina de asarlos en el horno hasta que tengan los bordes tostados y el centro tierno.', 'Cuece las rodajas finas de patata 5–7 minutos en mitad caldo y mitad agua; después dóralas.', 'Calienta los garbanzos y prepara un jugo aparte con la reducción del repollo y ajo. Añade una pizca mínima de cayena o guindilla.', 'Retira el jugo del fuego y empieza con media cucharadita de kimchi. Prueba antes de incorporarlo a todo; añade limón o vinagre solo si le falta acidez.'],
+      punto: 'Receta de hoy en fase de prueba. El chorizo debe quedar cocido, jugoso y en rodajas; no crujiente.',
+      etiquetas: ['casa', 'repollo', 'en prueba']
+    }
+  ];
+  let recetasCasaNuevas = false;
+  recetasCasaYuki.forEach(receta => {
+    if (!recetas.some(r => r.slug === receta.slug)) { recetas.push(receta); recetasCasaNuevas = true; }
+  });
+  if (recetasCasaNuevas) guardar('recetas_propias', recetas);
   let html = `
     <div class='card'>
       <div class='card-title'>Alimentación</div>
