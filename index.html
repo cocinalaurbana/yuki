@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Yuki">
-<link rel="manifest" href="manifest-v56.json">
+<link rel="manifest" href="manifest-v57.json">
 <title>Yuki</title>
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 <link rel="apple-touch-icon" href="icon-192.png">
@@ -2926,8 +2926,352 @@ function renderCocina() {
       etiquetas: ['casa', 'repollo', 'en prueba']
     }
   ];
+  const recetasDrivePendientes = [
+  {
+    "id": "brownie-72-naranja-chili",
+    "slug": "brownie-72-naranja-chili",
+    "nombre": "Brownie 72% de naranja y chili",
+    "descripcion": "Brownie de chocolate negro con naranja, una puntita de chili y nueces. Receta ya probada y consolidada.",
+    "raciones": "",
+    "tiempo": "20 min de horno + reposo",
+    "ingredientes": [
+      "200 g de chocolate negro 72%",
+      "150 g de mantequilla",
+      "200 g de azúcar",
+      "3 huevos",
+      "100 g de harina de trigo",
+      "80–100 g de nueces picadas a mano",
+      "Ralladura de 1 naranja",
+      "1 cucharadita de vainilla",
+      "Una puntita de chili powder",
+      "Una pizca de sal"
+    ],
+    "pasos": [
+      "Funde el chocolate con la mantequilla y la ralladura de naranja. En Mambo: 4–6 min, 45 °C, velocidad 2, hasta que quede brillante.",
+      "Añade azúcar, huevos, vainilla y chili; mezcla 2 min a velocidad 4.",
+      "Añade harina y sal; mezcla 30 segundos a velocidad 4.",
+      "Incorpora las nueces con la espátula y movimientos envolventes.",
+      "Vierte en un molde mediano con papel de horno y hornea a 180 °C, con el horno precalentado, durante 20 minutos exactos.",
+      "Deja reposar. El palillo debe salir con migas húmedas, nunca seco ni líquido."
+    ],
+    "punto": "El chili debe ser una puntita muy pequeña: acompaña al chocolate, no lo domina.",
+    "etiquetas": [
+      "casa",
+      "probada",
+      "dulce"
+    ]
+  },
+  {
+    "id": "tallarines-setas-repollo",
+    "slug": "tallarines-setas-repollo",
+    "nombre": "Tallarines con setas, repollo y toque crujiente",
+    "descripcion": "Pasta larga con mezcla de setas, repollo, puerro, cebolla roja, salsa y cebolla frita crujiente.",
+    "raciones": "2",
+    "tiempo": "20–25 min",
+    "ingredientes": [
+      "180 g de tallarines",
+      "Mezcla de portobello, ostra y shiitake",
+      "½ puerro",
+      "½ cebolla roja",
+      "Un puñado de repollo en juliana",
+      "2 dientes de ajo",
+      "5–6 cucharadas de salsa Biberón",
+      "½ vaso de agua de cocción",
+      "Cebolla frita crujiente",
+      "Sésamo negro",
+      "Aceite de girasol"
+    ],
+    "pasos": [
+      "Lamina las setas, corta puerro, cebolla y repollo, y pica el ajo.",
+      "Cuece los tallarines 8 minutos, dos menos de lo indicado. Reserva una taza de agua.",
+      "Calienta el wok con aceite. Dora las setas a fuego fuerte 6–7 minutos sin moverlas al principio.",
+      "Añade puerro y cebolla. Después, ajo y repollo solo durante 1 minuto.",
+      "Incorpora la pasta, la salsa y el agua de cocción. Remueve a fuego máximo hasta que brille.",
+      "Termina con cebolla frita y sésamo negro. El picante puede ser sambal o gochujang, al gusto."
+    ],
+    "punto": "El repollo debe conservar algo de textura.",
+    "etiquetas": [
+      "casa",
+      "pasta",
+      "setas"
+    ]
+  },
+  {
+    "id": "encurtido-casero",
+    "slug": "encurtido-casero",
+    "nombre": "Encurtido casero",
+    "descripcion": "Base de encurtido aromática para los vegetales que tengas en casa.",
+    "raciones": "",
+    "tiempo": "24–72 h de reposo",
+    "ingredientes": [
+      "1 l de vinagre blanco",
+      "500 ml de agua",
+      "60 g de azúcar",
+      "25 g de sal sin yodo",
+      "2 ramas de canela",
+      "3 estrellas de anís",
+      "15 g de semillas de mostaza",
+      "8 g de pimienta negra",
+      "Vegetales al gusto"
+    ],
+    "pasos": [
+      "Lava y corta los vegetales.",
+      "Hierve suavemente el vinagre, agua, azúcar, sal y especias durante 3–5 minutos.",
+      "Coloca los vegetales en frascos esterilizados.",
+      "Cubre completamente con el líquido caliente y cierra.",
+      "Deja enfriar y refrigera al menos 24 horas; mejora a las 48–72 horas."
+    ],
+    "punto": "Dura 3–4 semanas refrigerado y bien conservado.",
+    "etiquetas": [
+      "casa",
+      "conserva"
+    ]
+  },
+  {
+    "id": "ensalada-fresa-bufala",
+    "slug": "ensalada-fresa-bufala",
+    "nombre": "Ensalada de fresa, búfala y aguacate",
+    "descripcion": "Ensalada de espinacas, fresa, aguacate, mozzarella de búfala, nueces, sésamo y vinagreta rosa.",
+    "raciones": "",
+    "tiempo": "20 min",
+    "ingredientes": [
+      "Espinacas baby",
+      "Fresas laminadas",
+      "1 aguacate",
+      "1 bola de mozzarella de búfala",
+      "5 nueces",
+      "Sésamo negro",
+      "Albahaca fresca",
+      "2 partes de puré de fresa",
+      "5 partes de AOVE",
+      "1 parte de vinagre de arroz",
+      "Miel, sal y pimienta"
+    ],
+    "pasos": [
+      "Tritura las fresas y mézclalas con aceite, vinagre, miel, sal y pimienta.",
+      "Lamina el aguacate y píntalo con una gota de vinagre o aliño.",
+      "Monta las espinacas con fresa y aguacate formando una rueda.",
+      "Coloca la mozzarella en el centro y ábrela con las manos.",
+      "Termina con nueces, sésamo, albahaca y la vinagreta rosa."
+    ],
+    "punto": "La vinagreta se agita justo antes de servir.",
+    "etiquetas": [
+      "casa",
+      "ensalada"
+    ]
+  },
+  {
+    "id": "pollo-pepino-umami",
+    "slug": "pollo-pepino-umami",
+    "nombre": "Pollo marinado con jengibre y ensalada de pepino umami",
+    "descripcion": "Pollo marinado con soja, miel, jengibre y ajo, acompañado de pepino machacado, cebolla roja y sésamo.",
+    "raciones": "",
+    "tiempo": "1 h rápida o 24 h ideal de marinado",
+    "ingredientes": [
+      "Pollo, contramuslos o pechuga",
+      "2 cucharadas de salsa de soja",
+      "1 cucharada de AOVE",
+      "1 cucharadita de miel",
+      "Jengibre y ajo",
+      "Perejil seco y una pizca de shiitake en polvo",
+      "1 pepino pequeño",
+      "½ cebolla roja",
+      "Sésamo tostado",
+      "2 cucharadas de vinagre de arroz",
+      "1 cucharadita de mostaza antigua",
+      "½ cucharadita de miel"
+    ],
+    "pasos": [
+      "Mezcla soja, aceite, miel, jengibre, ajo, perejil y shiitake. Añade el pollo y masajea.",
+      "Marina en frío, idealmente 24 horas.",
+      "Cocina en sartén muy caliente para sellar y caramelizar; después baja a fuego medio.",
+      "Machaca el pepino con el plano del cuchillo y córtalo en trozos irregulares.",
+      "Escúrrelo con sal 15–20 minutos. Desflema la cebolla en agua helada.",
+      "Emulsiona vinagre, mostaza, miel y aceite; mezcla con pepino, cebolla y sésamo justo antes de servir."
+    ],
+    "punto": "No añadir soja a la ensalada: su frescura equilibra la intensidad del pollo.",
+    "etiquetas": [
+      "casa",
+      "pollo",
+      "pepino"
+    ]
+  },
+  {
+    "id": "alubias-fondo-profundo",
+    "slug": "alubias-fondo-profundo",
+    "nombre": "Alubias blancas de fondo profundo",
+    "descripcion": "Guiso caldoso de alubias con calabaza, repollo, brócoli, shiitake y doenjang.",
+    "raciones": "4–5",
+    "tiempo": "45 min + reposo",
+    "ingredientes": [
+      "800 g de alubias cocidas",
+      "1 cebolla",
+      "1 puerro",
+      "1 zanahoria",
+      "3 dientes de ajo",
+      "1 taza de calabaza",
+      "2 tazas de repollo",
+      "2 tazas de brócoli",
+      "1 tomate",
+      "1 cucharada de tomate concentrado",
+      "1 cucharada de carne de pimiento choricero",
+      "3 g de shiitake en polvo",
+      "¼ cucharadita de doenjang",
+      "1 cucharadita de pimentón dulce",
+      "1 hoja de laurel",
+      "500 ml de caldo vegetal",
+      "AOVE y sal"
+    ],
+    "pasos": [
+      "Prepara el caldo y corta las verduras.",
+      "Sofríe cebolla y puerro a nivel 2 durante 7 minutos.",
+      "Añade zanahoria, calabaza y tronco de brócoli; cocina 5 minutos. Incorpora repollo y ajo.",
+      "Añade tomate, concentrado y choricero; cocina 3–4 minutos.",
+      "Disuelve el doenjang en caldo. Añade pimentón, alubias, laurel, caldo y shiitake.",
+      "Cuece a nivel 1,5 unos 7 minutos. Añade los ramilletes de brócoli y cocina 8 minutos más. Reposa 10 minutos."
+    ],
+    "punto": "El brócoli debe quedar verde y tierno; prueba la sal al final.",
+    "etiquetas": [
+      "casa",
+      "legumbres",
+      "guiso"
+    ]
+  },
+  {
+    "id": "bolonesa-soja-lorena",
+    "slug": "bolonesa-soja-lorena",
+    "nombre": "Boloñesa de soja texturizada de Lorena",
+    "descripcion": "Boloñesa vegetal con vino tinto, tomate y soja texturizada.",
+    "raciones": "",
+    "tiempo": "30 min",
+    "ingredientes": [
+      "1 cebolla",
+      "½ rama de apio opcional",
+      "1 puerro",
+      "1 zanahoria grande",
+      "150 g de soja texturizada fina",
+      "1 cucharada de tamari o soja",
+      "200 ml de vino tinto",
+      "5 cucharadas de tomate concentrado",
+      "750 ml de caldo o agua",
+      "Orégano, ajo en polvo, pimentón agridulce, pimienta y sal",
+      "AOVE"
+    ],
+    "pasos": [
+      "Sofríe cebolla, puerro y zanahoria 5–6 minutos.",
+      "Añade ajo, soja texturizada y tamari; sofríe 2 minutos.",
+      "Incorpora el pimentón y remueve rápido.",
+      "Añade el vino y deja evaporar 2–3 minutos.",
+      "Agrega el concentrado mezclado con el caldo, orégano, sal y pimienta.",
+      "Cocina a fuego medio 10–15 minutos hasta que espese."
+    ],
+    "punto": "Va especialmente bien con arroz, macarrones, lasaña o patata.",
+    "etiquetas": [
+      "casa",
+      "vegetal",
+      "soja"
+    ]
+  },
+  {
+    "id": "tofu-marinado",
+    "slug": "tofu-marinado",
+    "nombre": "Tofu marinado",
+    "descripcion": "Tofu firme dorado con una salsa de soja, vinagre, sirope de arce, ajo y cayena opcional.",
+    "raciones": "",
+    "tiempo": "30 min",
+    "ingredientes": [
+      "340 g de tofu firme",
+      "60 ml de agua",
+      "2 cucharadas de salsa de soja",
+      "1 cucharada de vinagre de manzana",
+      "1 cucharada de sirope de arce",
+      "1 cucharadita de ajo en polvo",
+      "⅛ cucharadita de cayena opcional",
+      "1 cucharadita de maicena",
+      "1 cucharada de aceite de oliva"
+    ],
+    "pasos": [
+      "Corta el tofu en cubos.",
+      "Mezcla agua, soja, vinagre, sirope, ajo y cayena. Marina 15 minutos o más.",
+      "Cuela el tofu y reserva el marinado.",
+      "Dora el tofu en sartén con aceite.",
+      "Disuelve la maicena en el marinado y añádelo. Cocina hasta espesar.",
+      "Acompaña con arroz, ensalada o verduras asadas."
+    ],
+    "punto": "La cayena es opcional.",
+    "etiquetas": [
+      "casa",
+      "vegetal",
+      "tofu"
+    ]
+  },
+  {
+    "id": "salsa-tomate-mambo",
+    "slug": "salsa-tomate-mambo",
+    "nombre": "Salsa de tomate casera en Mambo",
+    "descripcion": "Salsa de tomate suave y versátil para pasta, guisos y bases de platos.",
+    "raciones": "",
+    "tiempo": "45 min",
+    "ingredientes": [
+      "800 g de tomate triturado",
+      "1 cebolla",
+      "2 dientes de ajo",
+      "50 ml de AOVE",
+      "1 cucharadita de sal",
+      "1 cucharadita de azúcar opcional",
+      "Albahaca u orégano",
+      "½ zanahoria opcional"
+    ],
+    "pasos": [
+      "Pica cebolla y ajos en Mambo: velocidad 6, 10 segundos.",
+      "Añade aceite y programa velocidad 1, 120 °C, 5 minutos, potencia calorífica 6.",
+      "Añade tomate, sal, azúcar, especias y zanahoria. Programa velocidad 2, 100 °C, 35 minutos, potencia 6, sin cubilete y con el cestillo como tapa.",
+      "Tritura si quieres una textura fina: velocidad 6–8 durante 30 segundos."
+    ],
+    "punto": "El azúcar es opcional: úsalo solo si el tomate resulta ácido.",
+    "etiquetas": [
+      "casa",
+      "base"
+    ]
+  },
+  {
+    "id": "sopa-kimchi-garbanzos",
+    "slug": "sopa-kimchi-garbanzos",
+    "nombre": "Sopa de verduras con kimchi y garbanzos",
+    "descripcion": "Sopa intensa con puerro, zanahoria, repollo, brécol, judías verdes, kimchi y garbanzos.",
+    "raciones": "",
+    "tiempo": "35–45 min",
+    "ingredientes": [
+      "2 puerros",
+      "1 zanahoria grande o 3 pequeñas",
+      "Unas hojas de repollo",
+      "½ ramillete de brécol",
+      "1 cebolla roja",
+      "Un puñado de judías verdes",
+      "Cebolla y ajo en especias",
+      "Caldo de verduras",
+      "Salsa kimchi",
+      "1 cucharada de tomate concentrado",
+      "1 bote de garbanzos",
+      "Sal y pimienta"
+    ],
+    "pasos": [
+      "Sofríe cebolla, puerro y zanahoria 5–7 minutos a nivel 2.",
+      "Añade brécol, judías verdes y repollo; saltea un par de minutos.",
+      "Incorpora especias, tomate concentrado y salsa kimchi.",
+      "Cubre con caldo y cuece 15–20 minutos a nivel 2.",
+      "Añade los garbanzos y cocina 5–10 minutos más. Ajusta sal y pimienta."
+    ],
+    "punto": "Puedes terminar con aceite de sésamo o unas gotas de Lea Perrins.",
+    "etiquetas": [
+      "casa",
+      "sopa",
+      "kimchi"
+    ]
+  }
+];
   let recetasCasaNuevas = false;
-  recetasCasaYuki.forEach(receta => {
+  [...recetasCasaYuki, ...recetasDrivePendientes].forEach(receta => {
     if (!recetas.some(r => r.slug === receta.slug)) { recetas.push(receta); recetasCasaNuevas = true; }
   });
   if (recetasCasaNuevas) guardar('recetas_propias', recetas);
