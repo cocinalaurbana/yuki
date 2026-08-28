@@ -1831,8 +1831,9 @@ function propuestaCandidata(c) {
   const urgente = pendientes.find(t => t.categoria === 'urgente');
   const movementDone = c.practica.some(x => /paseo|caminar|power|yoga|pilates|tai|fascial|fuerza|cama|tapping|radio|meditaci/i.test(x));
   const propuestas = [];
+  const marcada = (lista, id) => lista.some(x => x === id || (x && x.id === id));
   const add = (id, title, reason, area, score, minutes=10) => {
-    if (!c.rechazadas.includes(id) && !c.hechas.some(x => x.id === id)) propuestas.push({id,title,reason,area,score,minutes});
+    if (!marcada(c.rechazadas, id) && !marcada(c.hechas, id)) propuestas.push({id,title,reason,area,score,minutes});
   };
   const pideAire = /despej|aire|salir|cuerpo|mover|ansiedad|tensión|tension/.test(necesidad) || /bajo|tenso|😔|😤/.test(humor);
   const pideCasa = /casa|orden|limpiar|recoger|despejar/.test(necesidad) || /casa|orden/.test(prioridades);
