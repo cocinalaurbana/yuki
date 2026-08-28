@@ -1827,6 +1827,11 @@ function propuestaCandidata(c) {
   const prioridades = sistemaTexto('prioridades');
   const practicasConfig = sistemaTexto('practicas') + ' ' + sistemaTexto('rutinas');
   const reglas = sistemaTexto('reglas');
+  const ayerFecha = fechaAnterior(c.fecha);
+  const ayerCheck = cargar('checks', {})[ayerFecha];
+  const ayerSalud = cargar('salud_' + ayerFecha, {});
+  const ayerRutina = cargar('rutina_movimiento_' + ayerFecha, {});
+  const ayerSeMovio = (ayerSalud.practicas || []).length > 0 || Object.values(ayerRutina).some(Boolean);
   const pendientes = c.tareas.filter(t => !t.hecha);
   const urgente = pendientes.find(t => t.categoria === 'urgente');
   const movementDone = c.practica.some(x => /paseo|caminar|power|yoga|pilates|tai|fascial|fuerza|cama|tapping|radio|meditaci/i.test(x));
@@ -1841,7 +1846,7 @@ function propuestaCandidata(c) {
   if (pideAire && !movementDone) add('caminar-10', 'Sal a caminar 10 minutos.', 'Necesitas despejarte y el primer paso puede ser corporal, sin exigirte rendimiento.', 'salud', 108, 10);
   if (urgente && e >= 3) add('tarea-' + urgente.id, `Haz una sola tarea urgente: «${urgente.texto}».`, 'Hay una tarea marcada como urgente; la propuesta es tocar solo esa y parar.', urgente.categoria === 'urbana' ? 'urbana' : 'tareas', 106, 10);
   if (pideCasa) add('casa-10', 'Ordena una zona pequeña durante 10 minutos.', 'Has señalado que necesitas espacio u orden. Solo una superficie, no toda la casa.', 'casa', 103, 10);
-  if (e >= 4 && mins >= 15 && !movementDone) add('power-start-15', 'Haz Power Start durante 15 minutos.', 'Hoy hay energía suficiente para una práctica breve y concreta; no hace falta convertirla en una sesión larga.', 'salud', 101, 15);
+  if (e >= 4 && mins >= 15 && !movementDone) add('power-start-15', 'Haz Power Start durante 15 minutos.', 'Hoy hay energía suficiente para una práctica breve y concreta; no hace falta convertirla en una sesión larga.', 'salud', 101 + (/movimiento|cuerpo|salud/.test(prioridades) ? 6 : 0), 15);
   if (pendientes.length && e >= 3) {
     const tarea = pendientes[0];
     add('tarea-' + tarea.id, `Haz una sola tarea: «${tarea.texto}».`, 'Hay algo pendiente y tu energía permite dar un paso pequeño, sin abrir más frentes.', tarea.categoria === 'urbana' ? 'urbana' : (tarea.categoria === 'casa' ? 'casa' : 'tareas'), 92, 10);
@@ -1877,6 +1882,12 @@ function yukiQueHago(abrirRegistro=false) {
     return;
   }
   const p = propuestaCandidata(c);
+  if (p && c.check && cargar('checks', {})[fechaAnterior(c.fecha)]) {
+    const ayer = cargar('checks', {})[fechaAnterior(c.fecha)];
+    const ayerSeMovio = (cargar('salud_' + fechaAnterior(c.fecha), {}).practicas || []).length > 0 || Object.values(cargar('rutina_movimiento_' + fechaAnterior(c.fecha), {})).some(Boolean);
+    if (ayerSeMovio) p.reason += ' Ayer ya hubo movimiento; hoy no te propone repetirlo por inercia.';
+    if (ayer.energia && c.check.energia && Number(c.check.energia) > Number(ayer.energia)) p.reason += ' Hoy llegas con más disponibilidad que ayer.';
+  }
   guardarPropuestaActual(p);
   result.textContent = p.title;
   reason.textContent = p.reason;
