@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Yuki">
-<link rel="manifest" href="manifest-v60.json">
+<link rel="manifest" href="manifest-v61.json">
 <title>Yuki</title>
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 <link rel="apple-touch-icon" href="icon-192.png">
@@ -754,7 +754,7 @@ label{font-size:17px}
         <button type="button" data-min="20" onclick="elegirTiempoAhora(20,this)">20 min</button>
         <button type="button" data-min="30" onclick="elegirTiempoAhora(30,this)">30+ min</button>
       </div>
-      <button class="now-ask" type="button" onclick="yukiQueHago()">YUKI, ¿QUÉ HAGO?</button>
+      <button class="now-ask" type="button" onclick="yukiQueHago(true)">YUKI, ¿QUÉ HAGO?</button>
       <div id="now-do-wrap"></div>
     </div>
 
@@ -763,7 +763,7 @@ label{font-size:17px}
         <div class="now-action-title">DESPUÉS</div>
         <h3>Una cosa que importa hoy</h3>
         <p id="now-important">Cuando Yuki lea tu clima, elegirá una acción pequeña y concreta.</p>
-        <a class="now-do" href="#" onclick="yukiQueHago();return false">Elegir / hacer →</a>
+        <a class="now-do" href="#" onclick="yukiQueHago(true);return false">Elegir / hacer →</a>
       </div>
       <div class="now-card">
         <div class="now-action-title">SI TIENES MÁS TIEMPO</div>
@@ -1809,7 +1809,7 @@ function abrirAreaAhora(area) {
   if (navButton) tab(id, navButton);
   if (area === 'urbana') toast('La Urbana · elige una tarea pequeña');
 }
-function yukiQueHago() {
+function yukiQueHago(abrirRegistro=false) {
   const checks = cargar('checks', {});
   const c = checks[hoyStr()];
   const result = document.getElementById('now-result');
@@ -1820,10 +1820,14 @@ function yukiQueHago() {
   const mins = Number(cargar('ahora_minutos', 10));
   document.querySelectorAll('.now-time button').forEach(b => b.classList.toggle('sel', Number(b.dataset.min) === mins));
   if (!c) {
-    result.textContent = 'Primero, toma el pulso al día.';
+    result.textContent = abrirRegistro ? 'Vamos a tomar el pulso al día.' : 'Primero, toma el pulso al día.';
     reason.textContent = 'Sin analizar: elige clima interior o energía en el registro breve.';
     if (important) important.textContent = 'Tu siguiente paso es registrar cómo llegas. Después Yuki elegirá por ti.';
     if (wrap) wrap.innerHTML = '<a class="now-do" href="#" onclick="abrirCuadernoHoy();return false">Abrir mi registro →</a>';
+    if (abrirRegistro) {
+      abrirCuadernoHoy();
+      setTimeout(() => bookShow(1), 40);
+    }
     return;
   }
   const energia = Number(c.energia || 3);
