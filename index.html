@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Yuki">
-<link rel="manifest" href="manifest-v59.json">
+<link rel="manifest" href="manifest-v60.json">
 <title>Yuki</title>
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 <link rel="apple-touch-icon" href="icon-192.png">
@@ -671,6 +671,10 @@ label{font-size:17px}
 #tab-salud>.tab-book-hidden{display:none!important}
 
 .book-video-jump{margin-top:12px;color:var(--arcilla)!important}
+
+/* V60 · INICIO COMO PANEL DE DECISIÓN, NO COMO ARCHIVO */
+.now-home{max-width:900px;margin:0 auto;padding-bottom:12px}.now-intro{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:18px}.now-kicker{font-size:11px;letter-spacing:.16em;color:var(--arcilla);font-weight:700}.now-home h2{font-family:'Playfair Display',Georgia,serif;font-size:clamp(32px,5vw,48px);font-weight:500;line-height:1.1;margin:7px 0 0}.now-climate{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:18px}.now-climate div{border-top:1px solid var(--linea);padding-top:10px}.now-climate span{display:block;font-size:11px;color:var(--suave);text-transform:uppercase;letter-spacing:.08em}.now-climate b{display:block;font-size:15px;font-weight:500;margin-top:4px}.now-card{background:var(--papel);border:1px solid var(--linea);border-radius:3px;padding:20px;margin-bottom:14px}.now-card h3{font-family:'Playfair Display',Georgia,serif;font-size:25px;font-weight:500;margin:0 0 7px}.now-card p{margin:0;color:var(--suave);font-size:14px;line-height:1.5}.now-action{border-top:3px solid var(--arcilla)}.now-action-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}.now-action-title{font-size:11px;letter-spacing:.14em;color:var(--arcilla);font-weight:700}.now-result{font-family:'Playfair Display',Georgia,serif;font-size:23px;line-height:1.25;margin:12px 0 5px}.now-reason{font-size:13px!important}.now-time{display:flex;gap:7px;flex-wrap:wrap;margin:14px 0}.now-time button,.now-area button{font:inherit;font-size:13px;padding:8px 11px;border:1px solid var(--linea);background:transparent;color:var(--tinta);border-radius:3px;cursor:pointer}.now-time button.sel{background:var(--musgo);border-color:var(--musgo);color:#fff}.now-ask{width:100%;font:inherit;font-size:16px;padding:14px 16px;border:0;background:var(--musgo);color:#fff;border-radius:3px;cursor:pointer;letter-spacing:.02em}.now-ask:hover{background:var(--arcilla)}.now-do{display:inline-block;margin-top:12px;color:var(--arcilla);font-size:14px;text-decoration:none;border-bottom:1px solid var(--arcilla);cursor:pointer}.now-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.now-grid .now-card{margin-bottom:0}.now-area{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:14px}.now-area button{min-height:52px;text-align:left}.now-area button strong{display:block;font-size:14px;font-weight:600}.now-area button small{display:block;color:var(--suave);font-size:11px;margin-top:3px}.now-evening{display:flex;justify-content:space-between;align-items:center;gap:14px}.now-evening .now-do{margin-top:0;white-space:nowrap}.now-memory{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px}.now-memory div{border:1px solid var(--linea);padding:10px}.now-memory b{display:block;font-family:'Playfair Display',Georgia,serif;font-size:22px;font-weight:500}.now-memory span{display:block;font-size:11px;color:var(--suave);margin-top:3px}.now-secondary{margin-top:14px;padding-top:13px;border-top:1px solid var(--linea);font-size:12px;color:var(--suave)}.home-detail-book{margin-top:20px}.home-detail-toggle{display:block;width:100%;font:inherit;font-size:14px;padding:12px 14px;border:1px solid var(--linea);background:transparent;color:var(--tinta);border-radius:3px;cursor:pointer;margin-top:4px}.system-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.system-field label{display:block;font-size:14px;margin-bottom:6px}.system-field textarea{width:100%;min-height:86px;padding:10px;border:1px solid var(--linea);border-radius:3px;background:var(--papel);color:var(--tinta);font:inherit;font-size:14px;line-height:1.45;resize:vertical}.system-note{font-size:13px!important;color:var(--suave);line-height:1.5}.tab-sistema-save{margin-top:14px;width:100%}
+@media(max-width:650px){.now-intro{display:block}.now-intro .home-detail-toggle{margin-top:14px}.now-climate{gap:6px}.now-climate b{font-size:14px}.now-grid{grid-template-columns:1fr}.now-area{grid-template-columns:repeat(2,1fr)}.now-memory{grid-template-columns:repeat(2,1fr)}.now-evening{align-items:flex-start;flex-direction:column}.now-evening .now-do{margin-top:4px}.system-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -716,6 +720,9 @@ label{font-size:17px}
     <button onclick="tab('tareas',this)">Tareas</button>
     <button onclick="tab('hobbies',this)">Hobbies</button>
   </div>
+  <div class="nav-group"><div class="nav-label">SISTEMA</div>
+    <button onclick="tab('sistema',this)">Mi sistema</button>
+  </div>
 </nav>
 
 <div id="toast" class="toast"></div>
@@ -724,7 +731,67 @@ label{font-size:17px}
      CHECK DEL DÍA
 ══════════════════════════════════════════ -->
 <div id="tab-check" class="tab active">
-  <div class="book-shell">
+  <section class="now-home" aria-label="Hoy">
+    <div class="now-intro">
+      <div>
+        <div class="now-kicker">HOY · CUADERNO DE CLIMAS</div>
+        <h2>¿Cómo llegas?</h2>
+        <div class="now-climate" id="now-climate">
+          <div><span>Cuerpo</span><b>—</b></div>
+          <div><span>Energía</span><b>—</b></div>
+          <div><span>Necesidad</span><b>—</b></div>
+        </div>
+      </div>
+      <button class="home-detail-toggle" type="button" onclick="abrirCuadernoHoy()">Abrir registro completo</button>
+    </div>
+
+    <div class="now-card now-action">
+      <div class="now-action-head"><div class="now-action-title">TU SIGUIENTE PASO</div><span style="font-size:12px;color:var(--suave)">una cosa, no todo</span></div>
+      <div class="now-result" id="now-result">Dime cómo llegas y te propongo un paso.</div>
+      <p class="now-reason" id="now-reason">Yuki tendrá en cuenta tu energía, lo que necesitas y lo que está pendiente.</p>
+      <div class="now-time" aria-label="Tiempo disponible">
+        <button type="button" data-min="10" onclick="elegirTiempoAhora(10,this)">10 min</button>
+        <button type="button" data-min="20" onclick="elegirTiempoAhora(20,this)">20 min</button>
+        <button type="button" data-min="30" onclick="elegirTiempoAhora(30,this)">30+ min</button>
+      </div>
+      <button class="now-ask" type="button" onclick="yukiQueHago()">YUKI, ¿QUÉ HAGO?</button>
+      <div id="now-do-wrap"></div>
+    </div>
+
+    <div class="now-grid">
+      <div class="now-card">
+        <div class="now-action-title">DESPUÉS</div>
+        <h3>Una cosa que importa hoy</h3>
+        <p id="now-important">Cuando Yuki lea tu clima, elegirá una acción pequeña y concreta.</p>
+        <a class="now-do" href="#" onclick="yukiQueHago();return false">Elegir / hacer →</a>
+      </div>
+      <div class="now-card">
+        <div class="now-action-title">SI TIENES MÁS TIEMPO</div>
+        <p>Abre solo el territorio que te llame ahora.</p>
+        <div class="now-area">
+          <button type="button" onclick="abrirAreaAhora('casa')"><strong>Casa</strong><small>aligerar</small></button>
+          <button type="button" onclick="abrirAreaAhora('urbana')"><strong>La Urbana</strong><small>una tarea</small></button>
+          <button type="button" onclick="abrirAreaAhora('cocina')"><strong>Comida</strong><small>nutrir</small></button>
+          <button type="button" onclick="abrirAreaAhora('hobbies')"><strong>Hobby</strong><small>crear</small></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="now-card now-evening">
+      <div><div class="now-action-title">ESTA NOCHE</div><h3>¿Qué queda de hoy?</h3><p>Un cierre breve, sin convertirlo en otra tarea.</p></div>
+      <a class="now-do" href="#" onclick="abrirAreaAhora('cierre');return false">Ir a Atardecer →</a>
+    </div>
+
+    <div class="now-card">
+      <div class="now-action-title">ESTA SEMANA</div>
+      <div class="now-memory" id="now-memory"></div>
+      <div class="now-secondary" id="now-pattern">Yuki irá reconociendo tus ritmos sin convertirlos en una evaluación.</div>
+    </div>
+
+    <div class="now-secondary">Lo demás sigue en sus lugares: Diario · Luna · Orientación · Música · Cine · Lectura.</div>
+  </section>
+
+  <div class="book-shell home-detail-book" style="display:none">
     <div class="book-nav" aria-label="Páginas de Inicio">
       <button type="button" class="book-prev" onclick="bookMove(-1)">← Anterior</button>
       <span id="book-indicator">Página 1 de 4</span>
@@ -1390,6 +1457,38 @@ label{font-size:17px}
   </div>
 </div>
 
+<!-- TAB MI SISTEMA -->
+<div id="tab-sistema" class="tab">
+  <div class="card">
+    <div class="card-title">⚙️ Mi sistema</div>
+    <p class="system-note">Yuki puede saber muchas cosas sobre ti sin darlas por fijas. Edita aquí lo que quieras que tenga en cuenta.</p>
+  </div>
+  <div class="card">
+    <div class="card-title">Mi dirección</div>
+    <div class="system-grid">
+      <div class="system-field"><label for="sistema-prioridades">Mis prioridades</label><textarea id="sistema-prioridades" placeholder="Lo que importa en esta etapa…"></textarea></div>
+      <div class="system-field"><label for="sistema-reglas">Mis reglas</label><textarea id="sistema-reglas" placeholder="Por ejemplo: una cosa cada vez…"></textarea></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">Mi cuidado</div>
+    <div class="system-grid">
+      <div class="system-field"><label for="sistema-alimentos">Mis alimentos</label><textarea id="sistema-alimentos" placeholder="Lo que me sienta bien, lo que quiero tener a mano…"></textarea></div>
+      <div class="system-field"><label for="sistema-practicas">Mis prácticas</label><textarea id="sistema-practicas" placeholder="Movimiento, descanso, respiración…"></textarea></div>
+      <div class="system-field"><label for="sistema-rutinas">Mis rutinas</label><textarea id="sistema-rutinas" placeholder="Rituales o secuencias que me ayudan…"></textarea></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">Mi mundo</div>
+    <div class="system-grid">
+      <div class="system-field"><label for="sistema-lugares">Mis lugares</label><textarea id="sistema-lugares" placeholder="Casa, playa, trabajo, espacios de refugio…"></textarea></div>
+      <div class="system-field"><label for="sistema-proyectos">Mis proyectos</label><textarea id="sistema-proyectos" placeholder="Lo que estoy construyendo o aprendiendo…"></textarea></div>
+      <div class="system-field"><label for="sistema-personas">Mis personas</label><textarea id="sistema-personas" placeholder="Vínculos y apoyos que quiero cuidar…"></textarea></div>
+    </div>
+    <button class="btn btn-primary tab-sistema-save" onclick="guardarSistema()">Guardar mi sistema</button>
+  </div>
+</div>
+
 <!-- TAB COCINA -->
 <div id="tab-cocina" class="tab">
   <div class="card">
@@ -1575,7 +1674,7 @@ function tab(id, btn) {
   if(id === 'luna') initLuna();
   if(id === 'gastos') renderGastos();
   if(id === 'plantas') renderPlantas();
-  if(id === 'check') renderCheckHistorial();
+  if(id === 'check') { renderCheckHistorial(); renderAhoraDashboard(); }
   if(id === 'cierre') initCierre();
   if(id === 'reflexiones') initReflexiones();
   if(id === 'salud') { initSalud(); initRutinaMovimiento(); initPlanMovimiento(); }
@@ -1586,6 +1685,7 @@ function tab(id, btn) {
   if(id === 'cocina') renderCocina();
   if(id === 'casa') renderCasa();
   if(id === 'hobbies') renderHobbies();
+  if(id === 'sistema') initSistema();
   if(id !== 'check') prepareTabBook(id);
 }
 
@@ -1672,6 +1772,116 @@ function selEscala(campo, btn) {
   checkState[campo] = btn.dataset.val;
 }
 
+function fechaAnterior(fecha, dias=1) {
+  const d = new Date(fecha + 'T12:00:00');
+  d.setDate(d.getDate() - dias);
+  return d.toISOString().slice(0,10);
+}
+function elegirTiempoAhora(min, btn) {
+  guardar('ahora_minutos', min);
+  document.querySelectorAll('.now-time button').forEach(b => b.classList.remove('sel'));
+  if (btn) btn.classList.add('sel');
+  const result = document.getElementById('now-result');
+  if (result && result.textContent !== 'Dime cómo llegas y te propongo un paso.') yukiQueHago();
+}
+function renderClimaAhora() {
+  const el = document.getElementById('now-climate');
+  if (!el) return;
+  const c = cargar('checks', {})[hoyStr()];
+  if (!c) {
+    el.innerHTML = '<div><span>Cuerpo</span><b>Sin registrar</b></div><div><span>Energía</span><b>Sin registrar</b></div><div><span>Necesidad</span><b>Sin registrar</b></div>';
+    return;
+  }
+  el.innerHTML = `<div><span>Cuerpo</span><b>${c.humor || '—'}</b></div><div><span>Energía</span><b>${c.energia ? c.energia + '/5' : '—'}</b></div><div><span>Necesidad</span><b>${c.intencion || 'Sin escribir'}</b></div>`;
+}
+function abrirCuadernoHoy() {
+  const shell = document.querySelector('.home-detail-book');
+  const button = document.querySelector('.home-detail-toggle');
+  if (!shell) return;
+  shell.style.display = 'block';
+  if (button) button.style.display = 'none';
+  shell.scrollIntoView({behavior:'smooth', block:'start'});
+}
+function abrirAreaAhora(area) {
+  const ids = {casa:'casa', urbana:'tareas', cocina:'cocina', hobbies:'hobbies', cierre:'cierre'};
+  const id = ids[area] || 'tareas';
+  const navButton = [...document.querySelectorAll('nav button')].find(b => b.getAttribute('onclick')?.includes(`tab('${id}'`));
+  if (navButton) tab(id, navButton);
+  if (area === 'urbana') toast('La Urbana · elige una tarea pequeña');
+}
+function yukiQueHago() {
+  const checks = cargar('checks', {});
+  const c = checks[hoyStr()];
+  const result = document.getElementById('now-result');
+  const reason = document.getElementById('now-reason');
+  const important = document.getElementById('now-important');
+  const wrap = document.getElementById('now-do-wrap');
+  if (!result || !reason) return;
+  const mins = Number(cargar('ahora_minutos', 10));
+  document.querySelectorAll('.now-time button').forEach(b => b.classList.toggle('sel', Number(b.dataset.min) === mins));
+  if (!c) {
+    result.textContent = 'Primero, toma el pulso al día.';
+    reason.textContent = 'Sin analizar: elige clima interior o energía en el registro breve.';
+    if (important) important.textContent = 'Tu siguiente paso es registrar cómo llegas. Después Yuki elegirá por ti.';
+    if (wrap) wrap.innerHTML = '<a class="now-do" href="#" onclick="abrirCuadernoHoy();return false">Abrir mi registro →</a>';
+    return;
+  }
+  const energia = Number(c.energia || 3);
+  const humor = String(c.humor || '');
+  const necesidad = String(c.intencion || '').toLowerCase();
+  const pendientes = cargar('tareas', []).filter(t => !t.hecha);
+  const ayer = checks[fechaAnterior(hoyStr())];
+  let propuesta, motivo, area, enlace;
+  if (/casa|orden|limpiar|recoger|despejar/.test(necesidad)) {
+    propuesta = 'Ordena una zona pequeña durante 10 minutos.'; motivo = 'Has dicho que necesitas espacio u orden. Solo una superficie, no toda la casa.'; area='casa'; enlace='Abrir Casa';
+  } else if (energia <= 2 || /bajo|tenso|😔|😤/.test(humor)) {
+    propuesta = 'Sal a caminar 10 minutos.'; motivo = 'Tienes poca disponibilidad ahora: primero despejar el cuerpo, sin exigirte rendimiento.'; area='salud'; enlace='Abrir Salud';
+  } else if (energia >= 4 && mins >= 15) {
+    propuesta = `Haz Power Start ${Math.min(mins,15)} minutos.`; motivo = 'Hay energía suficiente para una práctica breve y concreta; no hace falta convertirla en una sesión larga.'; area='salud'; enlace='Abrir Salud';
+  } else if (pendientes.length) {
+    propuesta = `Haz una sola tarea: «${pendientes[0].texto}».`; motivo = 'Hay algo pendiente y tu energía permite dar un paso pequeño, sin abrir más frentes.'; area='tareas'; enlace='Abrir Tareas';
+  } else {
+    propuesta = 'Escucha una propuesta musical sin saltar de una a otra.'; motivo = 'No hay una urgencia clara: puedes cuidar tu curiosidad sin convertirla en productividad.'; area='hobbies'; enlace='Abrir Hobbies';
+  }
+  if (ayer && ayer.energia && energia > Number(ayer.energia)) motivo += ' Hoy llegas con más disponibilidad que ayer.';
+  result.textContent = propuesta;
+  reason.textContent = motivo;
+  if (important) important.textContent = propuesta;
+  if (wrap) wrap.innerHTML = `<a class="now-do" href="#" onclick="abrirAreaAhora('${area}');return false">${enlace} →</a>`;
+}
+function renderSemanaHome() {
+  const hoy = hoyStr(), checks = cargar('checks', {}), tareas = cargar('tareas', []);
+  const fechas = Array.from({length:7}, (_,i) => fechaAnterior(hoy, i));
+  const checkCount = fechas.filter(f => checks[f]).length;
+  const practiceCount = fechas.reduce((n,f) => n + (cargar('salud_' + f, {}).practicas || []).length, 0);
+  const hobbyCount = fechas.reduce((n,f) => n + (cargar('hobbies_ejecucion_' + f, []).length ? 1 : 0), 0);
+  const taskDone = tareas.filter(t => t.completadaAt && (Date.now() - t.completadaAt) < 7*86400000).length;
+  const el = document.getElementById('now-memory');
+  if (el) el.innerHTML = `<div><b>${practiceCount}</b><span>prácticas</span></div><div><b>${taskDone}</b><span>tareas</span></div><div><b>${hobbyCount}</b><span>sesiones creativas</span></div><div><b>${checkCount}</b><span>días registrados</span></div>`;
+  const energies = fechas.map(f => Number(checks[f]?.energia || 0)).filter(Boolean);
+  const pattern = document.getElementById('now-pattern');
+  if (pattern && energies.length >= 2 && practiceCount > 0) pattern.textContent = `Tu disponibilidad media registrada: ${(energies.reduce((a,b)=>a+b,0)/energies.length).toFixed(1)}/5. Yuki empieza a relacionar movimiento y clima, sin sacar conclusiones rápidas.`;
+}
+function renderAhoraDashboard() {
+  renderClimaAhora();
+  renderSemanaHome();
+  yukiQueHago();
+}
+function initSistema() {
+  ['prioridades','reglas','alimentos','practicas','rutinas','lugares','proyectos','personas'].forEach(k => {
+    const el = document.getElementById('sistema-' + k);
+    if (el) el.value = cargar('sistema_' + k, '');
+  });
+}
+function guardarSistema() {
+  ['prioridades','reglas','alimentos','practicas','rutinas','lugares','proyectos','personas'].forEach(k => {
+    const el = document.getElementById('sistema-' + k);
+    if (el) guardar('sistema_' + k, el.value.trim());
+  });
+  toast('⚙️ Mi sistema guardado');
+  yukiQueHago();
+}
+
 function guardarCheck() {
   checkState.intencion = document.getElementById('check-intencion').value.trim();
   checkState.palabra = '';
@@ -1685,6 +1895,7 @@ function guardarCheck() {
   toast('✅ Check guardado');
   mostrarCheckResumen();
   renderCheckHistorial();
+  renderAhoraDashboard();
 }
 
 function mostrarCheckResumen() {
@@ -2305,6 +2516,7 @@ function toast(msg) {
 initHeader();
 aplicarTema();
 renderCheckHistorial();
+renderAhoraDashboard();
 
 // ════════════════════════════════════════════════════════
 // REFLEXIONES
@@ -2736,8 +2948,9 @@ function addTarea() {
 function toggleTarea(id) {
   const items = cargar('tareas', []);
   const i = items.find(x => x.id === id);
-  if(i) i.hecha = !i.hecha;
+  if(i) { i.hecha = !i.hecha; i.completadaAt = i.hecha ? Date.now() : null; }
   guardar('tareas', items);
+  renderSemanaHome();
   renderTareas();
 }
 
