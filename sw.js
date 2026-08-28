@@ -1,5 +1,5 @@
-const CACHE = 'yuki-v63';
-const ASSETS = ['./', './?v=63', './index.html?v=63', './manifest.json', './manifest-v63.json', './icon-192.png', './icon-512.png'];
+const CACHE = 'yuki-v64';
+const ASSETS = ['./', './?v=64', './index.html?v=64', './manifest.json', './manifest-v64.json', './icon-192.png', './icon-512.png'];
 
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS)));
