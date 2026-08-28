@@ -630,12 +630,12 @@ label{font-size:17px}
 }
 
 /* Paginación tipo libro para las pestañas largas */
-.tab-book-controls{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 0 18px;padding:10px 0;border-bottom:1px solid var(--linea);order:-1000}
+.tab-book-controls{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 0 18px;padding:10px 0;border-bottom:1px solid var(--linea);order:-1000;position:sticky;top:72px;z-index:20;background:var(--marfil)}
 .tab-book-controls button{border:1px solid var(--linea);background:transparent;color:var(--tinta);border-radius:4px;padding:10px 14px;font:inherit;font-size:16px;cursor:pointer}
 .tab-book-controls button:disabled{opacity:.35;cursor:default}
 .tab-book-controls span{font-size:15px;color:var(--suave);font-weight:600}
-.tab-book-hidden{display:none!important}
-@media(max-width:520px){.tab-book-controls button{font-size:15px;padding:9px 10px}.tab-book-controls span{font-size:14px}}
+.tab-book-hidden{display:none!important}.tab-book-controls span{flex:1;text-align:center}.tab-book-controls button{min-width:112px}.music-list{columns:2;column-gap:28px}.music-list li{break-inside:avoid}@media(max-width:650px){.music-list{columns:1}}
+@media(max-width:520px){.tab-book-controls{top:59px;padding:8px 0;margin-bottom:14px}.tab-book-controls button{font-size:15px;padding:9px 10px;min-width:96px}.tab-book-controls span{font-size:14px}}
 
 /* Último ajuste de accesibilidad: ningún texto esencial queda diminuto */
 .tab p:not(.today-lead),.tab li{font-size:17px!important;line-height:1.55}
@@ -1013,7 +1013,7 @@ label{font-size:17px}
   <div class="card">
     <div class="card-title">🎧 Para escuchar · trip hop / downtempo</div>
     <p style="font-size:13px;color:var(--suave);line-height:1.5;margin-bottom:12px">Ruta sugerida para una tarde tranquila, oscura y atmosférica:</p>
-    <ol style="font-size:14px;line-height:1.8;padding-left:22px;color:var(--tinta)">
+    <ol class="music-list" style="font-size:14px;line-height:1.8;padding-left:22px;color:var(--tinta)">
       <li>Soapkills</li>
       <li>Stervia · México · un único álbum</li>
       <li>Smith &amp; Mighty</li>
@@ -3504,25 +3504,16 @@ function splitHealthRoutine(tabEl) {
 function prepareTabBook(id) {
   if (id === 'check') return;
   const tabEl = document.getElementById('tab-' + id);
-  if (!tabEl || tabEl.querySelector('.tab-book-controls')) return;
+  if (!tabEl) return;
+  // Salud es la más larga: cada bloque de práctica se convierte en una página.
+  if (id === 'salud') splitHealthRoutine(tabEl);
+  if (tabEl.querySelector('.tab-book-controls')) return;
   const nodes = Array.from(tabEl.children).filter(n => !n.classList.contains('tab-book-controls'));
-  if (nodes.length < 3 && id !== 'salud') return;
+  if (nodes.length < 2) return;
 
-  let groups = [];
-  if (id === 'hobbies') {
-    groups = nodes.map(node => [node]);
-  } else if (id === 'salud') {
-    groups.push(nodes.filter(n => n.matches('.health-options-card, .health-strategy-heading, .movement-week')));
-    groups.push(nodes.filter(n => n.matches('.movement-plan')));
-    groups.push(nodes.filter(n => n.matches('.movement-routine')));
-    groups.push(nodes.filter(n => n.matches('.health-meditation-choice, .health-data-row, .health-save, .health-history-title, .health-history')));
-    const used = groups.flat();
-    const rest = nodes.filter(n => !used.includes(n));
-    if (rest.length) groups.unshift(rest);
-    groups = groups.filter(g => g.length);
-  } else {
-    for (let i = 0; i < nodes.length; i += 2) groups.push(nodes.slice(i, i + 2));
-  }
+  // Una tarjeta por página: menos saturación y mucho menos scroll vertical.
+  // En vez de obligarte a recorrer una columna larga, Yuki te acompaña con Anterior/Siguiente.
+  const groups = nodes.map(node => [node]);
   if (groups.length < 2) return;
 
   const controls = document.createElement('div');
