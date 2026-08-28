@@ -749,12 +749,13 @@ label{font-size:17px}
       <div class="now-action-head"><div class="now-action-title">TU SIGUIENTE PASO</div><span style="font-size:12px;color:var(--suave)">una cosa, no todo</span></div>
       <div class="now-result" id="now-result">Dime cómo llegas y te propongo un paso.</div>
       <p class="now-reason" id="now-reason">Yuki tendrá en cuenta tu energía, lo que necesitas y lo que está pendiente.</p>
+      <div id="now-status" style="font-size:11px;color:var(--arcilla);margin-top:8px;min-height:16px"></div>
       <div class="now-time" aria-label="Tiempo disponible">
         <button type="button" data-min="10" onclick="elegirTiempoAhora(10,this)">10 min</button>
         <button type="button" data-min="20" onclick="elegirTiempoAhora(20,this)">20 min</button>
         <button type="button" data-min="30" onclick="elegirTiempoAhora(30,this)">30+ min</button>
       </div>
-      <button class="now-ask" type="button" onclick="yukiQueHago(true)">YUKI, ¿QUÉ HAGO?</button>
+      <button class="now-ask" type="button" onclick="yukiQueHago(true,true)">YUKI, ¿QUÉ HAGO?</button>
       <div id="now-feedback" class="now-feedback" style="display:none">
         <button type="button" onclick="confirmarAhora()">Hecho</button>
         <button type="button" onclick="cambiarPropuestaAhora()">Cambiar propuesta</button>
@@ -1863,12 +1864,13 @@ function pintarFeedback(visible=true) {
 }
 function guardarPropuestaActual(p) { guardar('ahora_propuesta_actual', p || null); }
 function propuestaActual() { return cargar('ahora_propuesta_actual', null); }
-function yukiQueHago(abrirRegistro=false) {
+function yukiQueHago(abrirRegistro=false, interactivo=false) {
   const c = estadoAhora();
   const result = document.getElementById('now-result');
   const reason = document.getElementById('now-reason');
   const important = document.getElementById('now-important');
   const wrap = document.getElementById('now-do-wrap');
+  const status = document.getElementById('now-status');
   if (!result || !reason) return;
   const mins = Number(cargar('ahora_minutos', 10));
   document.querySelectorAll('.now-time button').forEach(b => b.classList.toggle('sel', Number(b.dataset.min) === mins));
@@ -1878,6 +1880,7 @@ function yukiQueHago(abrirRegistro=false) {
     if (important) important.textContent = 'Tu siguiente paso es registrar cómo llegas. Después Yuki elegirá por ti.';
     if (wrap) wrap.innerHTML = '<a class="now-do" href="#" onclick="abrirCuadernoHoy();return false">Abrir mi registro →</a>';
     pintarFeedback(false);
+    if (status) status.textContent = abrirRegistro ? 'Abriendo el registro…' : '';
     if (abrirRegistro) { abrirCuadernoHoy(); setTimeout(() => bookShow(1), 40); }
     return;
   }
@@ -1893,6 +1896,8 @@ function yukiQueHago(abrirRegistro=false) {
   reason.textContent = p.reason;
   if (important) important.textContent = p.title;
   if (wrap) wrap.innerHTML = `<a class="now-do" href="#" onclick="abrirAreaAhora('${p.area}');return false">Abrir ${p.area === 'salud' ? 'Salud' : p.area === 'hobbies' ? 'Hobbies' : p.area === 'casa' ? 'Casa' : p.area === 'urbana' ? 'Tareas de La Urbana' : 'Tareas'} →</a>`;
+  if (status) status.textContent = interactivo ? '✓ Yuki ha revisado tu día ahora mismo' : '';
+  if (interactivo) toast('Yuki ha revisado tu día');
   pintarFeedback(true);
 }
 function registrarRespuestaAhora(estado) {
