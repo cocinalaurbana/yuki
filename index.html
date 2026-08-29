@@ -1810,11 +1810,17 @@ function guardar(key, val) {
 // NAVEGACIÓN
 // ════════════════════════════════════════════════════════
 
-function tab(id, btn) {
+function tab(id, btn, fromHistory=false) {
+  const panel = document.getElementById('tab-' + id);
+  if (!panel) return;
+  btn = btn || [...document.querySelectorAll('nav button')].find(b => b.getAttribute('onclick')?.includes(`tab('${id}'`));
+  if (!fromHistory && history.state?.yukiTab !== id) {
+    history.pushState({yukiTab:id}, '', `${location.pathname}${location.search}#${id}`);
+  }
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
   document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
-  document.getElementById('tab-' + id).classList.add('active');
-  btn.classList.add('active');
+  panel.classList.add('active');
+  if (btn) btn.classList.add('active');
   if(id === 'diario') renderDiario();
   if(id === 'luna') initLuna();
   if(id === 'gastos') renderGastos();
@@ -1832,6 +1838,22 @@ function tab(id, btn) {
   if(id === 'hobbies') renderHobbies();
   if(id === 'sistema') initSistema();
   if(id !== 'check') prepareTabBook(id);
+}
+
+function tabActualYuki(){return document.querySelector('.tab.active')?.id.replace('tab-','') || 'check';}
+function iniciarHistorialNavegacionYuki(){
+  const hash=(location.hash||'').replace('#','');
+  const id=document.getElementById('tab-'+hash)?hash:'check';
+  history.replaceState({yukiTab:id},'',location.href);
+  if(id!=='check'){const b=[...document.querySelectorAll('nav button')].find(x=>x.getAttribute('onclick')?.includes(`tab('${id}'`));if(b)tab(id,b,true);}
+  window.addEventListener('popstate',ev=>{
+    const modal=document.getElementById('yuki-flow-modal');
+    if(ev.state?.yukiModal==='flow'){if(modal&&!modal.classList.contains('open'))iniciarFlujoYuki();return;}
+    if(modal?.classList.contains('open')){cerrarFlujoYuki(true);return;}
+    const next=ev.state?.yukiTab || (location.hash||'').replace('#','') || 'check';
+    const b=[...document.querySelectorAll('nav button')].find(x=>x.getAttribute('onclick')?.includes(`tab('${next}'`));
+    if(b)tab(next,b,true);else {const home=[...document.querySelectorAll('nav button')].find(x=>x.getAttribute('onclick')?.includes("tab('check'"));if(home)tab('check',home,true);}
+  });
 }
 
 // ════════════════════════════════════════════════════════
@@ -1990,10 +2012,11 @@ async function obtenerClimaExterior() {
     guardar('weather_context',flujoWeather); pintarClimaFlujo();
   } catch(e) { flujoWeather={error:true,city:'A Coruña',fetchedAt:Date.now()}; pintarClimaFlujo(); }
 }
-function cerrarFlujoYuki(){const m=document.getElementById('yuki-flow-modal');if(m){m.classList.remove('open');m.setAttribute('aria-hidden','true');} flujoPropuesta=null;}
+function cerrarFlujoYuki(fromHistory=false){const m=document.getElementById('yuki-flow-modal');if(m){m.classList.remove('open');m.setAttribute('aria-hidden','true');} flujoPropuesta=null;if(!fromHistory&&history.state?.yukiModal==='flow')history.back();}
 function iniciarFlujoYuki(){
   const m=document.getElementById('yuki-flow-modal'), c=estadoAhora(), saved=c.check || {};
   if(!m)return;
+  if(!m.classList.contains('open'))history.pushState({yukiTab:tabActualYuki(),yukiModal:'flow'},'',location.href);
   flujoMinutos=Number(cargar('ahora_minutos',10)); flujoWeather=cargar('weather_context',null); m.classList.add('open');m.setAttribute('aria-hidden','false');
   const content=document.getElementById('yuki-flow-content');
   content.innerHTML=`<div class="yuki-flow-kicker">ANTES DE EMPEZAR</div><h1 id="yuki-flow-title" class="yuki-flow-title">Una cosa, no todo.</h1><p class="yuki-flow-lead">Antes de proponerte algo, necesito saber cómo llegas.</p>
@@ -4388,6 +4411,7 @@ function ayudaYuki(tipo){
   el.textContent=textos[tipo]||'';
 }
 window.addEventListener('resize',()=>{if(onboardingActive) onboardingRender();});
+setTimeout(iniciarHistorialNavegacionYuki,0);
 setTimeout(initOnboarding,250);
 
 // ── SERVICE WORKER (PWA offline) ──────────────────────
