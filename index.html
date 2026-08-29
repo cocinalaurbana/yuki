@@ -2026,7 +2026,8 @@ function estadoAhora() {
   const weather = cargar('weather_context', null);
   const canciones = cargar('musica_canciones', []);
   const sesiones = cargar('musica_sesiones', []);
-  return {fecha, check, tareas, salud, rutina, hechas, rechazadas, practica, tareasHechasHoy, hobbies, weather, canciones, sesiones};
+  const situacion = cargar('situacion_actual', null);
+  return {fecha, check, tareas, salud, rutina, hechas, rechazadas, practica, tareasHechasHoy, hobbies, weather, canciones, sesiones, situacion};
 }
 function sistemaTexto(clave) { return String(cargar('sistema_' + clave, '') || '').toLowerCase(); }
 function propuestaCandidata(c) {
@@ -2257,7 +2258,8 @@ function guardarSistema() {
 }
 
 function guardarCheck() {
-  checkState.intencion = document.getElementById('check-intencion').value.trim();
+  const intencionEl = document.getElementById('flow-intencion') || document.getElementById('check-intencion');
+  checkState.intencion = intencionEl ? intencionEl.value.trim() : '';
   checkState.palabra = '';
 
   if(!checkState.humor && !checkState.tiempo) { toast('Elige al menos el tiempo o tu clima interior'); return; }
@@ -4382,7 +4384,7 @@ function abrirAyudaYuki(){ const modal=document.getElementById('modal-ayuda-yuki
 function cerrarAyudaYuki(){ const modal=document.getElementById('modal-ayuda-yuki'); if(modal) modal.classList.remove('open'); }
 function ayudaYuki(tipo){
   const el=document.getElementById('ayuda-yuki-respuesta'); if(!el)return;
-  const textos={ahora:'Pulsa «Yuki, ¿qué hago?». Yuki obtiene primero el clima exterior, después recoge cómo llegas y cuánto tiempo disponible tienes. Con ese contexto te propone una sola cosa. Puedes marcar Hecho, Otra opción, No hoy o No me sirve.',exterior:'Es el tiempo meteorológico real del lugar: temperatura, cielo, lluvia y viento. Yuki lo utiliza como una variable más del contexto; no es lo mismo que los minutos disponibles.',interior:'Es cómo llegas tú hoy: Alegre, Bien, Neutro, Bajo o Tenso. Puedes añadir qué necesitas sin tener que analizarte.',disponible:'Son los minutos reales que tienes para hacer el siguiente paso: 10, 20 o 30+ minutos. No significa el tiempo meteorológico.',musica:'Yuki puede guardar y recomendar canciones o sesiones con sus enlaces. La reproducción ocurre fuera de Yuki, en YouTube u otro servicio que utilices.',escalas:'Ahora es el paso pequeño. Después es una continuación posible. Hoy es una única cosa importante. No son listas que tengas que completar.',sistema:'Mi sistema es la parte editable de Yuki: prioridades, reglas, prácticas, rutinas, lugares, proyectos y personas.',guardar:'Entra en la sección que corresponda y utiliza su botón Guardar. Lo que escribas queda en este dispositivo.',aprende:'Yuki aprende de tus decisiones: Hecho, No hoy y No me sirve. No interpreta un rechazo como falta de disciplina.',ligero:'Modo Ligero todavía no está disponible en esta versión.'};
+  const textos={ahora:'Pulsa «Yuki, ¿qué hago?». Yuki obtiene primero el clima exterior, después recoge cómo llegas y cuánto tiempo disponible tienes. Con ese contexto te propone una sola cosa. Puedes marcar Hecho, Otra opción, No hoy o No me sirve.',exterior:'Es el tiempo meteorológico real del lugar: temperatura, cielo, lluvia y viento. Yuki lo utiliza como una variable más del contexto; no es lo mismo que los minutos disponibles.',interior:'Es cómo llegas tú hoy: Alegre, Bien, Neutro, Bajo o Tenso. Puedes añadir qué necesitas sin tener que analizarte.',disponible:'Son los minutos reales que tienes para hacer el siguiente paso: 10, 20 o 30+ minutos. No significa el tiempo meteorológico.',musica:'Yuki no reproduce música dentro de la aplicación. La música se abre mediante enlaces externos en YouTube u otro servicio que utilices. La estructura para guardar canciones y sesiones queda preparada para incorporarla sin crear un reproductor propio.',escalas:'Ahora es el paso pequeño. Después es una continuación posible. Hoy es una única cosa importante. No son listas que tengas que completar.',sistema:'Mi sistema es la parte editable de Yuki: prioridades, reglas, prácticas, rutinas, lugares, proyectos y personas.',guardar:'Entra en la sección que corresponda y utiliza su botón Guardar. Lo que escribas queda en este dispositivo.',aprende:'Yuki aprende de tus decisiones: Hecho, No hoy y No me sirve. No interpreta un rechazo como falta de disciplina.',ligero:'Modo Ligero todavía no está disponible en esta versión.'};
   el.textContent=textos[tipo]||'';
 }
 window.addEventListener('resize',()=>{if(onboardingActive) onboardingRender();});
