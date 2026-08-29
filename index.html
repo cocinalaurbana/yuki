@@ -2082,13 +2082,14 @@ function iniciarFlujoYuki(){
 function flujoElegir(campo,btn){btn.parentElement.querySelectorAll('button').forEach(b=>b.classList.remove('sel'));btn.classList.add('sel');checkState[campo]=btn.dataset.val;}
 function flujoElegirTiempo(min,btn){flujoMinutos=min;guardar('ahora_minutos',min);btn.parentElement.querySelectorAll('button').forEach(b=>b.classList.remove('sel'));btn.classList.add('sel');}
 function flujoContexto(){const humor=document.querySelector('#flow-humor .sel')?.dataset.val || checkState.humor || '';const energia=document.querySelector('#flow-energia .sel')?.dataset.val || checkState.energia || '';const intencion=document.getElementById('flow-intencion')?.value.trim() || '';return {humor,energia,intencion};}
-function flujoProponer(){const x=flujoContexto();if(!x.humor&&!x.energia){toast('Elige cómo llegas o tu energía');return;}checkState={...checkState,humor:x.humor,energia:x.energia,intencion:x.intencion};guardarCheck();const c=estadoAhora();flujoPropuesta=propuestaCandidata(c);guardarPropuestaActual(flujoPropuesta);flujoMostrarPropuesta(flujoPropuesta);}
+function flujoProponer(){const x=flujoContexto();if(!x.humor||!x.energia){toast('Elige cómo llegas y tu energía');return;}checkState={...checkState,humor:x.humor,energia:x.energia,intencion:x.intencion};guardarCheck();const c=estadoAhora();flujoPropuesta=propuestaCandidata(c);guardarPropuestaActual(flujoPropuesta);flujoMostrarPropuesta(flujoPropuesta);}
 function flujoMostrarPropuesta(p){const content=document.getElementById('yuki-flow-content'), w=flujoWeather || cAhoraWeather(), c=estadoAhora();if(!p){content.innerHTML='<div class="yuki-flow-kicker">YUKI TE PROPONE</div><h1 class="yuki-flow-title">Hoy puedes parar aquí.</h1><p class="yuki-flow-lead">No aparece una acción que necesite ocupar este momento.</p><button class="btn btn-primary yuki-flow-primary" onclick="cerrarFlujoYuki()">Volver a Hoy</button>';return;}content.innerHTML=`<div class="yuki-flow-kicker">YUKI TE PROPONE</div><h1 class="yuki-flow-title">Una sola cosa</h1><div class="yuki-flow-summary"><div><span>Clima exterior</span><b>${w&&w.error?'No disponible':w?`${weatherIcon(w.code)} ${weatherLabel(w.code)} · ${Math.round(w.temperature)} °C`:'—'}</b></div><div><span>Clima interior</span><b>${c.check?.humor||'—'} · ${c.check?.energia||'—'}/5</b></div><div><span>Tiempo disponible</span><b>${flujoMinutos===30?'30+':flujoMinutos} min</b></div></div><div class="yuki-flow-proposal">${p.title}</div><div class="yuki-flow-reason">${p.reason}</div><div class="yuki-flow-meta">Duración aproximada · ${p.minutes||10} minutos</div>${p.musicUrl&&/^https?:\/\//i.test(p.musicUrl)?`<a class="routine-video-link" href="${p.musicUrl}" target="_blank" rel="noopener" style="display:inline-block;margin-top:10px">Abrir ${p.musicLabel||'música'} ↗</a>`:''}<div class="yuki-flow-actions"><button onclick="flujoDecision('hecho')">Hecho</button><button onclick="flujoDecision('otra')">Otra opción</button><button onclick="flujoDecision('no_hoy')">No hoy</button><button onclick="flujoDecision('no_me_sirve')">No me sirve</button></div><div id="flow-reasons" class="yuki-flow-reasons" style="display:none"><div class="yuki-flow-label">¿Qué no encaja?</div><button onclick="flujoMotivo('demasiado esfuerzo')">Demasiado esfuerzo</button><button onclick="flujoMotivo('no me apetece')">No me apetece</button><button onclick="flujoMotivo('no tengo tiempo')">No tengo tiempo</button><button onclick="flujoMotivo('no es importante ahora')">No es importante ahora</button></div>`;}
 function cAhoraWeather(){return cargar('weather_context',null);}
 function flujoDecision(tipo){if(!flujoPropuesta)return;if(tipo==='no_me_sirve'){document.getElementById('flow-reasons').style.display='block';return;}if(tipo==='otra'){registrarRespuestaAhora('cambiada');flujoPropuesta=propuestaCandidata(estadoAhora());guardarPropuestaActual(flujoPropuesta);flujoMostrarPropuesta(flujoPropuesta);return;}registrarRespuestaAhora(tipo==='hecho'?'hecho':'no_hoy','');flujoFinal(tipo==='hecho'?'Hecho. Puedes parar aquí.':'Lo dejamos para otro momento.');}
 function flujoMotivo(motivo){registrarRespuestaAhora('no_me_sirve',motivo);flujoFinal('Gracias. Yuki tendrá en cuenta que esta propuesta no encajaba ahora.');}
 function flujoFinal(texto){const content=document.getElementById('yuki-flow-content');content.innerHTML=`<div class="yuki-flow-kicker">RECORRIDO CERRADO</div><h1 class="yuki-flow-title">${texto}</h1><p class="yuki-flow-lead">La decisión queda registrada sin convertirla en una evaluación.</p><button class="btn btn-primary yuki-flow-primary" onclick="cerrarFlujoYuki()">Volver a Hoy</button>`;}
 
+function sistemaTextoSeguro(clave){return String(cargar('sistema_'+clave,'')||'').trim().toLowerCase();}
 function estadoAhora() {
   const fecha = hoyStr();
   const check = cargar('checks', {})[fecha] || null;
@@ -2104,12 +2105,16 @@ function estadoAhora() {
   const canciones = cargar('musica_canciones', []);
   const sesiones = cargar('musica_sesiones', []);
   const situacion = cargar('situacion_actual', null);
-  return {fecha, check, tareas, salud, rutina, hechas, rechazadas, practica, tareasHechasHoy, hobbies, weather, canciones, sesiones, situacion};
+  const historial = cargar('ahora_historial', []);
+  const diario = cargar('diario', []);
+  const gratitudes = diario.filter(e => (e.tags||[]).some(t => String(t).toLowerCase()==='gratitud')).slice(0,12);
+  const direccion = sistemaTextoSeguro('proyectos') || sistemaTextoSeguro('prioridades');
+  return {fecha, check, tareas, salud, rutina, hechas, rechazadas, practica, tareasHechasHoy, hobbies, weather, canciones, sesiones, situacion, historial, diario, gratitudes, direccion};
 }
 function sistemaTexto(clave) { return String(cargar('sistema_' + clave, '') || '').toLowerCase(); }
 function propuestaCandidata(c) {
   const mins = Number(cargar('ahora_minutos', 10));
-  const e = Number(c.check?.energia || 3);
+  const e = Number(c.check?.energia || 0);
   const humor = String(c.check?.humor || '').toLowerCase();
   const necesidad = String(c.check?.intencion || '').toLowerCase();
   const prioridades = sistemaTexto('prioridades');
@@ -2149,8 +2154,23 @@ function propuestaCandidata(c) {
   }
   if (pideCrear || (!pendientes.length && !movementDone)) add('hobby-10', 'Dedica 10 minutos a un hobby.', 'No todo tiene que ser producir: puedes cuidar tu curiosidad con un paso breve.', 'hobbies', 84, 10);
   if (mins >= 20 && /descanso|calma|parar|nada/.test(necesidad)) add('pausa-10', 'Haz una pausa de 10 minutos sin resolver nada.', 'Hoy la prioridad que has expresado es bajar el ruido, no añadir otra obligación.', 'salud', 110, 10);
-  if (reglas.includes('una cosa') && propuestas.length) propuestas.forEach(p => p.score += 3);
   if (!propuestas.length) add('pausa-5', 'Quédate cinco minutos sin producir.', 'No aparece una urgencia clara ni una práctica pendiente: también es válido no añadir nada.', 'salud', 50, 5);
+
+  // El contexto ajusta las posibilidades; no hay una tabla rígida de respuestas.
+  const movimientoEnDia = f => (cargar('salud_'+f,{}).practicas||[]).length + Object.values(cargar('rutina_movimiento_'+f,{})).filter(Boolean).length + cargar('fluir_sesiones_'+f,[]).length > 0;
+  const diasSinMovimiento = [0,1,2].filter(i=>!movimientoEnDia(fechaAnterior(c.fecha,i))).length;
+  const aprendizaje = c.historial.filter(x=>Date.now()-(x.ts||0)<90*86400000);
+  propuestas.forEach(p=>{
+    if(e>0 && e<=2){if(['tareas','urbana'].includes(p.area))p.score-=18;if(p.id==='power-start-15')p.score-=25;if(['salud','hobbies'].includes(p.area))p.score+=5;}
+    if(/bajo|tenso|😔|😤|satur|ansiedad|agob/.test(humor+' '+necesidad)){if(['salud','hobbies'].includes(p.area))p.score+=8;if(['tareas','urbana'].includes(p.area))p.score-=12;}
+    if(diasSinMovimiento>=2&&['caminar-10','bailar-10','activar-musica-5','power-start-15'].includes(p.id))p.score+=7;
+    if(weatherRain&&p.id==='caminar-10')p.score-=14;
+    if(weatherComfortable&&p.id==='caminar-10')p.score+=5;
+    if(c.direccion&&/bail|música|musica|cuerpo|movim/.test(c.direccion)&&['bailar-10','activar-musica-5'].includes(p.id))p.score+=5;
+    const prev=aprendizaje.filter(x=>x.id===p.id);p.score+=prev.filter(x=>x.estado==='hecho').length*3-prev.filter(x=>x.estado==='no_me_sirve').length*8;
+    if(urgente&&p.id.startsWith('tarea-'))p.score+=24;
+  });
+  if (reglas.includes('una cosa') && propuestas.length) propuestas.forEach(p => p.score += 3);
   return propuestas.sort((a,b) => b.score - a.score)[0];
 }
 function pintarFeedback(visible=true) {
@@ -4532,7 +4552,7 @@ function abrirAyudaYuki(){ const modal=document.getElementById('modal-ayuda-yuki
 function cerrarAyudaYuki(){ const modal=document.getElementById('modal-ayuda-yuki'); if(modal) modal.classList.remove('open'); }
 function ayudaYuki(tipo){
   const el=document.getElementById('ayuda-yuki-respuesta'); if(!el)return;
-  const textos={ahora:'Pulsa «Yuki, ¿qué hago?». Yuki obtiene primero el clima exterior, después recoge cómo llegas y cuánto tiempo disponible tienes. Con ese contexto te propone una sola cosa. Puedes marcar Hecho, Otra opción, No hoy o No me sirve.',exterior:'Es el tiempo meteorológico real del lugar: temperatura, cielo, lluvia y viento. Yuki lo utiliza como una variable más del contexto; no es lo mismo que los minutos disponibles.',interior:'Es cómo llegas tú hoy: Alegre, Bien, Neutro, Bajo o Tenso. Puedes añadir qué necesitas sin tener que analizarte.',disponible:'Son los minutos reales que tienes para hacer el siguiente paso: 10, 20 o 30+ minutos. No significa el tiempo meteorológico.',musica:'En Música puedes capturar canciones, sesiones y artistas por separado, añadir etiquetas y guardar por qué una canción te cambia el estado. Yuki puede utilizar esa memoria para proponerte movimiento. La reproducción ocurre fuera de Yuki, mediante el enlace externo.',fluir:'FLUIR no es entrenar. Es bailar, explorar, soltar tensión o moverte con música y poca preparación. Puedes elegir Despertar, Soltar o Explorar. Se registra internamente para que Yuki conozca tus ritmos, sin objetivos, rachas ni puntuaciones.',luna:'En Luna puedes ver referencias opcionales para tareas como depilarte, cortarte el pelo o trasplantar. Las fases lunares influyen de forma demostrable en las mareas, pero no hay evidencia concluyente de que hagan crecer más rápido el pelo o mejoren un trasplante. Yuki las muestra como tradición u observación, nunca como obligación ni consejo científico.',escalas:'Ahora es el paso pequeño. Después es una continuación posible. Hoy es una única cosa importante. No son listas que tengas que completar.',sistema:'Mi sistema es la parte editable de Yuki: prioridades, reglas, prácticas, rutinas, lugares, proyectos y personas.',guardar:'Entra en la sección que corresponda y utiliza su botón Guardar. Lo que escribas queda en este dispositivo.',aprende:'Yuki aprende de tus decisiones: Hecho, No hoy y No me sirve. No interpreta un rechazo como falta de disciplina.',ligero:'Modo Ligero todavía no está disponible en esta versión.'};
+  const textos={ahora:'Pulsa «Yuki, ¿qué hago?». Yuki obtiene primero el clima exterior, después recoge cómo llegas y cuánto tiempo disponible tienes. Puede tener en cuenta tu historial, cuerpo, prácticas, música, tareas y preferencias cuando sean relevantes. Con ese contexto te propone una sola cosa. Puedes marcar Hecho, Otra opción, No hoy o No me sirve.',exterior:'Es el tiempo meteorológico real del lugar: temperatura, cielo, lluvia y viento. Yuki lo utiliza como una variable más del contexto; no es lo mismo que los minutos disponibles.',interior:'Es cómo llegas tú hoy: Alegre, Bien, Neutro, Bajo o Tenso. Puedes añadir qué necesitas sin tener que analizarte.',disponible:'Son los minutos reales que tienes para hacer el siguiente paso: 10, 20 o 30+ minutos. No significa el tiempo meteorológico.',musica:'En Música puedes capturar canciones, sesiones y artistas por separado, añadir etiquetas y guardar por qué una canción te cambia el estado. Yuki puede utilizar esa memoria para proponerte movimiento. La reproducción ocurre fuera de Yuki, mediante el enlace externo.',fluir:'FLUIR no es entrenar. Es bailar, explorar, soltar tensión o moverte con música y poca preparación. Puedes elegir Despertar, Soltar o Explorar. Se registra internamente para que Yuki conozca tus ritmos, sin objetivos, rachas ni puntuaciones.',luna:'En Luna puedes ver referencias opcionales para tareas como depilarte, cortarte el pelo o trasplantar. Las fases lunares influyen de forma demostrable en las mareas, pero no hay evidencia concluyente de que hagan crecer más rápido el pelo o mejoren un trasplante. Yuki las muestra como tradición u observación, nunca como obligación ni consejo científico.',escalas:'Ahora es el paso pequeño. Después es una continuación posible. Hoy es una única cosa importante. No son listas que tengas que completar.',sistema:'Mi sistema es la parte editable de Yuki: prioridades, reglas, prácticas, rutinas, lugares, proyectos y personas.',guardar:'Entra en la sección que corresponda y utiliza su botón Guardar. Lo que escribas queda en este dispositivo.',aprende:'Yuki aprende de tus decisiones: Hecho indica que la propuesta encajó; No hoy significa que hoy no era el momento; No me sirve indica que esa propuesta o ese contexto no encajaron; Otra opción le pide volver a pensar. No interpreta un rechazo como falta de disciplina.',ligero:'Modo Ligero todavía no está disponible en esta versión.'};
   el.textContent=textos[tipo]||'';
 }
 window.addEventListener('resize',()=>{if(onboardingActive) onboardingRender();});
