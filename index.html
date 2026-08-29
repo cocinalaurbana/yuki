@@ -4491,7 +4491,20 @@ function onboardingRender() {
     if(onboardingWaitingForCheck){ const x=document.createElement('button'); x.type='button'; x.textContent='Salir'; x.onclick=()=>{onboardingWaitingForCheck=false;onboardingComplete();}; actions.appendChild(x); }
     const pw=pop.offsetWidth, ph=pop.offsetHeight;
     let left=Math.min(Math.max(12,r.left),window.innerWidth-pw-12), top=r.bottom+16;
-    if(top+ph>window.innerHeight-12) top=Math.max(12,r.top-ph-16);
+    if(window.innerWidth<=650 || window.innerHeight<=620){
+      // En pantallas bajas, nunca tapar el elemento que se está explicando.
+      if(r.top > window.innerHeight*0.42){
+        top=12;
+        pop.style.maxHeight=Math.max(130,Math.min(280,r.top-28))+'px';
+      } else {
+        top=Math.min(r.bottom+16,window.innerHeight-140);
+        pop.style.maxHeight=Math.max(130,window.innerHeight-top-12)+'px';
+      }
+      left=12; pop.style.width='calc(100vw - 24px)';
+    } else {
+      if(top+ph>window.innerHeight-12) top=Math.max(12,r.top-ph-16);
+      pop.style.maxHeight='78vh'; pop.style.width='';
+    }
     pop.style.left=left+'px'; pop.style.top=top+'px';
     spot.style.visibility='visible'; pop.style.visibility='visible'; pop.style.opacity='1';
   },240);
