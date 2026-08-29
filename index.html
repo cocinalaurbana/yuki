@@ -634,7 +634,8 @@ label{font-size:17px}
 .tab-book-controls button{border:1px solid var(--linea);background:transparent;color:var(--tinta);border-radius:4px;padding:10px 14px;font:inherit;font-size:16px;cursor:pointer}
 .tab-book-controls button:disabled{opacity:.35;cursor:default}
 .tab-book-controls span{font-size:15px;color:var(--suave);font-weight:600}
-.tab-book-hidden{display:none!important}.tab-book-controls span{flex:1;text-align:center}.tab-book-controls button{min-width:112px}.music-list{columns:2;column-gap:28px}.music-list li{break-inside:avoid}@media(max-width:650px){.music-list{columns:1}}
+.tab-book-hidden{display:none!important}.tab-book-controls span{flex:1;text-align:center}.tab-book-controls button{min-width:112px}.music-list{columns:2;column-gap:28px}.music-list li{break-inside:avoid}.music-record{display:flex;justify-content:space-between;gap:12px;padding:12px 0;border-bottom:1px solid var(--linea);font-size:13px}.music-record:last-child{border-bottom:0}.music-record strong{display:block}.music-record small{display:block;color:var(--suave);margin-top:3px}.music-record p{color:var(--suave);font-size:12px;line-height:1.45;margin:6px 0}.music-record-actions{display:flex;align-items:flex-start;gap:8px;white-space:nowrap}.music-record-actions a,.music-record-actions button{border:0;background:transparent;color:var(--arcilla);font:inherit;font-size:11px;padding:2px;cursor:pointer}.tag-pill{display:inline-block;margin:7px 5px 0 0;padding:3px 6px;border:1px solid var(--linea);border-radius:20px;color:var(--suave);font-size:10px;letter-spacing:.04em}@media(max-width:650px){.music-list{columns:1}.music-record{display:block}.music-record-actions{margin-top:8px}}
+
 @media(max-width:520px){.tab-book-controls{top:59px;padding:8px 0;margin-bottom:14px}.tab-book-controls button{font-size:15px;padding:9px 10px;min-width:96px}.tab-book-controls span{font-size:14px}}
 
 /* Último ajuste de accesibilidad: ningún texto esencial queda diminuto */
@@ -784,6 +785,7 @@ body[data-momento="noche"] .now-action{border-top-color:#756b61!important;backgr
     <button onclick="tab('luna',this)">Luna</button>
     <button onclick="tab('guia',this)">Guía</button>
     <button onclick="tab('reflexiones',this)">Reflexiones</button>
+    <button onclick="tab('musica',this)">Música</button>
     <button onclick="tab('referencias',this)">Ver y leer</button>
   </div>
   <div class="nav-group"><div class="nav-label">CREAR</div>
@@ -1251,6 +1253,40 @@ body[data-momento="noche"] .now-action{border-top-color:#756b61!important;backgr
   </div>
 </div>
 
+<!-- TAB MÚSICA -->
+<div id="tab-musica" class="tab">
+  <div class="card">
+    <div class="card-title">🎧 Música → cuerpo → movimiento</div>
+    <p class="hobby-lead">Yuki recuerda y recomienda. La música se reproduce fuera de Yuki, mediante el enlace que guardes.</p>
+  </div>
+  <div class="card">
+    <div class="card-title">⚡ CAPTURAR · guardar algo rápido</div>
+    <div class="form-group"><label>Qué quieres guardar</label><select id="music-capture-type" style="width:100%;padding:10px;border:1px solid var(--borde);border-radius:8px;font:inherit"><option value="cancion">Canción</option><option value="sesion">Sesión</option><option value="artista">Artista / grupo</option></select></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px"><input id="music-capture-name" placeholder="Título o nombre"><input id="music-capture-artist" placeholder="Artista (si es canción)"></div>
+    <input id="music-capture-url" placeholder="Enlace externo · YouTube, etc." style="margin-top:8px;width:100%;box-sizing:border-box">
+    <input id="music-capture-tags" placeholder="Etiquetas: BAILAR, BUEN ROLLO, CALMAR…" style="margin-top:8px;width:100%;box-sizing:border-box">
+    <button class="btn btn-primary btn-sm" style="margin-top:10px" onclick="capturarMusica()">Guardar</button>
+  </div>
+  <div class="card">
+    <div class="card-title">♪ MIS CANCIONES</div>
+    <p class="hobby-lead">Canciones concretas que quieres conservar, separadas de tus artistas favoritos.</p>
+    <div id="musica-canciones-lista"></div>
+    <details style="margin-top:12px"><summary>Añadir canción</summary><div style="display:grid;gap:8px;margin-top:12px"><input id="song-title" placeholder="Título"><input id="song-artist" placeholder="Artista"><input id="song-url" placeholder="Enlace externo"><input id="song-tags" placeholder="Etiquetas: BAILAR, CAMINAR…"><textarea id="song-notes" rows="2" placeholder="Por qué la guardas o qué estado te ayuda a explorar"></textarea><label style="font-size:13px"><input type="checkbox" id="song-state"> Me cambia el estado</label><button class="btn btn-outline btn-sm" onclick="guardarCancion()">Guardar canción</button></div></details>
+  </div>
+  <div class="card">
+    <div class="card-title">◌ MIS SESIONES</div>
+    <p class="hobby-lead">Playlists, sets o selecciones para cocinar, bailar, caminar o estar de noche.</p>
+    <div id="musica-sesiones-lista"></div>
+    <details style="margin-top:12px"><summary>Añadir sesión</summary><div style="display:grid;gap:8px;margin-top:12px"><input id="session-name" placeholder="Nombre de la sesión"><input id="session-url" placeholder="Enlace externo"><input id="session-type" placeholder="Tipo: playlist, DJ set, mezcla…"><input id="session-tags" placeholder="Etiquetas"><textarea id="session-notes" rows="2" placeholder="Notas"></textarea><button class="btn btn-outline btn-sm" onclick="guardarSesionMusical()">Guardar sesión</button></div></details>
+  </div>
+  <div class="card">
+    <div class="card-title">♧ MIS ARTISTAS</div>
+    <p class="hobby-lead">Artistas o grupos que te gustan, sin confundirlos con una canción concreta.</p>
+    <div id="musica-artistas-lista"></div>
+    <details style="margin-top:12px"><summary>Añadir artista</summary><div style="display:grid;gap:8px;margin-top:12px"><input id="artist-name" placeholder="Artista o grupo"><textarea id="artist-notes" rows="2" placeholder="Qué te atrae de su música"></textarea><button class="btn btn-outline btn-sm" onclick="guardarArtistaMusical()">Guardar artista</button></div></details>
+  </div>
+</div>
+
 <!-- TAB SALUD -->
 <div id="tab-salud" class="tab">
   <div class="card health-options-card">
@@ -1360,6 +1396,16 @@ body[data-momento="noche"] .now-action{border-top-color:#756b61!important;backgr
     <div class="routine-note"><strong>La medida es la continuidad.</strong> Termina con ganas de hacer un poco más. Si el Aquiles o las manos dan dolor agudo, paras y adaptas; nada de saltos ni rebotes mientras haya dolor.</div>
   </div>
 
+  <div class="card fluir-card">
+    <div class="card-title">∿ FLUIR</div>
+    <p class="routine-intro">Moverse no siempre es entrenar. Aquí el cuerpo puede cambiar de estado con música, curiosidad y poca preparación.</p><p class="choice-note">Inspiración conceptual: movilidad, columna, fuerza, fluidez y conciencia corporal. No es un método cerrado.</p>
+    <div class="today-choice-grid">
+      <div class="choice-item"><span><strong>DESPERTAR</strong><small>3–5 min · movilidad suave + música</small></span><button class="btn btn-outline btn-sm" onclick="registrarFluir('despertar')">Empezar</button></div>
+      <div class="choice-item"><span><strong>SOLTAR</strong><small>1–3 canciones · bailar sin coreografía</small></span><button class="btn btn-outline btn-sm" onclick="registrarFluir('soltar')">Empezar</button></div>
+      <div class="choice-item"><span><strong>EXPLORAR</strong><small>10–20 min · columna, caderas, brazos y espacio</small></span><button class="btn btn-outline btn-sm" onclick="registrarFluir('explorar')">Empezar</button></div>
+    </div>
+    <p class="choice-note">Sin objetivos, rachas ni obligación. Si hoy no te apetece, no pasa nada.</p>
+  </div>
   <div class="card health-meditation-choice">
     <div class="card-title">Meditación para elegir durante el día</div>
     <p class="routine-intro">Una pausa breve, sentada o tumbada. No tienes que esperar a la noche.</p>
@@ -1709,6 +1755,7 @@ body[data-momento="noche"] .now-action{border-top-color:#756b61!important;backgr
       <button onclick="ayudaYuki('interior')">Qué es el clima interior</button>
       <button onclick="ayudaYuki('disponible')">Qué significa tiempo disponible</button>
       <button onclick="ayudaYuki('musica')">Cómo utiliza Yuki la música</button>
+      <button onclick="ayudaYuki('fluir')">Qué es FLUIR</button>
       <button onclick="ayudaYuki('escalas')">Cómo funcionan las tres escalas</button>
       <button onclick="ayudaYuki('sistema')">Cómo funciona «Mi sistema»</button>
       <button onclick="ayudaYuki('guardar')">Cómo guardar cosas</button>
@@ -1828,6 +1875,7 @@ function tab(id, btn, fromHistory=false) {
   if(id === 'check') { renderCheckHistorial(); renderAhoraDashboard(); }
   if(id === 'cierre') initCierre();
   if(id === 'reflexiones') initReflexiones();
+  if(id === 'musica') renderMusica();
   if(id === 'salud') { initSalud(); initRutinaMovimiento(); initPlanMovimiento(); }
   if(id === 'guia') initGuia();
   if(id === 'belleza') initBelleza();
@@ -2029,7 +2077,7 @@ function flujoElegir(campo,btn){btn.parentElement.querySelectorAll('button').for
 function flujoElegirTiempo(min,btn){flujoMinutos=min;guardar('ahora_minutos',min);btn.parentElement.querySelectorAll('button').forEach(b=>b.classList.remove('sel'));btn.classList.add('sel');}
 function flujoContexto(){const humor=document.querySelector('#flow-humor .sel')?.dataset.val || checkState.humor || '';const energia=document.querySelector('#flow-energia .sel')?.dataset.val || checkState.energia || '';const intencion=document.getElementById('flow-intencion')?.value.trim() || '';return {humor,energia,intencion};}
 function flujoProponer(){const x=flujoContexto();if(!x.humor&&!x.energia){toast('Elige cómo llegas o tu energía');return;}checkState={...checkState,humor:x.humor,energia:x.energia,intencion:x.intencion};guardarCheck();const c=estadoAhora();flujoPropuesta=propuestaCandidata(c);guardarPropuestaActual(flujoPropuesta);flujoMostrarPropuesta(flujoPropuesta);}
-function flujoMostrarPropuesta(p){const content=document.getElementById('yuki-flow-content'), w=flujoWeather || cAhoraWeather(), c=estadoAhora();if(!p){content.innerHTML='<div class="yuki-flow-kicker">YUKI TE PROPONE</div><h1 class="yuki-flow-title">Hoy puedes parar aquí.</h1><p class="yuki-flow-lead">No aparece una acción que necesite ocupar este momento.</p><button class="btn btn-primary yuki-flow-primary" onclick="cerrarFlujoYuki()">Volver a Hoy</button>';return;}content.innerHTML=`<div class="yuki-flow-kicker">YUKI TE PROPONE</div><h1 class="yuki-flow-title">Una sola cosa</h1><div class="yuki-flow-summary"><div><span>Clima exterior</span><b>${w&&w.error?'No disponible':w?`${weatherIcon(w.code)} ${weatherLabel(w.code)} · ${Math.round(w.temperature)} °C`:'—'}</b></div><div><span>Clima interior</span><b>${c.check?.humor||'—'} · ${c.check?.energia||'—'}/5</b></div><div><span>Tiempo disponible</span><b>${flujoMinutos===30?'30+':flujoMinutos} min</b></div></div><div class="yuki-flow-proposal">${p.title}</div><div class="yuki-flow-reason">${p.reason}</div><div class="yuki-flow-meta">Duración aproximada · ${p.minutes||10} minutos</div><div class="yuki-flow-actions"><button onclick="flujoDecision('hecho')">Hecho</button><button onclick="flujoDecision('otra')">Otra opción</button><button onclick="flujoDecision('no_hoy')">No hoy</button><button onclick="flujoDecision('no_me_sirve')">No me sirve</button></div><div id="flow-reasons" class="yuki-flow-reasons" style="display:none"><div class="yuki-flow-label">¿Qué no encaja?</div><button onclick="flujoMotivo('demasiado esfuerzo')">Demasiado esfuerzo</button><button onclick="flujoMotivo('no me apetece')">No me apetece</button><button onclick="flujoMotivo('no tengo tiempo')">No tengo tiempo</button><button onclick="flujoMotivo('no es importante ahora')">No es importante ahora</button></div>`;}
+function flujoMostrarPropuesta(p){const content=document.getElementById('yuki-flow-content'), w=flujoWeather || cAhoraWeather(), c=estadoAhora();if(!p){content.innerHTML='<div class="yuki-flow-kicker">YUKI TE PROPONE</div><h1 class="yuki-flow-title">Hoy puedes parar aquí.</h1><p class="yuki-flow-lead">No aparece una acción que necesite ocupar este momento.</p><button class="btn btn-primary yuki-flow-primary" onclick="cerrarFlujoYuki()">Volver a Hoy</button>';return;}content.innerHTML=`<div class="yuki-flow-kicker">YUKI TE PROPONE</div><h1 class="yuki-flow-title">Una sola cosa</h1><div class="yuki-flow-summary"><div><span>Clima exterior</span><b>${w&&w.error?'No disponible':w?`${weatherIcon(w.code)} ${weatherLabel(w.code)} · ${Math.round(w.temperature)} °C`:'—'}</b></div><div><span>Clima interior</span><b>${c.check?.humor||'—'} · ${c.check?.energia||'—'}/5</b></div><div><span>Tiempo disponible</span><b>${flujoMinutos===30?'30+':flujoMinutos} min</b></div></div><div class="yuki-flow-proposal">${p.title}</div><div class="yuki-flow-reason">${p.reason}</div><div class="yuki-flow-meta">Duración aproximada · ${p.minutes||10} minutos</div>${p.musicUrl&&/^https?:\\/\\//i.test(p.musicUrl)?`<a class="routine-video-link" href="${p.musicUrl}" target="_blank" rel="noopener" style="display:inline-block;margin-top:10px">Abrir ${p.musicLabel||'música'} ↗</a>`:''}<div class="yuki-flow-actions"><button onclick="flujoDecision('hecho')">Hecho</button><button onclick="flujoDecision('otra')">Otra opción</button><button onclick="flujoDecision('no_hoy')">No hoy</button><button onclick="flujoDecision('no_me_sirve')">No me sirve</button></div><div id="flow-reasons" class="yuki-flow-reasons" style="display:none"><div class="yuki-flow-label">¿Qué no encaja?</div><button onclick="flujoMotivo('demasiado esfuerzo')">Demasiado esfuerzo</button><button onclick="flujoMotivo('no me apetece')">No me apetece</button><button onclick="flujoMotivo('no tengo tiempo')">No tengo tiempo</button><button onclick="flujoMotivo('no es importante ahora')">No es importante ahora</button></div>`;}
 function cAhoraWeather(){return cargar('weather_context',null);}
 function flujoDecision(tipo){if(!flujoPropuesta)return;if(tipo==='no_me_sirve'){document.getElementById('flow-reasons').style.display='block';return;}if(tipo==='otra'){registrarRespuestaAhora('cambiada');flujoPropuesta=propuestaCandidata(estadoAhora());guardarPropuestaActual(flujoPropuesta);flujoMostrarPropuesta(flujoPropuesta);return;}registrarRespuestaAhora(tipo==='hecho'?'hecho':'no_hoy','');flujoFinal(tipo==='hecho'?'Hecho. Puedes parar aquí.':'Lo dejamos para otro momento.');}
 function flujoMotivo(motivo){registrarRespuestaAhora('no_me_sirve',motivo);flujoFinal('Gracias. Yuki tendrá en cuenta que esta propuesta no encajaba ahora.');}
@@ -2080,8 +2128,12 @@ function propuestaCandidata(c) {
   const pideAire = /despej|aire|salir|cuerpo|mover|ansiedad|tensión|tension/.test(necesidad) || /bajo|tenso|😔|😤/.test(humor);
   const pideCasa = /casa|orden|limpiar|recoger/.test(necesidad) || /casa|orden/.test(prioridades);
   const pideCrear = /crear|creativ|hobby|música|musica|curios/.test(necesidad) || /creativ|hobby|música|musica/.test(prioridades);
-  if (pideAire && !movementDone) add('caminar-10', 'Sal a caminar 10 minutos.', weatherComfortable ? 'Hay un momento exterior amable y necesitas despejarte; el primer paso puede ser corporal, sin exigirte rendimiento.' : (weatherRain ? 'Necesitas despejarte, pero fuera hay lluvia; Yuki deja abierta una opción corporal sin salir.' : 'Necesitas despejarte y el primer paso puede ser corporal, sin exigirte rendimiento.'), 'salud', weatherComfortable ? 113 : (weatherRain ? 101 : 108), 10);
-  if (/despej|bail|danza|mover/.test(necesidad) && e >= 2 && !movementDone) add('bailar-10', 'Pon una canción y baila 5–10 minutos.', weatherRain ? 'Hoy fuera hay lluvia; creo que puede ayudarte a despejarte desde el cuerpo sin tener que salir.' : 'Creo que ahora puede ayudarte a despejarte desde el cuerpo. Empieza suave y termina con movimientos lentos.', 'hobbies', weatherRain ? 116 : 110, 10);
+  const songForDance = c.canciones.find(s => tagsMusica(s.tags).some(t => /bailar|buen rollo|activar|mover/i.test(t)));
+  const songForActivate = c.canciones.find(s => tagsMusica(s.tags).some(t => /activar|buen rollo/i.test(t)));
+  const sessionForWalk = c.sesiones.find(s => tagsMusica(s.tags).some(t => /caminar|pasear|andar/i.test(t)));
+  if (pideAire && !movementDone) { add('caminar-10', sessionForWalk ? `Camina 10 minutos con «${sessionForWalk.nombre}».` : 'Sal a caminar 10 minutos.', weatherComfortable ? 'Hay un momento exterior amable y necesitas despejarte; el primer paso puede ser corporal, sin exigirte rendimiento.' : (weatherRain ? 'Necesitas despejarte, pero fuera hay lluvia; Yuki deja abierta una opción corporal sin salir.' : 'Necesitas despejarte y el primer paso puede ser corporal, sin exigirte rendimiento.'), 'salud', weatherComfortable ? 113 : (weatherRain ? 101 : 108), 10); const p=propuestas.find(x=>x.id==='caminar-10'); if(sessionForWalk&&p){p.musicUrl=sessionForWalk.enlace;p.musicLabel=sessionForWalk.nombre;} }
+  if (/despej|bail|danza|mover/.test(necesidad) && e >= 2 && !movementDone) { add('bailar-10', songForDance ? `Baila con «${songForDance.titulo}».` : 'Pon una canción y baila 5–10 minutos.', weatherRain ? 'Hoy fuera hay lluvia; creo que puede ayudarte a despejarte desde el cuerpo sin tener que salir.' : (songForDance ? 'Has guardado esta canción como una puerta hacia el movimiento. Empieza sin exigirte coreografía.' : 'Creo que ahora puede ayudarte a despejarte desde el cuerpo. Empieza suave y termina con movimientos lentos.'), 'hobbies', weatherRain ? 116 : 110, 10); const p=propuestas.find(x=>x.id==='bailar-10'); if(songForDance&&p){p.musicUrl=songForDance.enlace;p.musicLabel=songForDance.titulo;}}
+  if (/activ|energía|energia/.test(necesidad) && e >= 2 && !movementDone && songForActivate) { add('activar-musica-5', `Pon «${songForActivate.titulo}» y muévete durante una canción.`, 'La has marcado como una canción que puede ayudarte a activar; la propuesta es probarla, no garantizar un resultado.', 'hobbies', 109, 5); const p=propuestas.find(x=>x.id==='activar-musica-5'); if(p){p.musicUrl=songForActivate.enlace;p.musicLabel=songForActivate.titulo;}}
   if (urgente && e >= 3) add('tarea-' + urgente.id, `Haz una sola tarea urgente: «${urgente.texto}».`, 'Hay una tarea marcada como urgente; la propuesta es tocar solo esa y parar.', urgente.categoria === 'urbana' ? 'urbana' : 'tareas', 106, 10);
   if (pideCasa) add('casa-10', 'Ordena una zona pequeña durante 10 minutos.', 'Has señalado que necesitas espacio u orden. Solo una superficie, no toda la casa.', 'casa', 103, 10);
   if (e >= 4 && mins >= 15 && !movementDone) add('power-start-15', 'Haz Power Start durante 15 minutos.', 'Hoy hay energía suficiente para una práctica breve y concreta; no hace falta convertirla en una sesión larga.', 'salud', 101 + (/movimiento|cuerpo|salud/.test(prioridades) ? 6 : 0), 15);
@@ -4294,6 +4346,31 @@ function addHobbyProposal() {
 }
 function removeHobbyProposal(i) { const p = cargar('hobby_propuestas', []); p.splice(i,1); guardar('hobby_propuestas',p); renderHobbies(); }
 
+// ── MÚSICA · canciones, sesiones y artistas ───────────
+const MUSIC_TAGS_BASE=['BAILAR','BUEN ROLLO','CAMINAR','ACTIVAR','CALMAR','CONCENTRAR','NOCHE','ELECTRÓNICA','DESCUBRIMIENTO','ME ENCANTA'];
+function escMusica(v){return String(v??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));}
+function tagsMusica(v){return (Array.isArray(v)?v:String(v||'').split(',')).map(x=>String(x).trim().toUpperCase()).filter(Boolean).filter((x,i,a)=>a.indexOf(x)===i);}
+function enlaceMusica(v){try{const u=new URL(String(v||'').trim());return /^https?:$/.test(u.protocol)?u.href:'';}catch(e){return '';}}
+function listaMusica(key){const x=cargar(key,[]);return Array.isArray(x)?x:[];}
+function guardarListaMusica(key,list){guardar(key,list);renderMusica();}
+function etiquetasHTML(tags){return tagsMusica(tags).map(t=>`<span class="tag-pill">${escMusica(t)}</span>`).join('');}
+function renderMusica(){
+  const songs=listaMusica('musica_canciones'), sessions=listaMusica('musica_sesiones'), artists=listaMusica('musica_artistas');
+  const songEl=document.getElementById('musica-canciones-lista'), sesEl=document.getElementById('musica-sesiones-lista'), artEl=document.getElementById('musica-artistas-lista');
+  if(songEl) songEl.innerHTML=songs.length?songs.map(s=>`<div class="music-record"><div><strong>${escMusica(s.titulo)}</strong>${s.artista?`<small>${escMusica(s.artista)}</small>`:''}${s.notas?`<p>${escMusica(s.notas)}</p>`:''}<div>${etiquetasHTML(s.tags)}${s.cambiaEstado?'<span class="tag-pill">ME CAMBIA EL ESTADO</span>':''}</div></div><div class="music-record-actions">${enlaceMusica(s.enlace)?`<a href="${enlaceMusica(s.enlace)}" target="_blank" rel="noopener">Abrir ↗</a>`:''}<button onclick="editarCancion('${s.id}')">Editar</button><button onclick="borrarRegistroMusica('musica_canciones','${s.id}')">×</button></div></div>`).join(''):'<p class="book-note">Todavía no hay canciones guardadas.</p>';
+  if(sesEl) sesEl.innerHTML=sessions.length?sessions.map(s=>`<div class="music-record"><div><strong>${escMusica(s.nombre)}</strong>${s.tipo?`<small>${escMusica(s.tipo)}</small>`:''}${s.notas?`<p>${escMusica(s.notas)}</p>`:''}<div>${etiquetasHTML(s.tags)}</div></div><div class="music-record-actions">${enlaceMusica(s.enlace)?`<a href="${enlaceMusica(s.enlace)}" target="_blank" rel="noopener">Abrir ↗</a>`:''}<button onclick="editarSesionMusical('${s.id}')">Editar</button><button onclick="borrarRegistroMusica('musica_sesiones','${s.id}')">×</button></div></div>`).join(''):'<p class="book-note">Todavía no hay sesiones guardadas.</p>';
+  if(artEl) artEl.innerHTML=artists.length?artists.map(a=>`<div class="music-record"><div><strong>${escMusica(a.nombre)}</strong>${a.notas?`<p>${escMusica(a.notas)}</p>`:''}</div><div class="music-record-actions"><button onclick="editarArtistaMusical('${a.id}')">Editar</button><button onclick="borrarRegistroMusica('musica_artistas','${a.id}')">×</button></div></div>`).join(''):'<p class="book-note">Todavía no hay artistas guardados.</p>';
+}
+function capturarMusica(){const type=document.getElementById('music-capture-type')?.value||'cancion',name=document.getElementById('music-capture-name')?.value.trim(),artist=document.getElementById('music-capture-artist')?.value.trim(),url=enlaceMusica(document.getElementById('music-capture-url')?.value),tags=tagsMusica(document.getElementById('music-capture-tags')?.value);if(!name){toast('Escribe un título o nombre');return;}const id=String(Date.now());if(type==='cancion')guardar('musica_canciones',[...listaMusica('musica_canciones'),{id,titulo:name,artista:artist,enlace:url,tags,notas:'',cambiaEstado:false}]);else if(type==='sesion')guardar('musica_sesiones',[...listaMusica('musica_sesiones'),{id,nombre:name,enlace:url,tipo:'',tags,notas:''}]);else guardar('musica_artistas',[...listaMusica('musica_artistas'),{id,nombre:name,notas:''}]);['music-capture-name','music-capture-artist','music-capture-url','music-capture-tags'].forEach(x=>{const el=document.getElementById(x);if(el)el.value='';});renderMusica();toast('Guardado');}
+function guardarCancion(){const titulo=document.getElementById('song-title')?.value.trim(),artista=document.getElementById('song-artist')?.value.trim(),enlace=enlaceMusica(document.getElementById('song-url')?.value);if(!titulo){toast('Escribe el título de la canción');return;}const list=listaMusica('musica_canciones');list.unshift({id:String(Date.now()),titulo,artista,enlace,tags:tagsMusica(document.getElementById('song-tags')?.value),notas:document.getElementById('song-notes')?.value.trim()||'',cambiaEstado:!!document.getElementById('song-state')?.checked});guardarListaMusica('musica_canciones',list);['song-title','song-artist','song-url','song-tags','song-notes'].forEach(x=>{const el=document.getElementById(x);if(el)el.value='';});const check=document.getElementById('song-state');if(check)check.checked=false;}
+function guardarSesionMusical(){const nombre=document.getElementById('session-name')?.value.trim();if(!nombre){toast('Escribe un nombre para la sesión');return;}const list=listaMusica('musica_sesiones');list.unshift({id:String(Date.now()),nombre,enlace:enlaceMusica(document.getElementById('session-url')?.value),tipo:document.getElementById('session-type')?.value.trim()||'',tags:tagsMusica(document.getElementById('session-tags')?.value),notas:document.getElementById('session-notes')?.value.trim()||''});guardarListaMusica('musica_sesiones',list);['session-name','session-url','session-type','session-tags','session-notes'].forEach(x=>{const el=document.getElementById(x);if(el)el.value='';});}
+function guardarArtistaMusical(){const nombre=document.getElementById('artist-name')?.value.trim();if(!nombre){toast('Escribe el nombre del artista');return;}const list=listaMusica('musica_artistas');list.unshift({id:String(Date.now()),nombre,notas:document.getElementById('artist-notes')?.value.trim()||''});guardarListaMusica('musica_artistas',list);['artist-name','artist-notes'].forEach(x=>{const el=document.getElementById(x);if(el)el.value='';});}
+function borrarRegistroMusica(key,id){guardarListaMusica(key,listaMusica(key).filter(x=>x.id!==id));}
+function editarCancion(id){const list=listaMusica('musica_canciones'),s=list.find(x=>x.id===id);if(!s)return;s.tags=tagsMusica(prompt('Etiquetas separadas por comas',tagsMusica(s.tags).join(', '))??tagsMusica(s.tags).join(', '));s.notas=prompt('Notas o motivo',s.notas||'')??s.notas;guardarListaMusica('musica_canciones',list);}
+function editarSesionMusical(id){const list=listaMusica('musica_sesiones'),s=list.find(x=>x.id===id);if(!s)return;s.tags=tagsMusica(prompt('Etiquetas separadas por comas',tagsMusica(s.tags).join(', '))??tagsMusica(s.tags).join(', '));s.notas=prompt('Notas',s.notas||'')??s.notas;guardarListaMusica('musica_sesiones',list);}
+function editarArtistaMusical(id){const list=listaMusica('musica_artistas'),a=list.find(x=>x.id===id);if(!a)return;a.notas=prompt('Notas',a.notas||'')??a.notas;guardarListaMusica('musica_artistas',list);}
+function registrarFluir(tipo){const key='fluir_sesiones_'+hoyStr(),list=cargar(key,[]);list.push({tipo,fecha:new Date().toISOString()});guardar(key,list);const rutina=cargar('rutina_movimiento_'+hoyStr(),{});rutina['fluir-'+tipo]=true;guardar('rutina_movimiento_'+hoyStr(),rutina);toast('Fluir registrado · sin puntuación');}
+
 function aplicarAtmoAhora() {
   const h = new Date().getHours();
   const momento = h < 12 ? 'manana' : h < 17 ? 'mediodia' : h < 21 ? 'atardecer' : 'noche';
@@ -4407,7 +4484,7 @@ function abrirAyudaYuki(){ const modal=document.getElementById('modal-ayuda-yuki
 function cerrarAyudaYuki(){ const modal=document.getElementById('modal-ayuda-yuki'); if(modal) modal.classList.remove('open'); }
 function ayudaYuki(tipo){
   const el=document.getElementById('ayuda-yuki-respuesta'); if(!el)return;
-  const textos={ahora:'Pulsa «Yuki, ¿qué hago?». Yuki obtiene primero el clima exterior, después recoge cómo llegas y cuánto tiempo disponible tienes. Con ese contexto te propone una sola cosa. Puedes marcar Hecho, Otra opción, No hoy o No me sirve.',exterior:'Es el tiempo meteorológico real del lugar: temperatura, cielo, lluvia y viento. Yuki lo utiliza como una variable más del contexto; no es lo mismo que los minutos disponibles.',interior:'Es cómo llegas tú hoy: Alegre, Bien, Neutro, Bajo o Tenso. Puedes añadir qué necesitas sin tener que analizarte.',disponible:'Son los minutos reales que tienes para hacer el siguiente paso: 10, 20 o 30+ minutos. No significa el tiempo meteorológico.',musica:'Yuki no reproduce música dentro de la aplicación. La música se abre mediante enlaces externos en YouTube u otro servicio que utilices. La estructura para guardar canciones y sesiones queda preparada para incorporarla sin crear un reproductor propio.',escalas:'Ahora es el paso pequeño. Después es una continuación posible. Hoy es una única cosa importante. No son listas que tengas que completar.',sistema:'Mi sistema es la parte editable de Yuki: prioridades, reglas, prácticas, rutinas, lugares, proyectos y personas.',guardar:'Entra en la sección que corresponda y utiliza su botón Guardar. Lo que escribas queda en este dispositivo.',aprende:'Yuki aprende de tus decisiones: Hecho, No hoy y No me sirve. No interpreta un rechazo como falta de disciplina.',ligero:'Modo Ligero todavía no está disponible en esta versión.'};
+  const textos={ahora:'Pulsa «Yuki, ¿qué hago?». Yuki obtiene primero el clima exterior, después recoge cómo llegas y cuánto tiempo disponible tienes. Con ese contexto te propone una sola cosa. Puedes marcar Hecho, Otra opción, No hoy o No me sirve.',exterior:'Es el tiempo meteorológico real del lugar: temperatura, cielo, lluvia y viento. Yuki lo utiliza como una variable más del contexto; no es lo mismo que los minutos disponibles.',interior:'Es cómo llegas tú hoy: Alegre, Bien, Neutro, Bajo o Tenso. Puedes añadir qué necesitas sin tener que analizarte.',disponible:'Son los minutos reales que tienes para hacer el siguiente paso: 10, 20 o 30+ minutos. No significa el tiempo meteorológico.',musica:'En Música puedes capturar canciones, sesiones y artistas por separado, añadir etiquetas y guardar por qué una canción te cambia el estado. Yuki puede utilizar esa memoria para proponerte movimiento. La reproducción ocurre fuera de Yuki, mediante el enlace externo.',fluir:'FLUIR no es entrenar. Es bailar, explorar, soltar tensión o moverte con música y poca preparación. Puedes elegir Despertar, Soltar o Explorar. Se registra internamente para que Yuki conozca tus ritmos, sin objetivos, rachas ni puntuaciones.',escalas:'Ahora es el paso pequeño. Después es una continuación posible. Hoy es una única cosa importante. No son listas que tengas que completar.',sistema:'Mi sistema es la parte editable de Yuki: prioridades, reglas, prácticas, rutinas, lugares, proyectos y personas.',guardar:'Entra en la sección que corresponda y utiliza su botón Guardar. Lo que escribas queda en este dispositivo.',aprende:'Yuki aprende de tus decisiones: Hecho, No hoy y No me sirve. No interpreta un rechazo como falta de disciplina.',ligero:'Modo Ligero todavía no está disponible en esta versión.'};
   el.textContent=textos[tipo]||'';
 }
 window.addEventListener('resize',()=>{if(onboardingActive) onboardingRender();});
