@@ -1918,10 +1918,15 @@ function elegirTiempoAhora(min, btn) {
 function abrirCuadernoHoy() {
   const shell = document.querySelector('.home-detail-book');
   const button = document.querySelector('.home-detail-toggle');
+  const form = document.getElementById('check-form');
   if (!shell) return;
   shell.style.display = 'block';
   if (button) button.style.display = 'none';
-  shell.scrollIntoView({behavior:'smooth', block:'start'});
+  // Abrir directamente la página del clima y llevarla al campo real,
+  // no al principio de la portada, para que el siguiente paso sea evidente.
+  if (typeof initBook === 'function') initBook();
+  if (typeof bookShow === 'function') bookShow(1);
+  setTimeout(() => form?.scrollIntoView({behavior:'smooth', block:'start'}), 80);
 }
 function abrirAreaAhora(area) {
   const ids = {casa:'casa', urbana:'tareas', cocina:'cocina', hobbies:'hobbies', cierre:'cierre', salud:'salud', tareas:'tareas'};
@@ -2029,10 +2034,10 @@ function yukiQueHago(abrirRegistro=false, interactivo=false) {
     const today = document.getElementById('now-today');
     if (after) after.textContent = 'Cuando registres tu clima, Yuki te mostrará una continuación posible.';
     if (today) today.textContent = 'Todavía no hace falta decidir la prioridad del día.';
-    if (wrap) wrap.innerHTML = '<a class="now-do" href="#" onclick="abrirCuadernoHoy();return false">Abrir mi registro →</a>';
+    if (wrap) wrap.innerHTML = '<a class="now-do" href="#" onclick="abrirCuadernoHoy();return false">Elegir mi clima →</a>';
     pintarFeedback(false);
     if (status) status.textContent = abrirRegistro ? 'Abriendo el registro…' : '';
-    if (abrirRegistro) { abrirCuadernoHoy(); setTimeout(() => bookShow(1), 40); }
+    if (abrirRegistro) { abrirCuadernoHoy(); }
     return;
   }
   const p = propuestaCandidata(c);
