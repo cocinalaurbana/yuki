@@ -698,7 +698,7 @@ label{font-size:17px}
 .now-climate div{border-top:0!important;border-right:1px solid var(--linea);padding:0 18px 0 0!important;margin-right:18px}
 .now-climate div:last-child{border-right:0;margin-right:0}
 .now-climate span{font-size:10px!important;letter-spacing:.15em!important;color:var(--suave)!important}
-.now-climate b{font-family:'Playfair Display',Georgia,serif;font-size:17px!important;font-weight:400!important;line-height:1.25;margin-top:6px!important;max-width:180px;overflow-wrap:anywhere}
+.now-climate b{font-family:'Playfair Display',Georgia,serif;font-size:17px!important;font-weight:400!important;line-height:1.25;margin-top:6px!important;max-width:180px;overflow-wrap:normal;word-break:normal}.now-climate .now-need{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;overflow:hidden}.now-need-more{border:0;background:transparent;color:var(--arcilla);font:inherit;font-size:15px;padding:1px 0;cursor:pointer}.now-need-more.expanded{font-size:11px;margin-top:5px}
 .home-detail-toggle{width:auto!important;margin:0!important;padding:8px 0!important;border:0!important;border-bottom:1px solid var(--linea)!important;border-radius:0!important;background:transparent!important;color:var(--suave)!important;font-size:12px!important;align-self:flex-end}
 .home-detail-toggle:hover{color:var(--arcilla)!important;border-color:var(--arcilla)!important}
 .now-card{background:transparent!important;border:0!important;border-top:1px solid var(--linea)!important;border-radius:0!important;box-shadow:none!important;padding:23px 0!important;margin:0!important}
@@ -2291,8 +2291,12 @@ function renderClimaAhora() {
     el.innerHTML = '<div><span>Cuerpo</span><b>Sin registrar</b></div><div><span>Energía</span><b>Sin registrar</b></div><div><span>Necesidad</span><b>Sin registrar</b></div>';
     return;
   }
-  el.innerHTML = `<div><span>Cuerpo</span><b>${c.humor || '—'}</b></div><div><span>Energía</span><b>${c.energia ? c.energia + '/5' : '—'}</b></div><div><span>Necesidad</span><b>${c.intencion || 'Sin escribir'}</b></div>`;
+  const necesidad = c.intencion || 'Sin escribir';
+  const corta = necesidad.length > 84 ? necesidad.slice(0,81).trimEnd() + '…' : necesidad;
+  const larga = necesidad.length > corta.length;
+  el.innerHTML = `<div><span>Cuerpo</span><b>${escMusica(c.humor || '—')}</b></div><div><span>Energía</span><b>${c.energia ? c.energia + '/5' : '—'}</b></div><div><span>Necesidad</span><b class="now-need" data-full="${escMusica(necesidad)}">${escMusica(corta)}</b>${larga ? `<button type="button" class="now-need-more" data-full="${escMusica(necesidad)}" data-short="${escMusica(corta)}" onclick="mostrarNecesidadAhora(this)" aria-label="Leer la necesidad completa">…</button>` : ''}</div>`;
 }
+function mostrarNecesidadAhora(btn){const b=btn.previousElementSibling;if(!b)return;const expanded=btn.classList.toggle('expanded');b.textContent=expanded?btn.dataset.full:btn.dataset.short;btn.textContent=expanded?'menos':'…';btn.title=expanded?'Mostrar menos':'Leer completa';}
 function renderSemanaHome() {
   const hoy = hoyStr(), c = estadoAhora(), checks = cargar('checks', {}), tareas = cargar('tareas', []);
   const fechas = Array.from({length:7}, (_,i) => fechaAnterior(hoy, i));
