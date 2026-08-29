@@ -698,7 +698,7 @@ label{font-size:17px}
 .now-climate div{border-top:0!important;border-right:1px solid var(--linea);padding:0 18px 0 0!important;margin-right:18px}
 .now-climate div:last-child{border-right:0;margin-right:0}
 .now-climate span{font-size:10px!important;letter-spacing:.15em!important;color:var(--suave)!important}
-.now-climate b{font-family:'Playfair Display',Georgia,serif;font-size:17px!important;font-weight:400!important;line-height:1.25;margin-top:6px!important;max-width:180px;overflow-wrap:normal;word-break:normal}.now-climate .now-need{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;overflow:hidden}.now-need-more{border:0;background:transparent;color:var(--arcilla);font:inherit;font-size:15px;padding:1px 0;cursor:pointer}.now-need-more.expanded{font-size:11px;margin-top:5px}
+.now-climate b{font-family:'Playfair Display',Georgia,serif;font-size:17px!important;font-weight:400!important;line-height:1.25;margin-top:6px!important;max-width:180px;overflow-wrap:normal;word-break:normal}.lunar-current{display:flex;justify-content:space-between;gap:12px;align-items:baseline;border-bottom:1px solid var(--linea);padding-bottom:10px;margin-bottom:4px}.lunar-current strong{font-family:'Playfair Display',Georgia,serif;font-size:17px;font-weight:400}.lunar-current small,.lunar-task small,.lunar-task span{display:block;color:var(--suave);font-size:11px;line-height:1.45}.lunar-task{padding:10px 0;border-bottom:1px solid var(--linea)}.lunar-task:last-child{border-bottom:0}.lunar-task strong{font-size:13px;font-weight:500}.lunar-task span{margin-top:3px}.lunar-task-inline{display:block;color:var(--suave);font-size:10px;margin-top:3px}.now-climate .now-need{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;overflow:hidden}.now-need-more{border:0;background:transparent;color:var(--arcilla);font:inherit;font-size:15px;padding:1px 0;cursor:pointer}.now-need-more.expanded{font-size:11px;margin-top:5px}
 .home-detail-toggle{width:auto!important;margin:0!important;padding:8px 0!important;border:0!important;border-bottom:1px solid var(--linea)!important;border-radius:0!important;background:transparent!important;color:var(--suave)!important;font-size:12px!important;align-self:flex-end}
 .home-detail-toggle:hover{color:var(--arcilla)!important;border-color:var(--arcilla)!important}
 .now-card{background:transparent!important;border:0!important;border-top:1px solid var(--linea)!important;border-radius:0!important;box-shadow:none!important;padding:23px 0!important;margin:0!important}
@@ -1065,6 +1065,11 @@ body[data-momento="noche"] .now-action{border-top-color:#756b61!important;backgr
   <div class="card">
     <div class="card-title">📝 Notas del ciclo</div>
     <textarea id="luna-notas" placeholder="Observaciones sobre este ciclo lunar..." rows="3" onchange="guardarLunaNotas()"></textarea>
+  </div>
+  <div class="card">
+    <div class="card-title">🌙 Ritmos lunares · referencia opcional</div>
+    <p class="text-suave" style="font-size:12px;line-height:1.5">Yuki puede señalar tareas como depilarte, cortarte el pelo o trasplantar. Las asociaciones con el crecimiento del pelo o las plantas pertenecen a tradiciones lunares y no están demostradas de forma concluyente; no sustituyen el cuidado real.</p>
+    <div id="luna-ritmos" style="margin-top:12px"></div>
   </div>
 </div>
 
@@ -1756,6 +1761,7 @@ body[data-momento="noche"] .now-action{border-top-color:#756b61!important;backgr
       <button onclick="ayudaYuki('disponible')">Qué significa tiempo disponible</button>
       <button onclick="ayudaYuki('musica')">Cómo utiliza Yuki la música</button>
       <button onclick="ayudaYuki('fluir')">Qué es FLUIR</button>
+      <button onclick="ayudaYuki('luna')">Cómo usa Yuki los ritmos lunares</button>
       <button onclick="ayudaYuki('escalas')">Cómo funcionan las tres escalas</button>
       <button onclick="ayudaYuki('sistema')">Cómo funciona «Mi sistema»</button>
       <button onclick="ayudaYuki('guardar')">Cómo guardar cosas</button>
@@ -2562,6 +2568,21 @@ function getLunaInfo() {
   return { emoji, nombre, guia, fase: Math.round(pct * 100), diasHastaLlena, diasHastaNueva, diaDelCiclo: Math.round(fase) };
 }
 
+function guiaLunarParaTarea(tarea) {
+  const texto=String(tarea?.texto||'').toLowerCase(), tipo=String(tarea?.lunarTipo||'').toLowerCase();
+  if(tipo==='depilacion'||/depil/.test(texto)) return {tipo:'depilacion',nombre:'Depilación',referencia:'luna menguante',nota:'Asociación tradicional: se dice que el vello tarda más en crecer. No hay evidencia concluyente.'};
+  if(tipo==='cabello'||/cortar(?:me)? el pelo|cort(?:ar|arme) el pelo|cabello|peluquer/.test(texto)) return {tipo:'cabello',nombre:'Corte de pelo',referencia:'luna creciente para favorecer crecimiento · menguante para mantener',nota:'Es una tradición popular, no un efecto lunar demostrado.'};
+  if(tipo==='trasplante'||/trasplant|plantar|sembrar/.test(texto)) return {tipo:'trasplante',nombre:'Trasplante / plantación',referencia:'la tradición agrícola lunar varía según planta y fase',nota:'Prioriza estación, raíces, luz, humedad y salud de la planta; la evidencia lunar es limitada.'};
+  return null;
+}
+function renderRitmosLuna(){
+  const el=document.getElementById('luna-ritmos'); if(!el)return;
+  const info=getLunaInfo(), faseActual=info.fase<50?'creciente':'menguante';
+  const tareas=cargar('tareas',[]).filter(t=>!t.hecha).map(t=>({t,g:guiaLunarParaTarea(t)})).filter(x=>x.g);
+  if(!tareas.length){el.innerHTML='<p class="book-note">Cuando guardes una tarea relacionada con cuidado personal o plantas, aparecerá aquí junto a la fase actual.</p>';return;}
+  el.innerHTML=`<div class="lunar-current"><strong>${info.emoji} ${info.nombre}</strong><small>Ahora estamos en fase ${faseActual}</small></div>`+tareas.map(x=>`<div class="lunar-task"><strong>${escMusica(x.t.nombre)}</strong><small>Referencia: ${x.g.referencia}</small><span>${x.g.nota}</span></div>`).join('');
+}
+
 function initLuna() {
   const info = getLunaInfo();
   document.getElementById('luna-emoji').textContent = info.emoji;
@@ -2576,6 +2597,7 @@ function initLuna() {
   // Notas guardadas
   const notas = cargar('luna_notas', '');
   document.getElementById('luna-notas').value = notas;
+  renderRitmosLuna();
 
   // I Ching si ya hay tirada del día
   const ichingHoy = cargar('iching_hoy', null);
@@ -2968,6 +2990,7 @@ function renderPlantas() {
         <div>
           <button class="btn-regar" onclick="regar(${p.id})">💧 Regar hoy</button>
           ${p.abonoDias ? `<button class="btn-abonar" onclick="abonar(${p.id})">🌱 Abonar hoy</button>` : ''}
+          <button class="btn btn-outline btn-sm" style="margin-top:7px" onclick="crearTareaLunar('trasplante',${p.id})">🌙 Planificar trasplante</button>
         </div>
       </div>
     `;
@@ -3411,6 +3434,10 @@ function cambiarCatCompra(id, cat) {
 // ════════════════════════════════════════════════════════
 let filtroTareaActivo = 'todas';
 
+function crearTareaLunar(tipo, plantaId){
+  const planta=cargar('plantas',[]).find(p=>p.id===plantaId), nombre=planta?planta.nombre:'la planta';
+  const items=cargar('tareas',[]); items.push({id:Date.now(),texto:`Trasplantar ${nombre}`,categoria:'casa',hecha:false,lunarTipo:tipo}); guardar('tareas',items); renderTareas(); toast('Tarea lunar guardada');
+}
 function addTarea() {
   const inp = document.getElementById('tarea-input');
   const texto = inp.value.trim();
@@ -3449,10 +3476,12 @@ function renderTareas() {
   if(filtroTareaActivo !== 'todas') items = items.filter(x => x.categoria === filtroTareaActivo);
   const el = document.getElementById('tareas-lista');
   if(!items.length) { el.innerHTML = '<div class="empty"><div class="empty-ico">✅</div>Sin tareas pendientes</div>'; return; }
-  el.innerHTML = items.map(i => `
+  el.innerHTML = items.map(i => {
+    const lunar=guiaLunarParaTarea(i);
+    return `
     <div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--borde)">
       <input type="checkbox" ${i.hecha?'checked':''} onchange="toggleTarea(${i.id})" style="width:18px;height:18px;cursor:pointer">
-      <span style="flex:1;font-size:14px;${i.hecha?'text-decoration:line-through;color:var(--texto-suave)':''}">${i.texto}</span>
+      <span style="flex:1;font-size:14px;${i.hecha?'text-decoration:line-through;color:var(--texto-suave)':''}">${i.texto}${lunar?`<small class="lunar-task-inline">🌙 ${lunar.nombre} · ${lunar.referencia}</small>`:''}</span>
       <select onchange="cambiarCatTarea(${i.id},this.value)" style="font-size:11px;border:1px solid var(--borde);border-radius:6px;padding:2px 4px;background:#fff">
         <option value="personal" ${i.categoria==='personal'?'selected':''}>👤</option>
         <option value="casa" ${i.categoria==='casa'?'selected':''}>🏠</option>
@@ -3460,7 +3489,7 @@ function renderTareas() {
         <option value="urbana" ${i.categoria==='urbana'?'selected':''}>🍽</option>
       </select>
     </div>
-  `).join('');
+  `;}).join('');
 }
 
 function cambiarCatTarea(id, cat) {
@@ -4490,7 +4519,7 @@ function abrirAyudaYuki(){ const modal=document.getElementById('modal-ayuda-yuki
 function cerrarAyudaYuki(){ const modal=document.getElementById('modal-ayuda-yuki'); if(modal) modal.classList.remove('open'); }
 function ayudaYuki(tipo){
   const el=document.getElementById('ayuda-yuki-respuesta'); if(!el)return;
-  const textos={ahora:'Pulsa «Yuki, ¿qué hago?». Yuki obtiene primero el clima exterior, después recoge cómo llegas y cuánto tiempo disponible tienes. Con ese contexto te propone una sola cosa. Puedes marcar Hecho, Otra opción, No hoy o No me sirve.',exterior:'Es el tiempo meteorológico real del lugar: temperatura, cielo, lluvia y viento. Yuki lo utiliza como una variable más del contexto; no es lo mismo que los minutos disponibles.',interior:'Es cómo llegas tú hoy: Alegre, Bien, Neutro, Bajo o Tenso. Puedes añadir qué necesitas sin tener que analizarte.',disponible:'Son los minutos reales que tienes para hacer el siguiente paso: 10, 20 o 30+ minutos. No significa el tiempo meteorológico.',musica:'En Música puedes capturar canciones, sesiones y artistas por separado, añadir etiquetas y guardar por qué una canción te cambia el estado. Yuki puede utilizar esa memoria para proponerte movimiento. La reproducción ocurre fuera de Yuki, mediante el enlace externo.',fluir:'FLUIR no es entrenar. Es bailar, explorar, soltar tensión o moverte con música y poca preparación. Puedes elegir Despertar, Soltar o Explorar. Se registra internamente para que Yuki conozca tus ritmos, sin objetivos, rachas ni puntuaciones.',escalas:'Ahora es el paso pequeño. Después es una continuación posible. Hoy es una única cosa importante. No son listas que tengas que completar.',sistema:'Mi sistema es la parte editable de Yuki: prioridades, reglas, prácticas, rutinas, lugares, proyectos y personas.',guardar:'Entra en la sección que corresponda y utiliza su botón Guardar. Lo que escribas queda en este dispositivo.',aprende:'Yuki aprende de tus decisiones: Hecho, No hoy y No me sirve. No interpreta un rechazo como falta de disciplina.',ligero:'Modo Ligero todavía no está disponible en esta versión.'};
+  const textos={ahora:'Pulsa «Yuki, ¿qué hago?». Yuki obtiene primero el clima exterior, después recoge cómo llegas y cuánto tiempo disponible tienes. Con ese contexto te propone una sola cosa. Puedes marcar Hecho, Otra opción, No hoy o No me sirve.',exterior:'Es el tiempo meteorológico real del lugar: temperatura, cielo, lluvia y viento. Yuki lo utiliza como una variable más del contexto; no es lo mismo que los minutos disponibles.',interior:'Es cómo llegas tú hoy: Alegre, Bien, Neutro, Bajo o Tenso. Puedes añadir qué necesitas sin tener que analizarte.',disponible:'Son los minutos reales que tienes para hacer el siguiente paso: 10, 20 o 30+ minutos. No significa el tiempo meteorológico.',musica:'En Música puedes capturar canciones, sesiones y artistas por separado, añadir etiquetas y guardar por qué una canción te cambia el estado. Yuki puede utilizar esa memoria para proponerte movimiento. La reproducción ocurre fuera de Yuki, mediante el enlace externo.',fluir:'FLUIR no es entrenar. Es bailar, explorar, soltar tensión o moverte con música y poca preparación. Puedes elegir Despertar, Soltar o Explorar. Se registra internamente para que Yuki conozca tus ritmos, sin objetivos, rachas ni puntuaciones.',luna:'En Luna puedes ver referencias opcionales para tareas como depilarte, cortarte el pelo o trasplantar. Las fases lunares influyen de forma demostrable en las mareas, pero no hay evidencia concluyente de que hagan crecer más rápido el pelo o mejoren un trasplante. Yuki las muestra como tradición u observación, nunca como obligación ni consejo científico.',escalas:'Ahora es el paso pequeño. Después es una continuación posible. Hoy es una única cosa importante. No son listas que tengas que completar.',sistema:'Mi sistema es la parte editable de Yuki: prioridades, reglas, prácticas, rutinas, lugares, proyectos y personas.',guardar:'Entra en la sección que corresponda y utiliza su botón Guardar. Lo que escribas queda en este dispositivo.',aprende:'Yuki aprende de tus decisiones: Hecho, No hoy y No me sirve. No interpreta un rechazo como falta de disciplina.',ligero:'Modo Ligero todavía no está disponible en esta versión.'};
   el.textContent=textos[tipo]||'';
 }
 window.addEventListener('resize',()=>{if(onboardingActive) onboardingRender();});
