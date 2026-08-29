@@ -4388,13 +4388,15 @@ let onboardingReasonsShown = false;
 let onboardingActive = false;
 function onboardingSteps() {
   const steps = [
-    {target:'#now-climate', title:'1 · Empieza aquí', body:'Cuéntale a Yuki cómo llegas hoy: cuerpo, energía y necesidad. No tienes que analizarte; elige lo que más se parezca a cómo estás.', next:'Siguiente'},
-    {target:'.now-time', title:'2 · Dile cuánto tiempo tienes', body:'No necesitas tener una hora libre. Yuki adaptará su propuesta al tiempo que tengas.', next:'Siguiente'},
-    {target:'.now-ask', title:'3 · Aquí empieza el recorrido', body:'Pulsa aquí y Yuki elegirá una sola cosa para ti. No tienes que decidir entre diez opciones.', next:'Probarlo', action:'try'},
+    {target:'#now-climate', title:'1 · Este es tu punto de partida', body:'Aquí verás cómo llegas hoy: cuerpo, energía y necesidad. No tienes que analizarte; elige lo que más se parezca a ti.', next:'Siguiente'},
+    {target:'.now-time', title:'2 · Dile cuánto tiempo tienes', body:'Son los minutos reales para el siguiente paso. Yuki los mantiene separados del clima exterior y adapta su propuesta.', next:'Siguiente'},
+    {target:'.now-ask', title:'3 · Aquí empieza el recorrido', body:'Pulsa aquí para entrar en la conversación guiada: clima exterior, cómo llegas, tiempo disponible y una sola propuesta.', next:'Probarlo', action:'try'},
+
     {target:'.now-result', title:'4 · Haz solo esto', body:'Esta es la propuesta real de Yuki para este momento. Puedes aceptarla, cambiarla o decirle que hoy no encaja.', next:'Siguiente'},
     {target:'#now-feedback', title:'5 · También puedes enseñarle', body:'Si algo no encaja, díselo. «No hoy» significa ahora no; «No me sirve» significa que esta propuesta no era adecuada para ti.', next:'Probar «No me sirve»', action:'reasons'},
     {target:'#now-after', title:'6 · No tienes que planificar todo el día', body:'Cuando termines el paso de ahora, Yuki puede ayudarte a decidir qué podría venir después.', next:'Siguiente'},
-    {target:'#now-today', title:'7 · Una sola cosa importante', body:'«Hoy» no es una lista interminable. Es una cosa que merece atención.', next:'Terminar'}
+    {target:'#now-today', title:'7 · Una sola cosa importante', body:'«Hoy» no es una lista interminable. Es una cosa que merece atención.', next:'Siguiente'},
+    {target:"nav button[onclick*=\"tab('musica'\"]", title:'8 · Música también es cuerpo', body:'En Música puedes guardar canciones y sesiones. Yuki puede usarlas como una puerta hacia el movimiento, sin crear obligaciones.', next:'Terminar'}
   ];
   if (document.querySelector('[data-modo-ligero]')) steps.push({target:'[data-modo-ligero]',title:'8 · Hay días para hacer menos',body:'Si hoy no quieres gestionar nada, activa Modo Ligero. Yuki reducirá el día a cuerpo, necesario y bienestar.',next:'Terminar'});
   return steps;
@@ -4410,15 +4412,15 @@ function iniciarOnboarding(forced=false) {
 function onboardingWelcome() {
   if (document.getElementById('onboarding-welcome')) return;
   const welcome=document.createElement('div'); welcome.id='onboarding-welcome'; welcome.className='onboarding-welcome';
-  welcome.innerHTML='<div class="onboarding-welcome-card"><div class="onboarding-progress">PRIMER RECORRIDO</div><h2>Bienvenida a Yuki</h2><p>No necesitas aprenderlo todo.<br>Vamos a hacer juntas tu primer recorrido.<br><br>Te llevará menos de 2 minutos.</p><div class="onboarding-welcome-actions"><button type="button" onclick="iniciarOnboarding()">Empezar</button><button type="button" onclick="saltarOnboarding()">Saltar recorrido</button></div></div>';
+  welcome.innerHTML='<div class="onboarding-welcome-card"><div class="onboarding-progress">RECORRIDO GUIADO</div><h2>Bienvenida a Yuki</h2><p>No necesitas aprenderlo todo.<br>Yuki te irá mostrando cada parte mientras entras.<br><br>Te llevará menos de 2 minutos.</p><div class="onboarding-welcome-actions"><button type="button" onclick="iniciarOnboarding()">Empezar</button><button type="button" onclick="saltarOnboarding()">Saltar recorrido</button></div></div>';
   document.body.appendChild(welcome);
 }
-function saltarOnboarding() { guardar('onboarding_completado', true); const el=document.getElementById('onboarding-welcome'); if(el) el.remove(); }
+function saltarOnboarding() { guardar('onboarding_completado', true); guardar('onboarding_revision',2); const el=document.getElementById('onboarding-welcome'); if(el) el.remove(); }
 function onboardingClose() {
   onboardingActive=false; document.querySelectorAll('.onboarding-focus-target').forEach(el=>el.classList.remove('onboarding-focus-target')); const layer=onboardingLayer(); if(layer){layer.style.display='none';layer.setAttribute('aria-hidden','true');}
   const pop=document.getElementById('onboarding-popover'); if(pop){pop.style.visibility='hidden';pop.style.opacity='0';} if(pop) pop.innerHTML='<div class="onboarding-progress" id="onboarding-progress"></div><h2 id="onboarding-title"></h2><p id="onboarding-body"></p><div id="onboarding-actions" class="onboarding-actions"></div>';
 }
-function onboardingComplete() { guardar('onboarding_completado',true); onboardingClose(); toast('Ya conoces el recorrido esencial de Yuki'); }
+function onboardingComplete() { guardar('onboarding_completado',true); guardar('onboarding_revision',2); onboardingClose(); toast('Ya conoces el recorrido esencial de Yuki'); }
 function onboardingFinishScreen() {
   const pop=document.getElementById('onboarding-popover'), spot=document.getElementById('onboarding-spotlight');
   if(!pop)return;
@@ -4483,7 +4485,7 @@ function onboardingRenderReasons() {
   if(!pop||!spot||!target)return; const r=target.getBoundingClientRect(),sx=Math.max(0,r.left-7),sy=Math.max(0,r.top-7),ex=Math.min(innerWidth,r.right+7),ey=Math.min(innerHeight,r.bottom+7); spot.style.left=sx+'px';spot.style.top=sy+'px';spot.style.width=(ex-sx)+'px';spot.style.height=(ey-sy)+'px'; if(shade){const panes=shade.querySelectorAll('i');panes[0].style.cssText=`left:0;top:0;width:100%;height:${sy}px`;panes[1].style.cssText=`left:0;top:${sy}px;width:${sx}px;height:${ey-sy}px`;panes[2].style.cssText=`left:${ex}px;top:${sy}px;width:${Math.max(0,innerWidth-ex)}px;height:${ey-sy}px`;panes[3].style.cssText=`left:0;top:${ey}px;width:100%;height:${Math.max(0,innerHeight-ey)}px`;shade.style.visibility='visible';} pop.querySelector('#onboarding-progress').textContent='5 / '+onboardingSteps().length; pop.querySelector('#onboarding-title').textContent='También puedes corregir a Yuki'; pop.querySelector('#onboarding-body').textContent='Puedes elegir un motivo real o continuar. Esta información sirve para que Yuki aprenda; no es un fallo tuyo.'; pop.querySelector('#onboarding-actions').innerHTML=''; const b=document.createElement('button');b.textContent='Siguiente';b.onclick=()=>{onboardingReasonsShown=false;onboardingStep=5;onboardingRender();};pop.querySelector('#onboarding-actions').appendChild(b); let left=Math.min(Math.max(12,r.left),window.innerWidth-pop.offsetWidth-12),top=r.bottom+16;if(top+pop.offsetHeight>innerHeight-12)top=Math.max(12,r.top-pop.offsetHeight-16);pop.style.left=left+'px';pop.style.top=top+'px';spot.style.visibility='visible';pop.style.visibility='visible';pop.style.opacity='1';
 }
 function onboardingCheckSaved(){ if(onboardingActive && onboardingWaitingForCheck){ onboardingWaitingForCheck=false;onboardingStep=3;setTimeout(onboardingRender,100); } }
-function initOnboarding(){ if(!cargar('onboarding_completado',false)) onboardingWelcome(); }
+function initOnboarding(){ if(!cargar('onboarding_completado',false) || Number(cargar('onboarding_revision',0))<2) onboardingWelcome(); }
 function abrirAyudaYuki(){ const modal=document.getElementById('modal-ayuda-yuki'); if(modal) modal.classList.add('open'); }
 function cerrarAyudaYuki(){ const modal=document.getElementById('modal-ayuda-yuki'); if(modal) modal.classList.remove('open'); }
 function ayudaYuki(tipo){
