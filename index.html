@@ -4079,16 +4079,25 @@ const HOBBIES_BASE = [
   {id:'upcycling', nombre:'Upcycling textil', paso:'Escoger una prenda o material'},
   {id:'domestika', nombre:'Domestika / manualidades', paso:'Retomar una lección corta'},
   {id:'musica', nombre:'Música', paso:'Escuchar una propuesta sin saltar de una a otra'},
-  {id:'lectura-cine', nombre:'Lectura y cine', paso:'Elegir un libro, película o serie'}
+  {id:'lectura-cine', nombre:'Lectura y cine', paso:'Elegir un libro, película o serie'},
+  {id:'bailar', nombre:'Bailar', paso:'Poner una canción y moverte 5–10 minutos; terminar con movimientos lentos', fuente:'https://www.instagram.com/reel/DcjXrI0s-c1/?igsi=MTJ0YXNlZWkzem5hOA==' }
 ];
-function getHobbies() { return cargar('hobbies', HOBBIES_BASE); }
+function getHobbies() {
+  const saved = cargar('hobbies', null);
+  if (!saved) return HOBBIES_BASE.map(h => ({...h}));
+  if (!saved.some(h => h.id === 'bailar')) {
+    saved.push({...HOBBIES_BASE.find(h => h.id === 'bailar')});
+    guardar('hobbies', saved);
+  }
+  return saved;
+}
 function renderHobbies() {
   const activos = getHobbies();
   const lista = document.getElementById('hobbies-activos');
   const ejec = document.getElementById('hobbies-ejecucion');
   const props = document.getElementById('hobbies-propuestas');
   if (!lista || !ejec || !props) return;
-  lista.innerHTML = activos.map(h => `<div class="hobby-row"><div><strong>${h.nombre}</strong><small>Activo</small></div><div><small>Siguiente paso: ${h.paso}</small></div><button type="button" onclick="removeHobby('${h.id}')">Quitar</button></div>`).join('');
+  lista.innerHTML = activos.map(h => `<div class="hobby-row"><div><strong>${h.nombre}</strong><small>Activo</small></div><div><small>Siguiente paso: ${h.paso}</small>${h.fuente ? `<a href="${h.fuente}" target="_blank" rel="noopener" style="display:block;margin-top:5px;color:var(--arcilla);font-size:12px">Ver reel de referencia ↗</a>` : ''}</div><button type="button" onclick="removeHobby('${h.id}')">Quitar</button></div>`).join('');
   const hecho = cargar('hobbies_ejecucion_' + hoyStr(), []);
   ejec.innerHTML = activos.map(h => `<label class="hobby-exec-row"><input type="checkbox" data-hobby-exec="${h.id}" ${hecho.includes(h.id)?'checked':''}><span><strong>${h.nombre}</strong><br><small>${h.paso} · 10–30 min</small></span></label>`).join('');
   const propuestas = cargar('hobby_propuestas', []);
