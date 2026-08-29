@@ -3366,6 +3366,20 @@ function renderCocina() {
     });
     guardar('recetas_prueba', recetasPrueba);
   }
+  if (!recetasPrueba.some(r => r.slug === 'melon-jamon-iberico')) {
+    recetasPrueba.unshift({
+      id: 'melon-jamon-iberico',
+      slug: 'melon-jamon-iberico',
+      nombre: 'Melón de verano con jamón ibérico',
+      estado: 'Para probar',
+      enlace: 'https://www.instagram.com/reel/Db3haZMPAEv/?igsi=MW50eWR4bndmeTgzMg==',
+      meta: 'Entrante de verano · dulce, salado y ligeramente picante',
+      descripcion: 'Idea del reel de Marée Portland: melón de temporada con jamón ibérico y un toque picante. Queda anotada como receta para probar; las cantidades y el aderezo exacto se deben consultar en el vídeo original antes de fijarlos.',
+      ingredientes: [],
+      pasos: []
+    });
+    guardar('recetas_prueba', recetasPrueba);
+  }
   if (!recetasPrueba.some(r => r.slug === 'pepinos-crujientes-asiaticos')) {
     recetasPrueba.unshift({
       id: 'pepinos-crujientes-asiaticos', slug: 'pepinos-crujientes-asiaticos',
