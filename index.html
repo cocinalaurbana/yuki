@@ -1747,11 +1747,11 @@ body[data-momento="noche"] .now-action{border-top-color:#756b61!important;backgr
     </div>
   </div>
 
-  <div class="card">
-    <div class="card-title">📦 Stock Despensa</div>
-    <div id="cocina-stock" style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-      <!-- Se genera por JS -->
-    </div>
+  <div class="card alimentacion-contexto-card">
+    <div class="card-title">Recursos para Alimentación</div>
+    <p class="trial-intro">Alimentación es una parte de tu vida. Cuando sea útil, Yuki puede tener en cuenta lo que tienes guardado en Casa, además de tu tiempo, tus preferencias y tus recetas.</p>
+    <p class="trial-meta">El inventario es compartido: no se traslada ni se duplica.</p>
+    <button class="btn btn-outline" type="button" onclick="abrirInventarioDesdeAlimentacion()">VER QUÉ HAY EN CASA</button>
   </div>
 
   <div class="card">
@@ -1830,6 +1830,7 @@ body[data-momento="noche"] .now-action{border-top-color:#756b61!important;backgr
       <button onclick="ayudaYuki('sistema')">Cómo funciona «Mi sistema»</button>
       <button onclick="ayudaYuki('guardar')">Cómo guardar cosas</button>
       <button onclick="ayudaYuki('casa')">Qué es «Lo que tengo»</button>
+      <button onclick="ayudaYuki('conexion')">Cómo conecta Yuki las áreas</button>
       <button onclick="ayudaYuki('aprende')">Cómo aprende Yuki</button>
       <button onclick="iniciarOnboarding(true)">Volver a hacer el recorrido completo</button>
     </div>
@@ -1939,6 +1940,8 @@ function tab(id, btn, fromHistory=false) {
   document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
   panel.classList.add('active');
   if (btn) btn.classList.add('active');
+  const areaPorTab={cocina:'alimentacion',salud:'cuerpo',belleza:'cuerpo',casa:'casa',musica:'musica',hobbies:'creatividad',tareas:'proyectos',luna:'mundo-interior',guia:'mundo-interior',reflexiones:'mundo-interior',check:'inicio',dia:'mi-dia',diario:'diario'};
+  if(areaPorTab[id]) guardar('area_actual',areaPorTab[id]);
   if(id === 'diario') { renderDiario(); const climateBook=document.querySelector('.home-detail-book'); if(climateBook) { climateBook.style.display='block'; initBook(); } }
   if(id === 'luna') initLuna();
   if(id === 'gastos') renderGastos();
@@ -2089,6 +2092,10 @@ function abrirCuadernoHoy() {
   if (typeof bookShow === 'function') bookShow(1);
   setTimeout(() => form?.scrollIntoView({behavior:'smooth', block:'start'}), 80);
 }
+function abrirInventarioDesdeAlimentacion() {
+  const navButton=[...document.querySelectorAll('nav button')].find(b=>b.getAttribute('onclick')?.includes("tab('casa'"));
+  if(navButton) tab('casa',navButton);
+}
 function abrirAreaAhora(area) {
   const ids = {casa:'casa', urbana:'tareas', cocina:'cocina', hobbies:'hobbies', cierre:'cierre', salud:'salud', tareas:'tareas'};
   const id = ids[area] || 'tareas';
@@ -2179,9 +2186,10 @@ function estadoAhora() {
   const historial = cargar('ahora_historial', []);
   const diario = cargar('diario', []);
   const inventario = cargar('inventario', []).filter(x => x && (x.estado === 'tengo' || x.estado === 'poco'));
+  const area = cargar('area_actual', 'inicio');
   const gratitudes = diario.filter(e => (e.tags||[]).some(t => String(t).toLowerCase()==='gratitud')).slice(0,12);
   const direccion = sistemaTextoSeguro('proyectos') || sistemaTextoSeguro('prioridades');
-  return {fecha, check, tareas, salud, rutina, hechas, rechazadas, practica, tareasHechasHoy, hobbies, weather, canciones, sesiones, situacion, historial, diario, gratitudes, direccion, inventario};
+  return {fecha, check, tareas, salud, rutina, hechas, rechazadas, practica, tareasHechasHoy, hobbies, weather, canciones, sesiones, situacion, historial, diario, gratitudes, direccion, inventario, area};
 }
 function sistemaTexto(clave) { return String(cargar('sistema_' + clave, '') || '').toLowerCase(); }
 function propuestaCandidata(c) {
@@ -4189,16 +4197,11 @@ function renderCocina() {
         </details>
       </div>
     </div>
-    <div class='card'>
-      <div class='card-title'>📦 Stock Despensa</div>
-      <div id='cocina-stock' style='display:grid;grid-template-columns:1fr 1fr;gap:8px'>
-        ${Object.keys(stock).map(item => `
-          <div style='display:flex;align-items:center;gap:8px;font-size:13px;padding:5px;border-radius:6px;background:var(--gris-card);border:1px solid var(--borde)'>
-            <input type='checkbox' ${stock[item]?'checked':''} onchange='toggleStock(\"${item}\")'>
-            <span style='flex:1'>${item}</span>
-          </div>
-        `).join('')}
-      </div>
+    <div class='card alimentacion-contexto-card'>
+      <div class='card-title'>Recursos para Alimentación</div>
+      <p class='trial-intro'>Alimentación es una parte de tu vida. Cuando sea útil, Yuki puede tener en cuenta lo que tienes guardado en Casa, además de tu tiempo, tus preferencias y tus recetas.</p>
+      <p class='trial-meta'>El inventario es compartido: no se traslada ni se duplica.</p>
+      <button class='btn btn-outline' type='button' onclick='abrirInventarioDesdeAlimentacion()'>VER QUÉ HAY EN CASA</button>
     </div>
   `;
   document.getElementById('tab-cocina').innerHTML = html;
@@ -4639,7 +4642,7 @@ function abrirAyudaYuki(){ const modal=document.getElementById('modal-ayuda-yuki
 function cerrarAyudaYuki(){ const modal=document.getElementById('modal-ayuda-yuki'); if(modal) modal.classList.remove('open'); }
 function ayudaYuki(tipo){
   const el=document.getElementById('ayuda-yuki-respuesta'); if(!el)return;
-  const textos={inicio:'Inicio es la puerta de entrada de Yuki. Aquí le dices cómo llegas, cuánto espacio tienes y le preguntas qué tiene sentido ahora. El resto de funciones sigue disponible en la navegación, pero no necesita aparecer todo a la vez.',ahora:'Pulsa «Yuki, ¿qué hago?». Yuki reúne el contexto que pueda ser relevante —clima exterior, cómo llegas, energía, tiempo, pendientes, movimiento, música, preferencias y tu sistema— y te propone una sola cosa. Yuki propone; tú decides.',propuesta:'Una propuesta es un siguiente paso pequeño y concreto para este momento. Puede reunir elementos que pertenecen a una misma escena, pero no es una lista de tareas ni una obligación.',decisiones:'Hecho indica que la propuesta encajó o la realizaste. Otra opción pide a Yuki que vuelva a pensar. No hoy significa que ahora no es el momento y no penaliza la decisión. No me sirve indica que esa propuesta o ese contexto no encajan y ayuda a Yuki a ajustar futuras propuestas.',exterior:'Es el tiempo meteorológico real del lugar: temperatura, cielo, lluvia y viento. Yuki lo utiliza como una variable más del contexto; no es lo mismo que los minutos disponibles. Si no está disponible, puedes continuar sin ese dato.',interior:'Es cómo llegas tú hoy: Alegre, Bien, Neutro, Bajo o Tenso. Puedes añadir qué necesitas sin tener que analizarte.',disponible:'Son los minutos reales que tienes para el siguiente paso: 10, 20 o 30+ minutos. Es decir, cuánto espacio tienes ahora; no es otro formulario ni el tiempo meteorológico.',resto:'El resto de Yuki está en la navegación. Mi Día reúne el recorrido temporal completo; Diario reúne el Cuaderno de climas, el registro íntimo, sueños y observaciones. Mi Mundo reúne Casa, Plantas, Alimentación, Compra, Gastos, Música, Ver y leer y Hobbies; Cuerpo reúne Salud y Cuidado; Orientación reúne Luna, Guía y Reflexiones; y Mi sistema conserva tu dirección, cuidado y mundo. Estas áreas siguen existiendo, pero no compiten con tu primer paso.',musica:'En Música puedes capturar canciones, sesiones y artistas por separado, añadir etiquetas y guardar por qué una canción te cambia el estado. Yuki puede utilizar esa memoria para proponerte movimiento. La reproducción ocurre fuera de Yuki, mediante el enlace externo.',fluir:'FLUIR no es entrenar. Es bailar, explorar, soltar tensión o moverte con música y poca preparación. Puedes elegir Despertar, Soltar o Explorar. Se registra internamente para que Yuki conozca tus ritmos, sin objetivos, rachas ni puntuaciones.',luna:'En Luna puedes ver referencias opcionales para tareas como depilarte, cortarte el pelo o trasplantar. Las fases lunares influyen de forma demostrable en las mareas, pero no hay evidencia concluyente de que hagan crecer más rápido el pelo o mejoren un trasplante. Yuki las muestra como tradición u observación, nunca como obligación ni consejo científico.',escalas:'Ahora es el paso pequeño. Después es una continuación posible. Hoy es una única cosa que merece atención. No son listas que tengas que completar.',sistema:'Mi sistema es la parte editable de Yuki: Mi dirección recoge hacia dónde quieres ir; Mi cuidado, cómo quieres cuidarte; y Mi mundo, los lugares, proyectos, personas e intereses que forman tu vida. No son objetivos que tengas que cumplir.',guardar:'Entra en la sección que corresponda y utiliza su botón Guardar. Lo que escribas queda en este dispositivo.',casa:'En Casa, «Lo que tengo» es una memoria sencilla de tu nevera, despensa y congelador. Pulsa «＋ TENGO ALGO NUEVO» y escribe, por ejemplo, «medio kilo de calabacines», «6 huevos» o «he congelado caldo». Yuki interpreta lo que puede y solo pregunta dónde guardarlo si no lo sabe. Puedes marcar TENGO, QUEDA POCO, SE ACABÓ o GASTAR PRONTO. QUEDA POCO y SE ACABÓ ofrecen «Añadir a la compra», pero tú decides. Al marcar algo como comprado en Compra puedes elegir «Guardar en casa». «¿Qué puedo cocinar?» muestra una idea sencilla usando lo apuntado. No pasa nada si un día no lo actualizas: cuanto mejor sepa Yuki qué hay en casa, mejor podrá ayudarte.',aprende:'Yuki aprende de tus decisiones. Hecho indica que la propuesta encajó; No hoy significa que hoy no era el momento; No me sirve indica que esa propuesta o ese contexto no encajaron; Otra opción le pide volver a pensar. No interpreta un rechazo como falta de disciplina.',ligero:'Modo Ligero todavía no está disponible en esta versión.'};
+  const textos={inicio:'Inicio es la puerta de entrada de Yuki. Aquí le dices cómo llegas, cuánto espacio tienes y le preguntas qué tiene sentido ahora. El resto de funciones sigue disponible en la navegación, pero no necesita aparecer todo a la vez.',ahora:'Pulsa «Yuki, ¿qué hago?». Yuki reúne el contexto que pueda ser relevante —clima exterior, cómo llegas, energía, tiempo, pendientes, movimiento, música, preferencias y tu sistema— y te propone una sola cosa. Yuki propone; tú decides.',propuesta:'Una propuesta es un siguiente paso pequeño y concreto para este momento. Puede reunir elementos que pertenecen a una misma escena, pero no es una lista de tareas ni una obligación.',decisiones:'Hecho indica que la propuesta encajó o la realizaste. Otra opción pide a Yuki que vuelva a pensar. No hoy significa que ahora no es el momento y no penaliza la decisión. No me sirve indica que esa propuesta o ese contexto no encajan y ayuda a Yuki a ajustar futuras propuestas.',exterior:'Es el tiempo meteorológico real del lugar: temperatura, cielo, lluvia y viento. Yuki lo utiliza como una variable más del contexto; no es lo mismo que los minutos disponibles. Si no está disponible, puedes continuar sin ese dato.',interior:'Es cómo llegas tú hoy: Alegre, Bien, Neutro, Bajo o Tenso. Puedes añadir qué necesitas sin tener que analizarte.',disponible:'Son los minutos reales que tienes para el siguiente paso: 10, 20 o 30+ minutos. Es decir, cuánto espacio tienes ahora; no es otro formulario ni el tiempo meteorológico.',resto:'El resto de Yuki está en la navegación. Mi Día reúne el recorrido temporal completo; Diario reúne el Cuaderno de climas, el registro íntimo, sueños y observaciones. Mi Mundo reúne Casa, Plantas, Alimentación, Compra, Gastos, Música, Ver y leer y Hobbies; Cuerpo reúne Salud y Cuidado; Orientación reúne Luna, Guía y Reflexiones; y Mi sistema conserva tu dirección, cuidado y mundo. Estas áreas siguen existiendo, pero no compiten con tu primer paso.',musica:'En Música puedes capturar canciones, sesiones y artistas por separado, añadir etiquetas y guardar por qué una canción te cambia el estado. Yuki puede utilizar esa memoria para proponerte movimiento. La reproducción ocurre fuera de Yuki, mediante el enlace externo.',fluir:'FLUIR no es entrenar. Es bailar, explorar, soltar tensión o moverte con música y poca preparación. Puedes elegir Despertar, Soltar o Explorar. Se registra internamente para que Yuki conozca tus ritmos, sin objetivos, rachas ni puntuaciones.',luna:'En Luna puedes ver referencias opcionales para tareas como depilarte, cortarte el pelo o trasplantar. Las fases lunares influyen de forma demostrable en las mareas, pero no hay evidencia concluyente de que hagan crecer más rápido el pelo o mejoren un trasplante. Yuki las muestra como tradición u observación, nunca como obligación ni consejo científico.',escalas:'Ahora es el paso pequeño. Después es una continuación posible. Hoy es una única cosa que merece atención. No son listas que tengas que completar.',sistema:'Mi sistema es la parte editable de Yuki: Mi dirección recoge hacia dónde quieres ir; Mi cuidado, cómo quieres cuidarte; y Mi mundo, los lugares, proyectos, personas e intereses que forman tu vida. No son objetivos que tengas que cumplir.',guardar:'Entra en la sección que corresponda y utiliza su botón Guardar. Lo que escribas queda en este dispositivo.',casa:'En Casa, «Lo que tengo» es una memoria sencilla de tu nevera, despensa y congelador. Pulsa «＋ TENGO ALGO NUEVO» y escribe, por ejemplo, «medio kilo de calabacines», «6 huevos» o «he congelado caldo». Yuki interpreta lo que puede y solo pregunta dónde guardarlo si no lo sabe. Puedes marcar TENGO, QUEDA POCO, SE ACABÓ o GASTAR PRONTO. QUEDA POCO y SE ACABÓ ofrecen «Añadir a la compra», pero tú decides. Al marcar algo como comprado en Compra puedes elegir «Guardar en casa». «¿Qué puedo cocinar?» muestra una idea sencilla usando lo apuntado. No pasa nada si un día no lo actualizas: cuanto mejor sepa Yuki qué hay en casa, mejor podrá ayudarte.',conexion:'Yuki no funciona como una colección de compartimentos independientes. Alimentación, Casa, Cuerpo y las demás partes son dimensiones distintas de tu vida, pero una misma información puede ayudar en varias. Si eliges Alimentación y quieres cocinar, Yuki puede consultar lo que tienes en Casa, tu tiempo, cómo llegas, tus preferencias y tus recetas, sin trasladarte a otra parte ni duplicar datos. Tú eliges por dónde empezar; Yuki conecta lo que resulte útil.',aprende:'Yuki aprende de tus decisiones. Hecho indica que la propuesta encajó; No hoy significa que hoy no era el momento; No me sirve indica que esa propuesta o ese contexto no encajaron; Otra opción le pide volver a pensar. No interpreta un rechazo como falta de disciplina.',ligero:'Modo Ligero todavía no está disponible en esta versión.'};
   el.textContent=textos[tipo]||'';
 }
 window.addEventListener('resize',()=>{if(onboardingActive) onboardingRender();});
