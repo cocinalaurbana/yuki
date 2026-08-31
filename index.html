@@ -756,6 +756,15 @@ body[data-momento="noche"] .now-action{border-top-color:#756b61!important;backgr
 .home-secondary-body{padding:16px 0 2px}
 .home-secondary .now-card{background:transparent}.home-secondary .now-grid{grid-template-columns:1fr!important}
 .home-day-now{padding:0 2px 18px;border-bottom:1px solid var(--linea);margin-bottom:18px}
+.home-day-link{display:block;width:100%;margin:30px 0 0;padding:14px 2px;border:0;border-top:1px solid var(--linea);border-bottom:1px solid var(--linea);background:transparent;color:var(--suave);font:inherit;font-size:16px!important;letter-spacing:.06em;text-align:left;cursor:pointer}
+.home-day-link:hover{color:var(--arcilla);border-color:var(--arcilla)}
+.day-view-heading{padding:4px 0 24px;border-bottom:1px solid var(--linea);margin-bottom:18px}
+.day-view-heading h2{font-family:'Playfair Display',Georgia,serif;font-size:clamp(32px,6vw,48px);font-weight:400;line-height:1.12;margin:9px 0 10px}
+.day-view-heading p{max-width:650px;color:var(--suave);font-size:17px;line-height:1.5}
+.day-view .home-secondary-body{padding-top:0}
+.day-view .now-grid{grid-template-columns:1fr!important}
+.day-view .now-card{background:transparent}
+
 .home-day-now p{margin:6px 0 0;color:var(--suave);font-size:13px;line-height:1.5}
 @media(max-width:650px){.home-secondary{margin-top:30px}.home-secondary summary{padding:15px 0;font-size:14px}.home-secondary-body{padding:16px 0 2px}.home-day-now{padding-left:0;padding-right:0}}
 /* ACCESIBILIDAD DE LECTURA · solo textos pequeños de Inicio y su recorrido */
@@ -807,6 +816,7 @@ body[data-momento="noche"] .now-action{border-top-color:#756b61!important;backgr
 <nav>
   <div class="nav-group"><div class="nav-label">MI DÍA</div>
     <button class="active" onclick="tab('check',this)">Inicio</button>
+    <button onclick="tab('dia',this)">Mi día</button>
     <button onclick="tab('diario',this)">Diario</button>
     <button onclick="tab('cierre',this)">Atardecer</button>
   </div>
@@ -846,7 +856,6 @@ body[data-momento="noche"] .now-action{border-top-color:#756b61!important;backgr
   <section class="now-home" aria-label="Hoy">
     <div class="now-intro">
       <div>
-        <div class="now-kicker">HOY</div><div class="now-kicker-note">CUADERNO DE CLIMAS</div>
         <h2>¿Cómo llegas?</h2>
         <div class="now-climate" id="now-climate">
           <div><span>Cuerpo</span><b>—</b></div>
@@ -854,11 +863,9 @@ body[data-momento="noche"] .now-action{border-top-color:#756b61!important;backgr
           <div><span>Necesidad</span><b>—</b></div>
         </div>
       </div>
-      <button class="home-detail-toggle" type="button" onclick="abrirCuadernoHoy()">Abrir registro completo</button>
     </div>
 
     <div class="now-card now-action">
-      <div class="now-action-head"><div class="now-action-title">AHORA</div><span class="now-scale">UNA COSA</span></div>
       <div class="now-result" id="now-result">Dime cómo llegas y te propongo un paso.</div>
       <p class="now-reason" id="now-reason">Yuki tendrá en cuenta tu energía, lo que necesitas y lo que está pendiente.</p>
       <div id="now-status" style="font-size:11px;color:var(--arcilla);margin-top:8px;min-height:16px"></div>
@@ -891,12 +898,25 @@ body[data-momento="noche"] .now-action{border-top-color:#756b61!important;backgr
       <div id="now-do-wrap"></div>
     </div>
 
-    <details class="home-secondary">
-      <summary>VER MI DÍA COMPLETO →</summary>
-      <div class="home-secondary-body">
+    <button class="yuki-help-link" type="button" onclick="abrirAyudaYuki()">? ¿Cómo funciona Yuki?</button>
+    <button class="home-day-link" type="button" onclick="abrirMiDia()">VER MI DÍA COMPLETO →</button>
+  </section>
+</div>
+
+<!-- ══════════════════════════════════════════
+     MI DÍA · RECORRIDO TEMPORAL
+══════════════════════════════════════════ -->
+<div id="tab-dia" class="tab">
+  <section class="now-home day-view" aria-label="Mi día">
+    <div class="day-view-heading">
+      <div class="now-kicker">MI DÍA</div>
+      <h2>Mi día completo</h2>
+      <p>Un recorrido temporal para consultar Ahora, Después, Hoy, Esta noche y Esta semana cuando quieras abrir más espacio.</p>
+    </div>
+    <div class="home-secondary-body">
         <div class="home-day-now">
           <div class="now-action-title">AHORA</div>
-          <p>La propuesta de arriba es tu siguiente paso para este momento.</p>
+          <p>Tu paso actual se elige desde Inicio, en el momento presente.</p>
         </div>
 
         <div class="now-grid">
@@ -922,67 +942,9 @@ body[data-momento="noche"] .now-action{border-top-color:#756b61!important;backgr
         </div>
 
         <div class="now-secondary">El resto sigue en sus lugares: Diario · Luna · Orientación · Música · Cine · Lectura.</div>
-      </div>
-    </details>
-    <button class="yuki-help-link" type="button" onclick="abrirAyudaYuki()">? ¿Cómo funciona Yuki?</button>
-  </section>
-
-  <div class="book-shell home-detail-book" style="display:none">
-    <div class="book-nav" aria-label="Páginas de Inicio">
-      <button type="button" class="book-prev" onclick="bookMove(-1)">← Anterior</button>
-      <span id="book-indicator">Página 1 de 4</span>
-      <button type="button" class="book-next" onclick="bookMove(1)">Siguiente →</button>
     </div>
-    <div class="book-pages" id="book-pages">
-  <section class="today-hero">
-    <div class="eyebrow">CUADERNO DE CLIMAS · INICIO</div>
-    <h2>¿Cómo llegas hoy?</h2>
-    <p class="today-lead">Una pausa breve para tomar el pulso al cuerpo y a tu clima interior antes de empezar.</p>
-    <div class="today-lines">
-      <div><span>Cuerpo</span><b>—</b></div>
-      <div><span>Energía</span><b>—</b></div>
-      <div><span>Necesidad</span><b>—</b></div>
-    </div>
-    <button class="quiet-link" onclick="bookShow(1)">Abrir mi inicio <span>↓</span></button>
   </section>
-
-
-  <div class="card" id="check-resumen" style="display:none">
-    <div class="card-title">Mi inicio de hoy</div>
-    <div id="check-resumen-content"></div>
-    <button class="btn btn-outline btn-sm mt-12" onclick="editarCheck()">Editar</button>
-  </div>
-
-  <div class="card inicio-despertar">
-    <div class="card-title">Despertar suave</div>
-    <p class="routine-intro">Para abrir el día sin levantarte de golpe.</p>
-    <a class="video-item" href="https://youtu.be/ANFB6yu0HIE?si=3zVwRuGi9g6Pdkm8" target="_blank" rel="noopener"><span class="video-symbol">◌</span><span><strong>Despertar suave · 7 min</strong><small>Vídeo guiado</small></span><b>↗</b></a>
-  </div>
-
-  <div id="check-form">
-    <section class="registro-hoy">
-      <div class="registro-heading"><span class="eyebrow">REGISTRO ÍNTIMO</span><span class="registro-hint">elige sin analizar</span></div>
-      <div class="registro-row"><div class="registro-label">Tiempo</div><div class="emoji-row" id="tiempo-row">
-        <button class="emoji-btn" data-val="☀️" data-icon="☼" onclick="selEmoji('tiempo',this)">Claro</button><button class="emoji-btn" data-val="⛅" data-icon="◐" onclick="selEmoji('tiempo',this)">Variable</button><button class="emoji-btn" data-val="🌧️" data-icon="╱" onclick="selEmoji('tiempo',this)">Lluvia</button><button class="emoji-btn" data-val="🌬️" data-icon="∿" onclick="selEmoji('tiempo',this)">Viento</button><button class="emoji-btn" data-val="❄️" data-icon="✧" onclick="selEmoji('tiempo',this)">Frío</button>
-      </div></div>
-      <div class="registro-row"><div class="registro-label">Clima interior</div><div class="emoji-row" id="humor-row">
-        <button class="emoji-btn" data-val="😄" data-icon="⌣" onclick="selEmoji('humor',this)">Alegre</button><button class="emoji-btn" data-val="🙂" data-icon="◡" onclick="selEmoji('humor',this)">Bien</button><button class="emoji-btn" data-val="😐" data-icon="—" onclick="selEmoji('humor',this)">Neutro</button><button class="emoji-btn" data-val="😔" data-icon="⌢" onclick="selEmoji('humor',this)">Bajo</button><button class="emoji-btn" data-val="😤" data-icon="≋" onclick="selEmoji('humor',this)">Tenso</button>
-      </div></div>
-      <div class="registro-row energia-row"><div class="registro-label">Presencia</div><div class="escala" id="energia-row">
-        <button class="esc-btn" data-val="1" onclick="selEscala('energia',this)">Vacía</button><button class="esc-btn" data-val="2" onclick="selEscala('energia',this)">Baja</button><button class="esc-btn" data-val="3" onclick="selEscala('energia',this)">Disponible</button><button class="esc-btn" data-val="4" onclick="selEscala('energia',this)">Viva</button><button class="esc-btn" data-val="5" onclick="selEscala('energia',this)">Expansiva</button>
-      </div></div>
-      <div class="registro-notas"><div class="form-group" style="grid-column:1/-1;margin-bottom:0"><label>Qué necesito hoy</label><textarea id="check-intencion" placeholder="Más calma, movimiento, espacio, contacto…" rows="2"></textarea></div></div>
-      <button class="btn btn-primary registro-save" onclick="guardarCheck()">Guardar mi clima</button>
-    </section>
-  </div>
-
-  <!-- Historial checks recientes -->
-  <div class="sec-title mt-12">Últimos días</div>
-  <div id="check-historial"></div>
 </div>
-  </div>
-</div>
-
 
 
 <!-- ══════════════════════════════════════════
@@ -1017,6 +979,62 @@ body[data-momento="noche"] .now-action{border-top-color:#756b61!important;backgr
      DIARIO
 ══════════════════════════════════════════ -->
 <div id="tab-diario" class="tab">
+
+    <div class="book-shell home-detail-book" style="display:block">
+      <div class="book-nav" aria-label="Páginas de Inicio">
+        <button type="button" class="book-prev" onclick="bookMove(-1)">← Anterior</button>
+        <span id="book-indicator">Página 1 de 4</span>
+        <button type="button" class="book-next" onclick="bookMove(1)">Siguiente →</button>
+      </div>
+      <div class="book-pages" id="book-pages">
+    <section class="today-hero">
+      <div class="eyebrow">CUADERNO DE CLIMAS · INICIO</div>
+      <h2>¿Cómo llegas hoy?</h2>
+      <p class="today-lead">Una pausa breve para tomar el pulso al cuerpo y a tu clima interior antes de empezar.</p>
+      <div class="today-lines">
+        <div><span>Cuerpo</span><b>—</b></div>
+        <div><span>Energía</span><b>—</b></div>
+        <div><span>Necesidad</span><b>—</b></div>
+      </div>
+      <button class="quiet-link" onclick="bookShow(1)">Abrir mi inicio <span>↓</span></button>
+    </section>
+  
+  
+    <div class="card" id="check-resumen" style="display:none">
+      <div class="card-title">Mi inicio de hoy</div>
+      <div id="check-resumen-content"></div>
+      <button class="btn btn-outline btn-sm mt-12" onclick="editarCheck()">Editar</button>
+    </div>
+  
+    <div class="card inicio-despertar">
+      <div class="card-title">Despertar suave</div>
+      <p class="routine-intro">Para abrir el día sin levantarte de golpe.</p>
+      <a class="video-item" href="https://youtu.be/ANFB6yu0HIE?si=3zVwRuGi9g6Pdkm8" target="_blank" rel="noopener"><span class="video-symbol">◌</span><span><strong>Despertar suave · 7 min</strong><small>Vídeo guiado</small></span><b>↗</b></a>
+    </div>
+  
+    <div id="check-form">
+      <section class="registro-hoy">
+        <div class="registro-heading"><span class="eyebrow">REGISTRO ÍNTIMO</span><span class="registro-hint">elige sin analizar</span></div>
+        <div class="registro-row"><div class="registro-label">Tiempo</div><div class="emoji-row" id="tiempo-row">
+          <button class="emoji-btn" data-val="☀️" data-icon="☼" onclick="selEmoji('tiempo',this)">Claro</button><button class="emoji-btn" data-val="⛅" data-icon="◐" onclick="selEmoji('tiempo',this)">Variable</button><button class="emoji-btn" data-val="🌧️" data-icon="╱" onclick="selEmoji('tiempo',this)">Lluvia</button><button class="emoji-btn" data-val="🌬️" data-icon="∿" onclick="selEmoji('tiempo',this)">Viento</button><button class="emoji-btn" data-val="❄️" data-icon="✧" onclick="selEmoji('tiempo',this)">Frío</button>
+        </div></div>
+        <div class="registro-row"><div class="registro-label">Clima interior</div><div class="emoji-row" id="humor-row">
+          <button class="emoji-btn" data-val="😄" data-icon="⌣" onclick="selEmoji('humor',this)">Alegre</button><button class="emoji-btn" data-val="🙂" data-icon="◡" onclick="selEmoji('humor',this)">Bien</button><button class="emoji-btn" data-val="😐" data-icon="—" onclick="selEmoji('humor',this)">Neutro</button><button class="emoji-btn" data-val="😔" data-icon="⌢" onclick="selEmoji('humor',this)">Bajo</button><button class="emoji-btn" data-val="😤" data-icon="≋" onclick="selEmoji('humor',this)">Tenso</button>
+        </div></div>
+        <div class="registro-row energia-row"><div class="registro-label">Presencia</div><div class="escala" id="energia-row">
+          <button class="esc-btn" data-val="1" onclick="selEscala('energia',this)">Vacía</button><button class="esc-btn" data-val="2" onclick="selEscala('energia',this)">Baja</button><button class="esc-btn" data-val="3" onclick="selEscala('energia',this)">Disponible</button><button class="esc-btn" data-val="4" onclick="selEscala('energia',this)">Viva</button><button class="esc-btn" data-val="5" onclick="selEscala('energia',this)">Expansiva</button>
+        </div></div>
+        <div class="registro-notas"><div class="form-group" style="grid-column:1/-1;margin-bottom:0"><label>Qué necesito hoy</label><textarea id="check-intencion" placeholder="Más calma, movimiento, espacio, contacto…" rows="2"></textarea></div></div>
+        <button class="btn btn-primary registro-save" onclick="guardarCheck()">Guardar mi clima</button>
+      </section>
+    </div>
+  
+    <!-- Historial checks recientes -->
+    <div class="sec-title mt-12">Últimos días</div>
+    <div id="check-historial"></div>
+  </div>
+    </div>
+
 
   <div class="card">
     <div class="card-title">📝 Nueva entrada · <span id="diario-hoy" style="color:var(--oro);font-size:14px"></span></div>
@@ -1919,7 +1937,7 @@ function tab(id, btn, fromHistory=false) {
   document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
   panel.classList.add('active');
   if (btn) btn.classList.add('active');
-  if(id === 'diario') renderDiario();
+  if(id === 'diario') { renderDiario(); const climateBook=document.querySelector('.home-detail-book'); if(climateBook) { climateBook.style.display='block'; initBook(); } }
   if(id === 'luna') initLuna();
   if(id === 'gastos') renderGastos();
   if(id === 'plantas') renderPlantas();
@@ -2050,11 +2068,17 @@ function elegirTiempoAhora(min, btn) {
   const status = document.getElementById('now-status');
   if (status) status.textContent = `Has elegido ${min === 30 ? '30+ minutos' : min + ' minutos'}. Ahora pulsa «YUKI, ¿QUÉ HAGO?»`;
 }
+function abrirMiDia() {
+  const navButton = [...document.querySelectorAll('nav button')].find(b => b.getAttribute('onclick')?.includes("tab('dia'"));
+  if (navButton) tab('dia', navButton);
+}
 function abrirCuadernoHoy() {
   const shell = document.querySelector('.home-detail-book');
   const button = document.querySelector('.home-detail-toggle');
   const form = document.getElementById('check-form');
   if (!shell) return;
+  const navButton = [...document.querySelectorAll('nav button')].find(b => b.getAttribute('onclick')?.includes("tab('diario'"));
+  if (navButton) tab('diario', navButton);
   shell.style.display = 'block';
   if (button) button.style.display = 'none';
   // Abrir directamente la página del clima y llevarla al campo real,
@@ -4541,6 +4565,12 @@ function onboardingRender() {
   document.querySelectorAll('.onboarding-focus-target').forEach(el=>el.classList.remove('onboarding-focus-target'));
   const target=onboardingTarget(step.target);
   if(!target){ onboardingStep++; onboardingRender(); return; }
+  const owningTab=target.closest('.tab');
+  if(owningTab && !owningTab.classList.contains('active')){
+    const tabId=owningTab.id.replace('tab-','');
+    const navButton=[...document.querySelectorAll('nav button')].find(b=>b.getAttribute('onclick')?.includes(`tab('${tabId}'`));
+    if(navButton) tab(tabId,navButton,true);
+  }
   const secondary=target.closest('.home-secondary');
   if(secondary) secondary.open=true;
   target.classList.add('onboarding-focus-target');
@@ -4599,7 +4629,7 @@ function abrirAyudaYuki(){ const modal=document.getElementById('modal-ayuda-yuki
 function cerrarAyudaYuki(){ const modal=document.getElementById('modal-ayuda-yuki'); if(modal) modal.classList.remove('open'); }
 function ayudaYuki(tipo){
   const el=document.getElementById('ayuda-yuki-respuesta'); if(!el)return;
-  const textos={inicio:'Inicio es la puerta de entrada de Yuki. Aquí le dices cómo llegas, cuánto espacio tienes y le preguntas qué tiene sentido ahora. El resto de funciones sigue disponible en la navegación, pero no necesita aparecer todo a la vez.',ahora:'Pulsa «Yuki, ¿qué hago?». Yuki reúne el contexto que pueda ser relevante —clima exterior, cómo llegas, energía, tiempo, pendientes, movimiento, música, preferencias y tu sistema— y te propone una sola cosa. Yuki propone; tú decides.',propuesta:'Una propuesta es un siguiente paso pequeño y concreto para este momento. Puede reunir elementos que pertenecen a una misma escena, pero no es una lista de tareas ni una obligación.',decisiones:'Hecho indica que la propuesta encajó o la realizaste. Otra opción pide a Yuki que vuelva a pensar. No hoy significa que ahora no es el momento y no penaliza la decisión. No me sirve indica que esa propuesta o ese contexto no encajan y ayuda a Yuki a ajustar futuras propuestas.',exterior:'Es el tiempo meteorológico real del lugar: temperatura, cielo, lluvia y viento. Yuki lo utiliza como una variable más del contexto; no es lo mismo que los minutos disponibles. Si no está disponible, puedes continuar sin ese dato.',interior:'Es cómo llegas tú hoy: Alegre, Bien, Neutro, Bajo o Tenso. Puedes añadir qué necesitas sin tener que analizarte.',disponible:'Son los minutos reales que tienes para el siguiente paso: 10, 20 o 30+ minutos. Es decir, cuánto espacio tienes ahora; no es otro formulario ni el tiempo meteorológico.',resto:'El resto de Yuki está en la navegación. Mi Mundo reúne Casa, Plantas, Alimentación, Compra, Gastos, Música, Ver y leer y Hobbies. También puedes entrar en Mi Día, Cuerpo, Luna, Guía, Reflexiones, Tareas y Mi sistema. Estas áreas siguen existiendo, pero no compiten con tu primer paso.',musica:'En Música puedes capturar canciones, sesiones y artistas por separado, añadir etiquetas y guardar por qué una canción te cambia el estado. Yuki puede utilizar esa memoria para proponerte movimiento. La reproducción ocurre fuera de Yuki, mediante el enlace externo.',fluir:'FLUIR no es entrenar. Es bailar, explorar, soltar tensión o moverte con música y poca preparación. Puedes elegir Despertar, Soltar o Explorar. Se registra internamente para que Yuki conozca tus ritmos, sin objetivos, rachas ni puntuaciones.',luna:'En Luna puedes ver referencias opcionales para tareas como depilarte, cortarte el pelo o trasplantar. Las fases lunares influyen de forma demostrable en las mareas, pero no hay evidencia concluyente de que hagan crecer más rápido el pelo o mejoren un trasplante. Yuki las muestra como tradición u observación, nunca como obligación ni consejo científico.',escalas:'Ahora es el paso pequeño. Después es una continuación posible. Hoy es una única cosa que merece atención. No son listas que tengas que completar.',sistema:'Mi sistema es la parte editable de Yuki: Mi dirección recoge hacia dónde quieres ir; Mi cuidado, cómo quieres cuidarte; y Mi mundo, los lugares, proyectos, personas e intereses que forman tu vida. No son objetivos que tengas que cumplir.',guardar:'Entra en la sección que corresponda y utiliza su botón Guardar. Lo que escribas queda en este dispositivo.',aprende:'Yuki aprende de tus decisiones. Hecho indica que la propuesta encajó; No hoy significa que hoy no era el momento; No me sirve indica que esa propuesta o ese contexto no encajaron; Otra opción le pide volver a pensar. No interpreta un rechazo como falta de disciplina.',ligero:'Modo Ligero todavía no está disponible en esta versión.'};
+  const textos={inicio:'Inicio es la puerta de entrada de Yuki. Aquí le dices cómo llegas, cuánto espacio tienes y le preguntas qué tiene sentido ahora. El resto de funciones sigue disponible en la navegación, pero no necesita aparecer todo a la vez.',ahora:'Pulsa «Yuki, ¿qué hago?». Yuki reúne el contexto que pueda ser relevante —clima exterior, cómo llegas, energía, tiempo, pendientes, movimiento, música, preferencias y tu sistema— y te propone una sola cosa. Yuki propone; tú decides.',propuesta:'Una propuesta es un siguiente paso pequeño y concreto para este momento. Puede reunir elementos que pertenecen a una misma escena, pero no es una lista de tareas ni una obligación.',decisiones:'Hecho indica que la propuesta encajó o la realizaste. Otra opción pide a Yuki que vuelva a pensar. No hoy significa que ahora no es el momento y no penaliza la decisión. No me sirve indica que esa propuesta o ese contexto no encajan y ayuda a Yuki a ajustar futuras propuestas.',exterior:'Es el tiempo meteorológico real del lugar: temperatura, cielo, lluvia y viento. Yuki lo utiliza como una variable más del contexto; no es lo mismo que los minutos disponibles. Si no está disponible, puedes continuar sin ese dato.',interior:'Es cómo llegas tú hoy: Alegre, Bien, Neutro, Bajo o Tenso. Puedes añadir qué necesitas sin tener que analizarte.',disponible:'Son los minutos reales que tienes para el siguiente paso: 10, 20 o 30+ minutos. Es decir, cuánto espacio tienes ahora; no es otro formulario ni el tiempo meteorológico.',resto:'El resto de Yuki está en la navegación. Mi Día reúne el recorrido temporal completo; Diario reúne el Cuaderno de climas, el registro íntimo, sueños y observaciones. Mi Mundo reúne Casa, Plantas, Alimentación, Compra, Gastos, Música, Ver y leer y Hobbies; Cuerpo reúne Salud y Cuidado; Orientación reúne Luna, Guía y Reflexiones; y Mi sistema conserva tu dirección, cuidado y mundo. Estas áreas siguen existiendo, pero no compiten con tu primer paso.',musica:'En Música puedes capturar canciones, sesiones y artistas por separado, añadir etiquetas y guardar por qué una canción te cambia el estado. Yuki puede utilizar esa memoria para proponerte movimiento. La reproducción ocurre fuera de Yuki, mediante el enlace externo.',fluir:'FLUIR no es entrenar. Es bailar, explorar, soltar tensión o moverte con música y poca preparación. Puedes elegir Despertar, Soltar o Explorar. Se registra internamente para que Yuki conozca tus ritmos, sin objetivos, rachas ni puntuaciones.',luna:'En Luna puedes ver referencias opcionales para tareas como depilarte, cortarte el pelo o trasplantar. Las fases lunares influyen de forma demostrable en las mareas, pero no hay evidencia concluyente de que hagan crecer más rápido el pelo o mejoren un trasplante. Yuki las muestra como tradición u observación, nunca como obligación ni consejo científico.',escalas:'Ahora es el paso pequeño. Después es una continuación posible. Hoy es una única cosa que merece atención. No son listas que tengas que completar.',sistema:'Mi sistema es la parte editable de Yuki: Mi dirección recoge hacia dónde quieres ir; Mi cuidado, cómo quieres cuidarte; y Mi mundo, los lugares, proyectos, personas e intereses que forman tu vida. No son objetivos que tengas que cumplir.',guardar:'Entra en la sección que corresponda y utiliza su botón Guardar. Lo que escribas queda en este dispositivo.',aprende:'Yuki aprende de tus decisiones. Hecho indica que la propuesta encajó; No hoy significa que hoy no era el momento; No me sirve indica que esa propuesta o ese contexto no encajaron; Otra opción le pide volver a pensar. No interpreta un rechazo como falta de disciplina.',ligero:'Modo Ligero todavía no está disponible en esta versión.'};
   el.textContent=textos[tipo]||'';
 }
 window.addEventListener('resize',()=>{if(onboardingActive) onboardingRender();});
