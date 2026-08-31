@@ -1,4 +1,4 @@
-const CACHE = 'yuki-v91.2';
+const CACHE = 'yuki-v91.2-readable';
 const ASSETS = ['./', './?v=91.2', './index.html?v=91.2', './manifest.json', './manifest-v91.json', './icon-192.png', './icon-512.png'];
 
 self.addEventListener('install', e => {
