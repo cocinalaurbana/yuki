@@ -4204,12 +4204,11 @@ function renderCocina() {
     </details>
   `;
   let html = `
-    <div class='card'>
+    <div class='card alimentacion-necesidad'>
       <div class='card-title'>Alimentación</div>
       <p class='trial-intro'>Vamos a empezar por aquí.</p>
       <p class='trial-intro'>Yuki irá descubriendo contigo qué necesitas en esta parte de tu vida.</p>
-    </div>
-    <div class='card alimentacion-necesidad'>
+      <div class='alimentacion-necesidad-pregunta'>
       <div class='card-title'>¿Qué quieres cuidar ahora de tu alimentación?</div>
       <div class='alimentacion-opciones'>
         <button type='button' class='btn btn-outline alimentacion-opcion' data-alimentacion-necesidad='cocinar' onclick="seleccionarNecesidadAlimentacion('cocinar')">🍳 Cocinar</button>
@@ -4221,6 +4220,7 @@ function renderCocina() {
         <button type='button' class='btn btn-outline alimentacion-opcion' data-alimentacion-necesidad='no-se' onclick="seleccionarNecesidadAlimentacion('no-se')">❓ No lo sé</button>
       </div>
       <p id='alimentacion-seleccion' class='trial-meta' aria-live='polite'></p>
+      </div>
     </div>
     <div id='alimentacion-cocinar' class='card' style='display:none'>
       <div class='card-title'>🍳 Cocinar</div>
