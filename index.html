@@ -749,14 +749,15 @@ body[data-momento="noche"] .now-action{border-top-color:#756b61!important;backgr
 /* V91 · Inicio como puerta de entrada: el resto existe, pero espera su momento */
 .now-time-label{font-size:11px;letter-spacing:.12em;color:var(--suave);font-weight:600;margin-top:14px;margin-bottom:7px}
 
-.home-secondary{margin:4px 0 18px;border-top:1px solid var(--linea);border-bottom:1px solid var(--linea)}
-.home-secondary summary{list-style:none;cursor:pointer;padding:14px 2px;color:var(--suave);font-size:13px;letter-spacing:.03em}
+.home-secondary{margin:32px 0 18px;border-top:1px solid var(--linea);border-bottom:1px solid var(--linea)}
+.home-secondary summary{list-style:none;cursor:pointer;padding:14px 2px;color:var(--suave);font-size:13px;letter-spacing:.08em;text-transform:uppercase}
 .home-secondary summary::-webkit-details-marker{display:none}
-.home-secondary summary::after{content:'＋';float:right;color:var(--arcilla);font-size:17px;line-height:1}
-.home-secondary[open] summary::after{content:'−'}
-.home-secondary-body{padding-bottom:2px}
+.home-secondary summary::after{content:'';float:right;color:var(--arcilla);font-size:17px;line-height:1}
+.home-secondary-body{padding:16px 0 2px}
 .home-secondary .now-card{background:transparent}
-@media(max-width:650px){.home-secondary summary{padding:15px 0;font-size:14px}.home-secondary-body{padding-bottom:2px}}
+.home-day-now{padding:0 2px 18px;border-bottom:1px solid var(--linea);margin-bottom:18px}
+.home-day-now p{margin:6px 0 0;color:var(--suave);font-size:13px;line-height:1.5}
+@media(max-width:650px){.home-secondary{margin-top:30px}.home-secondary summary{padding:15px 0;font-size:14px}.home-secondary-body{padding:16px 0 2px}.home-day-now{padding-left:0;padding-right:0}}
 </style>
 
 </head>
@@ -864,8 +865,13 @@ body[data-momento="noche"] .now-action{border-top-color:#756b61!important;backgr
     </div>
 
     <details class="home-secondary">
-      <summary>Ver el resto del día</summary>
+      <summary>VER MI DÍA COMPLETO →</summary>
       <div class="home-secondary-body">
+        <div class="home-day-now">
+          <div class="now-action-title">AHORA</div>
+          <p>La propuesta de arriba es tu siguiente paso para este momento.</p>
+        </div>
+
         <div class="now-grid">
           <div class="now-card">
             <div class="now-action-title">DESPUÉS · 30–60 MIN</div>
@@ -874,16 +880,6 @@ body[data-momento="noche"] .now-action{border-top-color:#756b61!important;backgr
             <div class="now-action-title" style="margin-top:18px">HOY · 1 COSA IMPORTANTE</div>
             <p id="now-today" style="margin-top:7px">Una sola prioridad, sin convertirla en una lista.</p>
             <a class="now-do" href="#" onclick="yukiQueHago(true,true);return false">Recalcular →</a>
-          </div>
-          <div class="now-card">
-            <div class="now-action-title">SI TIENES MÁS TIEMPO</div>
-            <p>Estos botones abren directamente una sección. No cambian la propuesta de Yuki.</p>
-            <div class="now-area">
-              <button type="button" onclick="abrirAreaAhora('casa')"><strong>Abrir Casa</strong><small>acceso directo</small></button>
-              <button type="button" onclick="abrirAreaAhora('urbana')"><strong>Abrir La Urbana</strong><small>ir a tareas</small></button>
-              <button type="button" onclick="abrirAreaAhora('cocina')"><strong>Abrir Comida</strong><small>acceso directo</small></button>
-              <button type="button" onclick="abrirAreaAhora('hobbies')"><strong>Abrir Hobby</strong><small>acceso directo</small></button>
-            </div>
           </div>
         </div>
 
