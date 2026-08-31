@@ -4736,7 +4736,7 @@ function recetaInventario(items){
 function proponerCocinaInventario(){
   const el=document.getElementById('inventario-cocina');if(!el)return;const items=inventarioDisponible();
   if(!items.length){el.innerHTML='<strong>🍳 ¿QUÉ PUEDO COCINAR?</strong><p>No hay alimentos disponibles apuntados todavía.</p>';return;}
-  const pronto=items.filter(x=>x.gastarPronto),pool=pronto.length?pronto:items;
+  const pronto=items.filter(x=>x.gastarPronto),pool=pronto.length?pronto.concat(items.filter(x=>!x.gastarPronto)):items;
   const propuesta=recetaInventario(pool.slice(inventarioCocinaIdx%Math.max(1,pool.length),pool.length).concat(pool.slice(0,inventarioCocinaIdx%Math.max(1,pool.length))).slice(0,4));
   inventarioCocinaIdx++;
   el.innerHTML='<strong>🍳 ¿QUÉ PUEDO COCINAR?</strong><p>'+invEsc(propuesta)+'</p><button class="btn btn-outline" type="button" onclick="proponerCocinaInventario()">OTRA OPCIÓN</button>';
