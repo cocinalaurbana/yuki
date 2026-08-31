@@ -4254,7 +4254,10 @@ function seleccionarNecesidadAlimentacion(necesidad) {
   const seleccion = document.getElementById('alimentacion-seleccion');
   if (seleccion) seleccion.textContent = 'Has elegido «'+ALIMENTACION_NECESIDADES[necesidad]+'». Yuki lo tendrá en cuenta como punto de partida, no como una categoría cerrada.';
   const cocinar = document.getElementById('alimentacion-cocinar');
-  if (cocinar) cocinar.style.display = necesidad === 'cocinar' ? 'block' : 'none';
+  if (cocinar) {
+    cocinar.style.display = necesidad === 'cocinar' ? 'block' : 'none';
+    cocinar.classList.toggle('tab-book-hidden', necesidad !== 'cocinar');
+  }
 }
 function abrirRecetasAlimentacion() {
   const contenidos = document.getElementById('alimentacion-contenidos');
