@@ -746,7 +746,19 @@ body[data-momento="mediodia"] .now-action{border-top-color:var(--musgo)!importan
 body[data-momento="atardecer"] .now-action{border-top-color:var(--arcilla)!important;background:#fbf4ec!important}
 body[data-momento="noche"] .now-action{border-top-color:#756b61!important;background:#f2ede7!important}
 @media(max-width:650px){.now-home{padding:14px 0 28px!important}.now-intro{min-height:0;display:block!important;padding-bottom:22px}.now-intro:after{right:3px;bottom:17px}.home-detail-toggle{margin-top:17px!important}.now-climate{margin-top:22px!important}.now-climate div{padding-right:9px!important;margin-right:9px!important}.now-climate b{font-size:15px!important}.now-action{padding:22px 16px 18px!important}.now-grid{grid-template-columns:1fr!important}.now-grid .now-card:first-child,.now-grid .now-card:nth-child(2){border-right:0!important;padding:22px 0!important}.now-memory{grid-template-columns:repeat(2,1fr)!important}.now-memory div:nth-child(2){border-right:0!important;margin-right:0}.now-memory div:nth-child(3){border-top:1px solid var(--linea);padding-top:12px}.now-memory div:nth-child(4){border-top:1px solid var(--linea);border-right:0!important;margin-right:0;padding-top:12px}}
+/* V91 · Inicio como puerta de entrada: el resto existe, pero espera su momento */
+.now-time-label{font-size:11px;letter-spacing:.12em;color:var(--suave);font-weight:600;margin-top:14px;margin-bottom:7px}
+
+.home-secondary{margin:4px 0 18px;border-top:1px solid var(--linea);border-bottom:1px solid var(--linea)}
+.home-secondary summary{list-style:none;cursor:pointer;padding:14px 2px;color:var(--suave);font-size:13px;letter-spacing:.03em}
+.home-secondary summary::-webkit-details-marker{display:none}
+.home-secondary summary::after{content:'＋';float:right;color:var(--arcilla);font-size:17px;line-height:1}
+.home-secondary[open] summary::after{content:'−'}
+.home-secondary-body{padding-bottom:2px}
+.home-secondary .now-card{background:transparent}
+@media(max-width:650px){.home-secondary summary{padding:15px 0;font-size:14px}.home-secondary-body{padding-bottom:2px}}
 </style>
+
 </head>
 <body>
 
@@ -818,11 +830,12 @@ body[data-momento="noche"] .now-action{border-top-color:#756b61!important;backgr
     </div>
 
     <div class="now-card now-action">
-      <div class="now-action-head"><div class="now-action-title">AHORA</div><span class="now-scale">5–15 MIN · una cosa</span></div>
+      <div class="now-action-head"><div class="now-action-title">AHORA</div><span class="now-scale">UNA COSA</span></div>
       <div class="now-result" id="now-result">Dime cómo llegas y te propongo un paso.</div>
       <p class="now-reason" id="now-reason">Yuki tendrá en cuenta tu energía, lo que necesitas y lo que está pendiente.</p>
       <div id="now-status" style="font-size:11px;color:var(--arcilla);margin-top:8px;min-height:16px"></div>
-      <p class="now-flow-note">1. Elige el tiempo · 2. pulsa el botón · 3. haz solo lo que te proponga.</p>
+      <p class="now-flow-note">1. Dile a Yuki cuánto espacio tienes · 2. pulsa el botón · 3. decide si te encaja.</p>
+      <div class="now-time-label">TIEMPO DISPONIBLE · ¿CUÁNTO ESPACIO TIENES?</div>
       <div class="now-time" aria-label="Tiempo disponible">
         <button type="button" data-min="10" onclick="elegirTiempoAhora(10,this)">10 min</button>
         <button type="button" data-min="20" onclick="elegirTiempoAhora(20,this)">20 min</button>
@@ -850,39 +863,44 @@ body[data-momento="noche"] .now-action{border-top-color:#756b61!important;backgr
       <div id="now-do-wrap"></div>
     </div>
 
-    <div class="now-grid">
-      <div class="now-card">
-        <div class="now-action-title">DESPUÉS · 30–60 MIN</div>
-        <h3 id="now-after-title">Siguiente tramo</h3>
-        <p id="now-after">Cuando termines el paso de ahora, Yuki te mostrará una continuación posible.</p>
-        <div class="now-action-title" style="margin-top:18px">HOY · 1 COSA IMPORTANTE</div>
-        <p id="now-today" style="margin-top:7px">Una sola prioridad, sin convertirla en una lista.</p>
-        <a class="now-do" href="#" onclick="yukiQueHago(true,true);return false">Recalcular →</a>
-      </div>
-      <div class="now-card">
-        <div class="now-action-title">SI TIENES MÁS TIEMPO</div>
-        <p>Estos botones abren directamente una sección. No cambian la propuesta de Yuki.</p>
-        <div class="now-area">
-          <button type="button" onclick="abrirAreaAhora('casa')"><strong>Abrir Casa</strong><small>acceso directo</small></button>
-          <button type="button" onclick="abrirAreaAhora('urbana')"><strong>Abrir La Urbana</strong><small>ir a tareas</small></button>
-          <button type="button" onclick="abrirAreaAhora('cocina')"><strong>Abrir Comida</strong><small>acceso directo</small></button>
-          <button type="button" onclick="abrirAreaAhora('hobbies')"><strong>Abrir Hobby</strong><small>acceso directo</small></button>
+    <details class="home-secondary">
+      <summary>Ver el resto del día</summary>
+      <div class="home-secondary-body">
+        <div class="now-grid">
+          <div class="now-card">
+            <div class="now-action-title">DESPUÉS · 30–60 MIN</div>
+            <h3 id="now-after-title">Siguiente tramo</h3>
+            <p id="now-after">Cuando termines el paso de ahora, Yuki te mostrará una continuación posible.</p>
+            <div class="now-action-title" style="margin-top:18px">HOY · 1 COSA IMPORTANTE</div>
+            <p id="now-today" style="margin-top:7px">Una sola prioridad, sin convertirla en una lista.</p>
+            <a class="now-do" href="#" onclick="yukiQueHago(true,true);return false">Recalcular →</a>
+          </div>
+          <div class="now-card">
+            <div class="now-action-title">SI TIENES MÁS TIEMPO</div>
+            <p>Estos botones abren directamente una sección. No cambian la propuesta de Yuki.</p>
+            <div class="now-area">
+              <button type="button" onclick="abrirAreaAhora('casa')"><strong>Abrir Casa</strong><small>acceso directo</small></button>
+              <button type="button" onclick="abrirAreaAhora('urbana')"><strong>Abrir La Urbana</strong><small>ir a tareas</small></button>
+              <button type="button" onclick="abrirAreaAhora('cocina')"><strong>Abrir Comida</strong><small>acceso directo</small></button>
+              <button type="button" onclick="abrirAreaAhora('hobbies')"><strong>Abrir Hobby</strong><small>acceso directo</small></button>
+            </div>
+          </div>
         </div>
+
+        <div class="now-card now-evening">
+          <div><div class="now-action-title">ESTA NOCHE</div><h3>¿Qué queda de hoy?</h3><p>Un cierre breve, sin convertirlo en otra tarea.</p></div>
+          <a class="now-do" href="#" onclick="abrirAreaAhora('cierre');return false">Ir a Atardecer →</a>
+        </div>
+
+        <div class="now-card">
+          <div class="now-action-title">ESTA SEMANA</div>
+          <div class="now-memory" id="now-memory"></div>
+          <div class="now-secondary" id="now-pattern">Yuki irá reconociendo tus ritmos sin convertirlos en una evaluación.</div>
+        </div>
+
+        <div class="now-secondary">El resto sigue en sus lugares: Diario · Luna · Orientación · Música · Cine · Lectura.</div>
       </div>
-    </div>
-
-    <div class="now-card now-evening">
-      <div><div class="now-action-title">ESTA NOCHE</div><h3>¿Qué queda de hoy?</h3><p>Un cierre breve, sin convertirlo en otra tarea.</p></div>
-      <a class="now-do" href="#" onclick="abrirAreaAhora('cierre');return false">Ir a Atardecer →</a>
-    </div>
-
-    <div class="now-card">
-      <div class="now-action-title">ESTA SEMANA</div>
-      <div class="now-memory" id="now-memory"></div>
-      <div class="now-secondary" id="now-pattern">Yuki irá reconociendo tus ritmos sin convertirlos en una evaluación.</div>
-    </div>
-
-    <div class="now-secondary">Lo demás sigue en sus lugares: Diario · Luna · Orientación · Música · Cine · Lectura.</div>
+    </details>
     <button class="yuki-help-link" type="button" onclick="abrirAyudaYuki()">? ¿Cómo funciona Yuki?</button>
   </section>
 
@@ -1755,10 +1773,14 @@ body[data-momento="noche"] .now-action{border-top-color:#756b61!important;backgr
   <div class="modal onboarding-help-modal">
     <div class="modal-title"><span>¿Qué quieres aprender?</span><button class="modal-close" onclick="cerrarAyudaYuki()">×</button></div>
     <div class="onboarding-help-list">
+      <button onclick="ayudaYuki('inicio')">Qué es Inicio</button>
       <button onclick="ayudaYuki('ahora')">Cómo funciona «Yuki, ¿qué hago?»</button>
+      <button onclick="ayudaYuki('propuesta')">Qué es una propuesta</button>
+      <button onclick="ayudaYuki('decisiones')">Qué significan las cuatro respuestas</button>
       <button onclick="ayudaYuki('exterior')">Qué es el clima exterior</button>
       <button onclick="ayudaYuki('interior')">Qué es el clima interior</button>
       <button onclick="ayudaYuki('disponible')">Qué significa tiempo disponible</button>
+      <button onclick="ayudaYuki('resto')">Dónde está el resto de Yuki</button>
       <button onclick="ayudaYuki('musica')">Cómo utiliza Yuki la música</button>
       <button onclick="ayudaYuki('fluir')">Qué es FLUIR</button>
       <button onclick="ayudaYuki('luna')">Cómo usa Yuki los ritmos lunares</button>
@@ -4441,7 +4463,7 @@ function onboardingSteps() {
     {target:'.now-time', title:'2 · Dile cuánto tiempo tienes', body:'Son los minutos reales para el siguiente paso. Yuki los mantiene separados del clima exterior y adapta su propuesta.', next:'Siguiente'},
     {target:'.now-ask', title:'3 · Aquí empieza el recorrido', body:'Pulsa aquí para entrar en la conversación guiada: clima exterior, cómo llegas, tiempo disponible y una sola propuesta.', next:'Probarlo', action:'try'},
 
-    {target:'.now-result', title:'4 · Haz solo esto', body:'Esta es la propuesta real de Yuki para este momento. Puedes aceptarla, cambiarla o decirle que hoy no encaja.', next:'Siguiente'},
+    {target:'.now-result', title:'4 · Esta es tu propuesta', body:'Esta es la propuesta de Yuki para este momento. Puedes probarla, cambiarla o decirle que hoy no encaja.', next:'Siguiente'},
     {target:'#now-feedback', title:'5 · También puedes enseñarle', body:'Si algo no encaja, díselo. «No hoy» significa ahora no; «No me sirve» significa que esta propuesta no era adecuada para ti.', next:'Probar «No me sirve»', action:'reasons'},
     {target:'#now-after', title:'6 · No tienes que planificar todo el día', body:'Cuando termines el paso de ahora, Yuki puede ayudarte a decidir qué podría venir después.', next:'Siguiente'},
     {target:'#now-today', title:'7 · Una sola cosa importante', body:'«Hoy» no es una lista interminable. Es una cosa que merece atención.', next:'Siguiente'},
@@ -4496,6 +4518,8 @@ function onboardingRender() {
   document.querySelectorAll('.onboarding-focus-target').forEach(el=>el.classList.remove('onboarding-focus-target'));
   const target=onboardingTarget(step.target);
   if(!target){ onboardingStep++; onboardingRender(); return; }
+  const secondary=target.closest('.home-secondary');
+  if(secondary) secondary.open=true;
   target.classList.add('onboarding-focus-target');
   target.scrollIntoView({behavior:'smooth',block:'center'});
   setTimeout(()=>{
@@ -4552,7 +4576,7 @@ function abrirAyudaYuki(){ const modal=document.getElementById('modal-ayuda-yuki
 function cerrarAyudaYuki(){ const modal=document.getElementById('modal-ayuda-yuki'); if(modal) modal.classList.remove('open'); }
 function ayudaYuki(tipo){
   const el=document.getElementById('ayuda-yuki-respuesta'); if(!el)return;
-  const textos={ahora:'Pulsa «Yuki, ¿qué hago?». Yuki obtiene primero el clima exterior, después recoge cómo llegas y cuánto tiempo disponible tienes. Puede tener en cuenta tu historial, cuerpo, prácticas, música, tareas y preferencias cuando sean relevantes. Con ese contexto te propone una sola cosa. Puedes marcar Hecho, Otra opción, No hoy o No me sirve.',exterior:'Es el tiempo meteorológico real del lugar: temperatura, cielo, lluvia y viento. Yuki lo utiliza como una variable más del contexto; no es lo mismo que los minutos disponibles.',interior:'Es cómo llegas tú hoy: Alegre, Bien, Neutro, Bajo o Tenso. Puedes añadir qué necesitas sin tener que analizarte.',disponible:'Son los minutos reales que tienes para hacer el siguiente paso: 10, 20 o 30+ minutos. No significa el tiempo meteorológico.',musica:'En Música puedes capturar canciones, sesiones y artistas por separado, añadir etiquetas y guardar por qué una canción te cambia el estado. Yuki puede utilizar esa memoria para proponerte movimiento. La reproducción ocurre fuera de Yuki, mediante el enlace externo.',fluir:'FLUIR no es entrenar. Es bailar, explorar, soltar tensión o moverte con música y poca preparación. Puedes elegir Despertar, Soltar o Explorar. Se registra internamente para que Yuki conozca tus ritmos, sin objetivos, rachas ni puntuaciones.',luna:'En Luna puedes ver referencias opcionales para tareas como depilarte, cortarte el pelo o trasplantar. Las fases lunares influyen de forma demostrable en las mareas, pero no hay evidencia concluyente de que hagan crecer más rápido el pelo o mejoren un trasplante. Yuki las muestra como tradición u observación, nunca como obligación ni consejo científico.',escalas:'Ahora es el paso pequeño. Después es una continuación posible. Hoy es una única cosa importante. No son listas que tengas que completar.',sistema:'Mi sistema es la parte editable de Yuki: prioridades, reglas, prácticas, rutinas, lugares, proyectos y personas.',guardar:'Entra en la sección que corresponda y utiliza su botón Guardar. Lo que escribas queda en este dispositivo.',aprende:'Yuki aprende de tus decisiones: Hecho indica que la propuesta encajó; No hoy significa que hoy no era el momento; No me sirve indica que esa propuesta o ese contexto no encajaron; Otra opción le pide volver a pensar. No interpreta un rechazo como falta de disciplina.',ligero:'Modo Ligero todavía no está disponible en esta versión.'};
+  const textos={inicio:'Inicio es la puerta de entrada de Yuki. Aquí le dices cómo llegas, cuánto espacio tienes y le preguntas qué tiene sentido ahora. El resto de funciones sigue disponible en la navegación, pero no necesita aparecer todo a la vez.',ahora:'Pulsa «Yuki, ¿qué hago?». Yuki reúne el contexto que pueda ser relevante —clima exterior, cómo llegas, energía, tiempo, pendientes, movimiento, música, preferencias y tu sistema— y te propone una sola cosa. Yuki propone; tú decides.',propuesta:'Una propuesta es un siguiente paso pequeño y concreto para este momento. Puede reunir elementos que pertenecen a una misma escena, pero no es una lista de tareas ni una obligación.',decisiones:'Hecho indica que la propuesta encajó o la realizaste. Otra opción pide a Yuki que vuelva a pensar. No hoy significa que ahora no es el momento y no penaliza la decisión. No me sirve indica que esa propuesta o ese contexto no encajan y ayuda a Yuki a ajustar futuras propuestas.',exterior:'Es el tiempo meteorológico real del lugar: temperatura, cielo, lluvia y viento. Yuki lo utiliza como una variable más del contexto; no es lo mismo que los minutos disponibles. Si no está disponible, puedes continuar sin ese dato.',interior:'Es cómo llegas tú hoy: Alegre, Bien, Neutro, Bajo o Tenso. Puedes añadir qué necesitas sin tener que analizarte.',disponible:'Son los minutos reales que tienes para el siguiente paso: 10, 20 o 30+ minutos. Es decir, cuánto espacio tienes ahora; no es otro formulario ni el tiempo meteorológico.',resto:'El resto de Yuki está en la navegación. Mi Mundo reúne Casa, Plantas, Alimentación, Compra y Gastos. También puedes entrar en Cuerpo, Diario, Luna, Música, Ver y leer, Tareas, Hobbies y Mi sistema. Estas áreas siguen existiendo, pero no compiten con tu primer paso.',musica:'En Música puedes capturar canciones, sesiones y artistas por separado, añadir etiquetas y guardar por qué una canción te cambia el estado. Yuki puede utilizar esa memoria para proponerte movimiento. La reproducción ocurre fuera de Yuki, mediante el enlace externo.',fluir:'FLUIR no es entrenar. Es bailar, explorar, soltar tensión o moverte con música y poca preparación. Puedes elegir Despertar, Soltar o Explorar. Se registra internamente para que Yuki conozca tus ritmos, sin objetivos, rachas ni puntuaciones.',luna:'En Luna puedes ver referencias opcionales para tareas como depilarte, cortarte el pelo o trasplantar. Las fases lunares influyen de forma demostrable en las mareas, pero no hay evidencia concluyente de que hagan crecer más rápido el pelo o mejoren un trasplante. Yuki las muestra como tradición u observación, nunca como obligación ni consejo científico.',escalas:'Ahora es el paso pequeño. Después es una continuación posible. Hoy es una única cosa que merece atención. No son listas que tengas que completar.',sistema:'Mi sistema es la parte editable de Yuki: Mi dirección recoge hacia dónde quieres ir; Mi cuidado, cómo quieres cuidarte; y Mi mundo, los lugares, proyectos, personas e intereses que forman tu vida. No son objetivos que tengas que cumplir.',guardar:'Entra en la sección que corresponda y utiliza su botón Guardar. Lo que escribas queda en este dispositivo.',aprende:'Yuki aprende de tus decisiones. Hecho indica que la propuesta encajó; No hoy significa que hoy no era el momento; No me sirve indica que esa propuesta o ese contexto no encajaron; Otra opción le pide volver a pensar. No interpreta un rechazo como falta de disciplina.',ligero:'Modo Ligero todavía no está disponible en esta versión.'};
   el.textContent=textos[tipo]||'';
 }
 window.addEventListener('resize',()=>{if(onboardingActive) onboardingRender();});
