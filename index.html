@@ -795,6 +795,76 @@ body[data-momento="noche"] .now-action{border-top-color:#756b61!important;backgr
   .onboarding-help-list button{font-size:16px!important}
   .onboarding-help-response{font-size:16px!important}
 }
+/* LEGIBILIDAD MÓVIL · adaptación visual, sin cambiar contenidos ni comportamiento */
+@media (orientation: portrait), (max-width: 799px){
+  body{font-size:17px;line-height:1.5}
+  header{min-height:64px;height:auto!important;padding:14px 16px!important;gap:12px}
+  header h1{font-size:26px!important;line-height:1.15}
+  header .fecha{font-size:15px!important;line-height:1.35}
+  .theme-toggle{font-size:16px!important;min-height:44px;padding:9px 11px!important}
+
+  /* La navegación conserva el desplazamiento horizontal: no se comprime para que quepa todo. */
+  nav{padding:7px 8px!important;gap:6px!important;scrollbar-width:thin}
+  nav button{font-size:17px!important;line-height:1.25!important;min-height:46px!important;padding:11px 14px!important}
+
+  .tab{padding:24px 16px 52px!important}
+  .card{padding:20px!important}
+  .tab h2{font-size:29px!important;line-height:1.2!important}
+  .tab h3{font-size:22px!important;line-height:1.25!important}
+  .tab .card-title,.tab .sec-title{font-size:23px!important;line-height:1.25!important;margin-bottom:17px!important}
+  .tab p,.tab li{font-size:17px!important;line-height:1.6!important}
+  .tab small,.tab .text-suave{font-size:16px!important;line-height:1.55!important}
+  .tab a{font-size:17px!important;line-height:1.5!important}
+  .tab [style*="font-size:10px"],.tab [style*="font-size:11px"],.tab [style*="font-size:12px"],.tab [style*="font-size:13px"],.tab [style*="font-size:14px"]{font-size:16px!important;line-height:1.5!important}
+  .tab button{font-size:16px!important;line-height:1.35!important;min-height:44px!important}
+  .tab input,.tab select,.tab textarea{font-size:17px!important;line-height:1.5!important;min-height:48px}
+  .tab textarea{padding:12px!important}
+  .tab label{font-size:16px!important;line-height:1.5!important}
+  .tab details summary{font-size:17px!important;line-height:1.5!important;padding:10px 0!important}
+
+  /* Inicio y mensajes de Yuki: un poco más de aire, sin agrandar los títulos indiscriminadamente. */
+  .now-result{font-size:clamp(29px,8vw,38px)!important;line-height:1.2!important}
+  .now-reason{font-size:18px!important;line-height:1.6!important}
+  .now-flow-note{font-size:16px!important;line-height:1.55!important}
+  .now-time-label,.now-action-title{font-size:15px!important;line-height:1.4!important}
+  .now-time button,.now-feedback button{font-size:17px!important;min-height:44px!important}
+  .now-ask{font-size:18px!important;min-height:52px!important;line-height:1.3!important}
+  .now-do,.yuki-help-link{font-size:17px!important;line-height:1.5!important}
+  .now-card p,.home-day-now p{font-size:17px!important;line-height:1.6!important}
+  .home-secondary summary,.home-day-link{font-size:17px!important;line-height:1.5!important}
+
+  /* Ventanas y modales: título claro, lectura holgada y controles fáciles de tocar. */
+  .modal{padding:24px 20px 30px!important;max-height:92vh!important}
+  .modal-title{font-size:23px!important;line-height:1.3!important;margin-bottom:20px!important;gap:12px}
+  .modal-close{font-size:30px!important;line-height:1!important;min-width:46px!important;min-height:46px!important;padding:8px!important}
+  .modal p,.modal li,.modal label,.modal small,.modal .text-suave{font-size:17px!important;line-height:1.6!important}
+  .modal [style*="font-size:10px"],.modal [style*="font-size:11px"],.modal [style*="font-size:12px"],.modal [style*="font-size:13px"],.modal [style*="font-size:14px"]{font-size:16px!important;line-height:1.55!important}
+  .modal button{font-size:17px!important;min-height:48px!important;padding:11px 14px!important}
+  .modal input,.modal select,.modal textarea{font-size:17px!important;line-height:1.5!important;min-height:48px}
+  .onboarding-help-modal .onboarding-help-list{gap:9px}
+  .onboarding-help-modal .onboarding-help-response{font-size:17px!important;line-height:1.6!important}
+
+  /* Flujo guiado a pantalla completa. */
+  .yuki-flow-shell{padding:20px 18px 44px!important}
+  .yuki-flow-top{padding-bottom:16px!important}
+  .yuki-flow-mark{font-size:16px!important}
+  .yuki-flow-close{font-size:17px!important;min-width:46px!important;min-height:46px!important;padding:10px!important}
+  .yuki-flow-kicker,.yuki-flow-label{font-size:15px!important;line-height:1.4!important;letter-spacing:.1em!important}
+  .yuki-flow-title{font-size:clamp(34px,9vw,48px)!important;line-height:1.15!important}
+  .yuki-flow-lead{font-size:20px!important;line-height:1.6!important}
+  .yuki-flow-weather strong{font-size:26px!important;line-height:1.25!important}
+  .yuki-flow-weather small{font-size:16px!important;line-height:1.5!important}
+  .yuki-flow-context-options button,.yuki-flow-time button{font-size:17px!important;line-height:1.3!important;min-height:52px!important;padding:10px 8px!important}
+  .yuki-flow-textarea{font-size:17px!important;line-height:1.5!important;min-height:64px!important;padding:12px!important}
+  .yuki-flow-note{font-size:16px!important;line-height:1.6!important}
+  .yuki-flow-summary span{font-size:15px!important;line-height:1.4!important}
+  .yuki-flow-summary b{font-size:18px!important;line-height:1.4!important}
+  .yuki-flow-proposal{font-size:clamp(32px,8vw,42px)!important;line-height:1.2!important}
+  .yuki-flow-reason{font-size:18px!important;line-height:1.65!important}
+  .yuki-flow-meta{font-size:16px!important;line-height:1.5!important}
+  .yuki-flow-actions button{font-size:17px!important;line-height:1.35!important;min-height:52px!important;padding:11px 8px!important}
+  .yuki-flow-reasons button{font-size:17px!important;line-height:1.5!important;min-height:48px!important;padding:13px 0!important}
+}
 </style>
 
 </head>
