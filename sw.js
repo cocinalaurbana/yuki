@@ -1,5 +1,5 @@
-const CACHE = 'yuki-v93.0';
-const ASSETS = ['./', './?v=93.0', './index.html?v=93.0', './manifest.json', './manifest-v91.json', './icon-192.png', './icon-512.png'];
+const CACHE = 'yuki-v94.0';
+const ASSETS = ['./', './?v=94.0', './index.html?v=94.0', './manifest.json', './manifest-v91.json', './icon-192.png', './icon-512.png'];
 self.addEventListener('install', e => { e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS))); self.skipWaiting(); });
 self.addEventListener('activate', e => { e.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k))))); self.clients.claim(); });
 self.addEventListener('fetch', e => { e.respondWith(caches.match(e.request).then(cached => cached || fetch(e.request))); });
