@@ -865,6 +865,7 @@ body[data-momento="noche"] .now-action{border-top-color:#756b61!important;backgr
   .yuki-flow-actions button{font-size:17px!important;line-height:1.35!important;min-height:52px!important;padding:11px 8px!important}
   .yuki-flow-reasons button{font-size:17px!important;line-height:1.5!important;min-height:48px!important;padding:13px 0!important}
 }
+.inventario-inicial{border-top:1px solid var(--linea);padding:20px 0 4px;margin-top:18px}.inventario-inicial h3{font-family:'Playfair Display',Georgia,serif;font-size:24px;font-weight:400;margin:0 0 8px}.inventario-inicial p{font-size:17px;line-height:1.55;color:var(--suave);margin:0 0 16px}.inventario-inicial-opciones{display:flex;flex-direction:column;gap:9px}.inventario-inicial-opciones button{text-align:left;width:100%}.inventario-fotos-proximamente{border:1px dashed var(--linea);padding:12px 13px;color:var(--suave);font-size:16px;line-height:1.45}.inventario-importacion{border-top:1px solid var(--linea);padding-top:18px;margin-top:18px}.inventario-importacion>label{display:block;margin-bottom:8px}.inventario-importacion textarea{width:100%;box-sizing:border-box;min-height:170px}.inventario-importacion-preview{border-top:1px solid var(--linea);margin-top:18px;padding-top:16px}.inventario-importacion-preview p{font-size:17px;line-height:1.55;color:var(--suave);margin:6px 0 12px}.inventario-importacion-list>div{display:flex;justify-content:space-between;gap:12px;border-top:1px solid var(--linea);padding:10px 0;font-size:16px;line-height:1.45}.inventario-importacion-list span{color:var(--suave);text-align:right}.inventario-importacion-revision{border-top:1px solid var(--linea);margin-top:14px;padding-top:10px}.inventario-revision-row{display:flex;align-items:center;gap:10px;border-top:1px solid var(--linea);padding:10px 0}.inventario-revision-row span{flex:1;font-size:16px;line-height:1.45}.inventario-revision-row select{font-size:16px!important;min-height:42px}.inventario-importacion-ok{color:var(--musgo)!important}.inventario-revision{margin-top:16px}
 </style>
 
 </head>
@@ -1900,7 +1901,7 @@ body[data-momento="noche"] .now-action{border-top-color:#756b61!important;backgr
       <button onclick="ayudaYuki('escalas')">Cómo funcionan las tres escalas</button>
       <button onclick="ayudaYuki('sistema')">Cómo funciona «Mi sistema»</button>
       <button onclick="ayudaYuki('guardar')">Cómo guardar cosas</button>
-      <button onclick="ayudaYuki('casa')">Qué es «Lo que tengo»</button>
+      <button onclick="ayudaYuki('inventario')">Qué es «Lo que tengo»</button>
       <button onclick="ayudaYuki('conexion')">Cómo conecta Yuki las áreas</button>
       <button onclick="ayudaYuki('alimentacion')">Cómo empezar por Alimentación</button>
       <button onclick="ayudaYuki('aprende')">Cómo aprende Yuki</button>
@@ -4798,7 +4799,7 @@ function abrirAyudaYuki(){ const modal=document.getElementById('modal-ayuda-yuki
 function cerrarAyudaYuki(){ const modal=document.getElementById('modal-ayuda-yuki'); if(modal) modal.classList.remove('open'); }
 function ayudaYuki(tipo){
   const el=document.getElementById('ayuda-yuki-respuesta'); if(!el)return;
-  const textos={inicio:'Inicio es la puerta de entrada de Yuki. Aquí le dices cómo llegas, cuánto espacio tienes y le preguntas qué tiene sentido ahora. El resto de funciones sigue disponible en la navegación, pero no necesita aparecer todo a la vez.',ahora:'Pulsa «Yuki, ¿qué hago?». Yuki reúne el contexto que pueda ser relevante —clima exterior, cómo llegas, energía, tiempo, pendientes, movimiento, música, preferencias y tu sistema— y te propone una sola cosa. Yuki propone; tú decides.',propuesta:'Una propuesta es un siguiente paso pequeño y concreto para este momento. Puede reunir elementos que pertenecen a una misma escena, pero no es una lista de tareas ni una obligación.',decisiones:'Hecho indica que la propuesta encajó o la realizaste. Otra opción pide a Yuki que vuelva a pensar. No hoy significa que ahora no es el momento y no penaliza la decisión. No me sirve indica que esa propuesta o ese contexto no encajan y ayuda a Yuki a ajustar futuras propuestas.',exterior:'Es el tiempo meteorológico real del lugar: temperatura, cielo, lluvia y viento. Yuki lo utiliza como una variable más del contexto; no es lo mismo que los minutos disponibles. Si no está disponible, puedes continuar sin ese dato.',interior:'Es cómo llegas tú hoy: Alegre, Bien, Neutro, Bajo o Tenso. Puedes añadir qué necesitas sin tener que analizarte.',disponible:'Son los minutos reales que tienes para el siguiente paso: 10, 20 o 30+ minutos. Es decir, cuánto espacio tienes ahora; no es otro formulario ni el tiempo meteorológico.',resto:'El resto de Yuki está en la navegación. Mi Día reúne el recorrido temporal completo; Diario reúne el Cuaderno de climas, el registro íntimo, sueños y observaciones. Mi Mundo reúne Casa, Plantas, Alimentación, Compra, Gastos, Música, Ver y leer y Hobbies; Cuerpo reúne Salud y Cuidado; Orientación reúne Luna, Guía y Reflexiones; y Mi sistema conserva tu dirección, cuidado y mundo. Estas áreas siguen existiendo, pero no compiten con tu primer paso.',musica:'En Música puedes capturar canciones, sesiones y artistas por separado, añadir etiquetas y guardar por qué una canción te cambia el estado. Yuki puede utilizar esa memoria para proponerte movimiento. La reproducción ocurre fuera de Yuki, mediante el enlace externo.',fluir:'FLUIR no es entrenar. Es bailar, explorar, soltar tensión o moverte con música y poca preparación. Puedes elegir Despertar, Soltar o Explorar. Se registra internamente para que Yuki conozca tus ritmos, sin objetivos, rachas ni puntuaciones.',paspar:'Paspar también es una forma de estar. No siempre necesitas hacer algo con tu tiempo. Si Yuki te lo propone, no es una tarea, no tiene una duración obligatoria y no tienes que marcarlo como hecho. Puedes simplemente dejar que el momento sea.',luna:'En Luna puedes ver referencias opcionales para tareas como depilarte, cortarte el pelo o trasplantar. Las fases lunares influyen de forma demostrable en las mareas, pero no hay evidencia concluyente de que hagan crecer más rápido el pelo o mejoren un trasplante. Yuki las muestra como tradición u observación, nunca como obligación ni consejo científico.',paspar:'Paspar también es una forma de estar. No siempre necesitas hacer algo con tu tiempo. Si Yuki te lo propone, no es una tarea, no tiene una duración obligatoria y no tienes que marcarlo como hecho. Puedes simplemente dejar que el momento sea.',escalas:'Ahora es el paso pequeño. Después es una continuación posible. Hoy es una única cosa que merece atención. No son listas que tengas que completar.',sistema:'Mi sistema es la parte editable de Yuki: Mi dirección recoge hacia dónde quieres ir; Mi cuidado, cómo quieres cuidarte; y Mi mundo, los lugares, proyectos, personas e intereses que forman tu vida. No son objetivos que tengas que cumplir.',guardar:'Entra en la sección que corresponda y utiliza su botón Guardar. Lo que escribas queda en este dispositivo.',casa:'En Casa, «Lo que tengo» es una memoria sencilla de tu nevera, despensa y congelador. Pulsa «＋ TENGO ALGO NUEVO» y escribe, por ejemplo, «medio kilo de calabacines», «6 huevos» o «he congelado caldo». Yuki interpreta lo que puede y solo pregunta dónde guardarlo si no lo sabe. Puedes marcar TENGO, QUEDA POCO, SE ACABÓ o GASTAR PRONTO. QUEDA POCO y SE ACABÓ ofrecen «Añadir a la compra», pero tú decides. Al marcar algo como comprado en Compra puedes elegir «Guardar en casa». «¿Qué puedo cocinar?» muestra una idea sencilla usando lo apuntado. No pasa nada si un día no lo actualizas: cuanto mejor sepa Yuki qué hay en casa, mejor podrá ayudarte.',conexion:'Yuki no funciona como una colección de compartimentos independientes. Alimentación, Casa, Cuerpo y las demás partes son dimensiones distintas de tu vida, pero una misma información puede ayudar en varias. Si eliges Alimentación y quieres cocinar, Yuki puede consultar lo que tienes en Casa, tu tiempo, cómo llegas, tus preferencias y tus recetas, sin trasladarte a otra parte ni duplicar datos. Tú eliges por dónde empezar; Yuki conecta lo que resulte útil.',alimentacion:'Cuando entras en Alimentación, no estás entrando en un almacén ni en una dieta. Estás diciendo por dónde quieres empezar. Puedes elegir qué quieres cuidar ahora o decir «No lo sé». Esa elección orienta a Yuki, pero no te encierra en una categoría.',aprende:'Yuki aprende de tus decisiones. Hecho indica que la propuesta encajó; No hoy significa que hoy no era el momento; No me sirve indica que esa propuesta o ese contexto no encajaron; Otra opción le pide volver a pensar. No interpreta un rechazo como falta de disciplina.',ligero:'Modo Ligero todavía no está disponible en esta versión.'};
+  const textos={inicio:'Inicio es la puerta de entrada de Yuki. Aquí le dices cómo llegas, cuánto espacio tienes y le preguntas qué tiene sentido ahora. El resto de funciones sigue disponible en la navegación, pero no necesita aparecer todo a la vez.',ahora:'Pulsa «Yuki, ¿qué hago?». Yuki reúne el contexto que pueda ser relevante —clima exterior, cómo llegas, energía, tiempo, pendientes, movimiento, música, preferencias y tu sistema— y te propone una sola cosa. Yuki propone; tú decides.',propuesta:'Una propuesta es un siguiente paso pequeño y concreto para este momento. Puede reunir elementos que pertenecen a una misma escena, pero no es una lista de tareas ni una obligación.',decisiones:'Hecho indica que la propuesta encajó o la realizaste. Otra opción pide a Yuki que vuelva a pensar. No hoy significa que ahora no es el momento y no penaliza la decisión. No me sirve indica que esa propuesta o ese contexto no encajan y ayuda a Yuki a ajustar futuras propuestas.',exterior:'Es el tiempo meteorológico real del lugar: temperatura, cielo, lluvia y viento. Yuki lo utiliza como una variable más del contexto; no es lo mismo que los minutos disponibles. Si no está disponible, puedes continuar sin ese dato.',interior:'Es cómo llegas tú hoy: Alegre, Bien, Neutro, Bajo o Tenso. Puedes añadir qué necesitas sin tener que analizarte.',disponible:'Son los minutos reales que tienes para el siguiente paso: 10, 20 o 30+ minutos. Es decir, cuánto espacio tienes ahora; no es otro formulario ni el tiempo meteorológico.',resto:'El resto de Yuki está en la navegación. Mi Día reúne el recorrido temporal completo; Diario reúne el Cuaderno de climas, el registro íntimo, sueños y observaciones. Mi Mundo reúne Casa, Plantas, Alimentación, Compra, Gastos, Música, Ver y leer y Hobbies; Cuerpo reúne Salud y Cuidado; Orientación reúne Luna, Guía y Reflexiones; y Mi sistema conserva tu dirección, cuidado y mundo. Estas áreas siguen existiendo, pero no compiten con tu primer paso.',musica:'En Música puedes capturar canciones, sesiones y artistas por separado, añadir etiquetas y guardar por qué una canción te cambia el estado. Yuki puede utilizar esa memoria para proponerte movimiento. La reproducción ocurre fuera de Yuki, mediante el enlace externo.',fluir:'FLUIR no es entrenar. Es bailar, explorar, soltar tensión o moverte con música y poca preparación. Puedes elegir Despertar, Soltar o Explorar. Se registra internamente para que Yuki conozca tus ritmos, sin objetivos, rachas ni puntuaciones.',paspar:'Paspar también es una forma de estar. No siempre necesitas hacer algo con tu tiempo. Si Yuki te lo propone, no es una tarea, no tiene una duración obligatoria y no tienes que marcarlo como hecho. Puedes simplemente dejar que el momento sea.',luna:'En Luna puedes ver referencias opcionales para tareas como depilarte, cortarte el pelo o trasplantar. Las fases lunares influyen de forma demostrable en las mareas, pero no hay evidencia concluyente de que hagan crecer más rápido el pelo o mejoren un trasplante. Yuki las muestra como tradición u observación, nunca como obligación ni consejo científico.',paspar:'Paspar también es una forma de estar. No siempre necesitas hacer algo con tu tiempo. Si Yuki te lo propone, no es una tarea, no tiene una duración obligatoria y no tienes que marcarlo como hecho. Puedes simplemente dejar que el momento sea.',escalas:'Ahora es el paso pequeño. Después es una continuación posible. Hoy es una única cosa que merece atención. No son listas que tengas que completar.',sistema:'Mi sistema es la parte editable de Yuki: Mi dirección recoge hacia dónde quieres ir; Mi cuidado, cómo quieres cuidarte; y Mi mundo, los lugares, proyectos, personas e intereses que forman tu vida. No son objetivos que tengas que cumplir.',guardar:'Entra en la sección que corresponda y utiliza su botón Guardar. Lo que escribas queda en este dispositivo.',casa:'En Casa, «Lo que tengo» es una memoria sencilla de tu nevera, despensa y congelador. Pulsa «＋ TENGO ALGO NUEVO» y escribe, por ejemplo, «medio kilo de calabacines», «6 huevos» o «he congelado caldo». Yuki interpreta lo que puede y solo pregunta dónde guardarlo si no lo sabe. Puedes marcar TENGO, QUEDA POCO, SE ACABÓ o GASTAR PRONTO. QUEDA POCO y SE ACABÓ ofrecen «Añadir a la compra», pero tú decides. Al marcar algo como comprado en Compra puedes elegir «Guardar en casa». «¿Qué puedo cocinar?» muestra una idea sencilla usando lo apuntado. No pasa nada si un día no lo actualizas: cuanto mejor sepa Yuki qué hay en casa, mejor podrá ayudarte.',inventario:'Lo que tengo es el inventario de tu casa. No necesitas introducirlo todo de una vez: puedes contarle a Yuki muchas cosas de golpe, añadirlas poco a poco o, cuando esté disponible, utilizar fotografías para hacer una primera carga. Yuki intenta separar cada elemento y clasificarlo; si no puede saber dónde va con seguridad, lo deja para revisar. El inventario puede estar incompleto y sigue siendo útil.',conexion:'Yuki no funciona como una colección de compartimentos independientes. Alimentación, Casa, Cuerpo y las demás partes son dimensiones distintas de tu vida, pero una misma información puede ayudar en varias. Si eliges Alimentación y quieres cocinar, Yuki puede consultar lo que tienes en Casa, tu tiempo, cómo llegas, tus preferencias y tus recetas, sin trasladarte a otra parte ni duplicar datos. Tú eliges por dónde empezar; Yuki conecta lo que resulte útil.',alimentacion:'Cuando entras en Alimentación, no estás entrando en un almacén ni en una dieta. Estás diciendo por dónde quieres empezar. Puedes elegir qué quieres cuidar ahora o decir «No lo sé». Esa elección orienta a Yuki, pero no te encierra en una categoría.',aprende:'Yuki aprende de tus decisiones. Hecho indica que la propuesta encajó; No hoy significa que hoy no era el momento; No me sirve indica que esa propuesta o ese contexto no encajaron; Otra opción le pide volver a pensar. No interpreta un rechazo como falta de disciplina.',ligero:'Modo Ligero todavía no está disponible en esta versión.'};
   el.textContent=textos[tipo]||'';
 }
 window.addEventListener('resize',()=>{if(onboardingActive) onboardingRender();});
@@ -4815,7 +4816,8 @@ if ('serviceWorker' in navigator) {
 // ════════════════════════════════════════════════════════
 // LO QUE TENGO · INVENTARIO DOMÉSTICO EXPERIMENTAL
 // ════════════════════════════════════════════════════════
-const INVENTARIO_LUGARES = {nevera:'🧊 NEVERA', despensa:'🥫 DESPENSA', congelador:'❄️ CONGELADOR'};
+const INVENTARIO_LUGARES = {nevera:'🧊 NEVERA', despensa:'🥫 DESPENSA', congelador:'❄️ CONGELADOR', especias:'🫙 ESPECIAS', otros:'· OTROS'};
+let inventarioImportacion = null;
 const INVENTARIO_ESTADOS = {tengo:'🟢 TENGO', poco:'🟡 QUEDA POCO', acabado:'🔴 SE ACABÓ', merma:'MERMA'};
 let inventarioCocinaIdx = 0;
 function invEsc(value){return String(value??'').replace(/[&<>\"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',"'":'&#39;'}[c]));}
@@ -4831,17 +4833,18 @@ function interpretarInventario(texto){
   let cantidad='Sin cantidad indicada', producto=t;
   const approx=/^(medio\s+(?:kilo|kg)|un\s+poco|casi\s+entero|casi\s+entera|un\s+puñado|una\s+pizca)\s+(?:de\s+)?(.+)$/i.exec(t);
   const medida=/^(\d+(?:[.,]\d+)?\s*(?:kg|kilos?|kilogramos?|g|gramos?|l|litros?|botes?|tarros?|paquetes?|unidades?|uds?))\s+(?:de\s+)?(.+)$/i.exec(t);
-  const recipiente=/^(un(?:a)?\s+(?:bote|tarro|paquete|lata|litro|kilo))\s+de\s+(.+)$/i.exec(t);
+  const recipiente=/^(?:(un(?:a)?\s+)?(bote|tarro|paquete|lata|litro|kilo|tupper))\s+de\s+(.+)$/i.exec(t);
   const numero=/^(\d+(?:[.,]\d+)?)\s+(?:de\s+)?(.+)$/i.exec(t);
   const palabra=/^(un|una|dos|tres|cuatro|cinco|seis|medio|media)\s+(.+)$/i.exec(t);
   if(approx){cantidad=approx[1];producto=approx[2];}
   else if(medida){cantidad=medida[1];producto=medida[2];}
-  else if(recipiente){cantidad=recipiente[1];producto=recipiente[2];}
+  else if(recipiente){cantidad=(recipiente[1]?recipiente[1].trim()+' ':'')+recipiente[2];producto=recipiente[3];}
   else if(numero){cantidad=numero[1]+' unidades';producto=numero[2];}
   else if(palabra && ['un','una','dos','tres','cuatro','cinco','seis'].includes(palabra[1].toLowerCase())){cantidad=palabra[1];producto=palabra[2];}
   producto=producto.replace(/\s+(?:en|a)\s+(?:la\s+)?(?:nevera|despensa|congelador|freezer)\s*$/i,'').trim();
   producto=producto.replace(/^(?:el|la|los|las)\s+/i,'').trim();
   const pn=invNorm(producto);
+  if(!lugar && /pimenton|oregano|canela|comino|curcuma|curry|pimienta|nuez\s+moscada|clavo|romero\s+seco|tomillo\s+seco|albahaca\s+seca/.test(pn)) lugar='especias';
   if(!lugar && /arroz|pasta|lenteja|garbanzo|harina|aceite|vinagre|azucar|sal|conserva|lata|cereal|avena|galleta|legumbre/.test(pn)) lugar='despensa';
   if(!lugar && /huevo|yogur|calabacin|tomate|lechuga|espinaca|queso|leche|fruta|manzana|hierba|verdura|mantequilla/.test(pn)) lugar='nevera';
   const esMerma=/he\s+tirado|tire|tir[eé]/.test(n);
@@ -4856,11 +4859,9 @@ function incorporarInventario(item){
   const clave=invNorm(item.producto)+'|'+item.lugar;
   const existente=items.find(x=>invNorm(x.producto)+'|'+x.lugar===clave && x.estado!=='merma');
   if(existente){Object.assign(existente,item,{id:existente.id,estado:item.estado||'tengo'});}
-  else items.push({...item,id:Date.now()});
+  else items.push({...item,id:Date.now()+items.length});
   guardarInventarioDatos(items); return items;
 }
-function mostrarAltaInventario(){const el=document.getElementById('inventario-alta');if(el){el.style.display='block';document.getElementById('inventario-entrada')?.focus();}}
-function cerrarAltaInventario(){const el=document.getElementById('inventario-alta');if(el)el.style.display='none';}
 function guardarNuevoInventario(){
   const input=document.getElementById('inventario-entrada'), item=interpretarInventario(input?.value||''); if(!item||!item.producto){toast('Escribe qué tienes');return;}
   const conocido=inventarioDatos().find(x=>invNorm(x.producto)===invNorm(item.producto)||invNorm(x.producto).includes(invNorm(item.producto))||invNorm(item.producto).includes(invNorm(x.producto)));
@@ -4868,6 +4869,62 @@ function guardarNuevoInventario(){
   if(!item.lugar){guardar('inventario_pendiente',item);toast('Solo necesito saber dónde lo guardas');}
   else {incorporarInventario(item);toast(item.estado==='merma'?'Merma registrada':'Guardado en '+INVENTARIO_LUGARES[item.lugar]);}
   if(input)input.value=''; cerrarAltaInventario(); renderInventario();
+}
+function separarLineasInventario(texto){
+  return String(texto||'').split(/[\n;•]+/).map(x=>x.replace(/^\s*(?:[-*]|\d+[.)])\s*/,'').trim()).filter(Boolean);
+}
+function consolidarInventarioLote(items){
+  const salida=[];
+  items.forEach(item=>{
+    const existente=salida.find(x=>invNorm(x.producto)===invNorm(item.producto));
+    if(!existente){salida.push({...item});return;}
+    if(existente && existente.cantidad==='Sin cantidad indicada' && item.cantidad!=='Sin cantidad indicada') existente.cantidad=item.cantidad;
+    else if(existente && item.cantidad!=='Sin cantidad indicada' && existente.cantidad!==item.cantidad) existente.cantidad=existente.cantidad==='Sin cantidad indicada'?item.cantidad:existente.cantidad+' + '+item.cantidad;
+    if(existente && existente.lugar && item.lugar && existente.lugar!==item.lugar) existente.lugar=null;
+    else if(existente && !existente.lugar) existente.lugar=item.lugar;
+    if(existente && existente.estado==='tengo' && item.estado!=='tengo') existente.estado=item.estado;
+  });
+  return salida;
+}
+function mostrarAltaInventario(){
+  const opciones=document.getElementById('inventario-inicial-opciones');if(opciones)opciones.style.display='none';
+  const el=document.getElementById('inventario-alta');if(el){el.style.display='block';document.getElementById('inventario-entrada')?.focus();}
+}
+function cerrarAltaInventario(){const el=document.getElementById('inventario-alta');if(el)el.style.display='none';const opciones=document.getElementById('inventario-inicial-opciones');if(opciones&&!inventarioDatos().length)opciones.style.display='flex';}
+function mostrarImportacionInventario(){
+  const opciones=document.getElementById('inventario-inicial-opciones');if(opciones)opciones.style.display='none';
+  const el=document.getElementById('inventario-importacion');if(el){el.style.display='block';document.getElementById('inventario-importacion-entrada')?.focus();}
+}
+function cancelarImportacionInventario(){inventarioImportacion=null;const el=document.getElementById('inventario-importacion');if(el)el.style.display='none';const opciones=document.getElementById('inventario-inicial-opciones');if(opciones&&!inventarioDatos().length)opciones.style.display='flex';renderInventario();}
+function prepararImportacionInventario(){
+  const input=document.getElementById('inventario-importacion-entrada'), lineas=separarLineasInventario(input?.value||'');
+  const items=consolidarInventarioLote(lineas.map(interpretarInventario).filter(x=>x&&x.producto));
+  if(!items.length){toast('Escribe o pega lo que tienes');return;}
+  inventarioImportacion={items};renderVistaImportacionInventario();
+}
+function opcionesLugarInventario(valor){return '<option value="">Revisar más tarde</option>'+Object.keys(INVENTARIO_LUGARES).map(k=>'<option value="'+k+'" '+(valor===k?'selected':'')+'>'+INVENTARIO_LUGARES[k]+'</option>').join('');}
+function renderVistaImportacionInventario(){
+  const el=document.getElementById('inventario-importacion-preview'), data=inventarioImportacion;if(!el||!data)return;
+  const claros=data.items.filter(x=>x.lugar), revision=data.items.filter(x=>!x.lugar);
+  el.innerHTML='<div class="inventario-importacion-preview"><p><strong>Esto es lo que he entendido.</strong></p>'+
+    '<div class="inventario-importacion-list">'+(claros.length?claros.map(x=>'<div><strong>'+invEsc(x.producto)+'</strong><span>'+invEsc(x.cantidad)+' · '+INVENTARIO_LUGARES[x.lugar]+'</span></div>').join(''):'<p>No he podido clasificar ningún elemento con suficiente seguridad.</p>')+'</div>'+
+    (revision.length?'<div class="inventario-importacion-revision"><p><strong>Hay '+revision.length+' '+(revision.length===1?'cosa':'cosas')+' que no tengo claras.</strong></p>'+revision.map((x,i)=>'<div class="inventario-revision-row"><span>'+invEsc(x.producto)+' · '+invEsc(x.cantidad)+'</span><select id="inventario-importacion-lugar-'+i+'">'+opcionesLugarInventario('')+'</select></div>').join('')+'</div>':'<p class="inventario-importacion-ok">No veo elementos pendientes de clasificar.</p>')+
+    '<div class="inventario-alta-actions"><button class="btn btn-primary" type="button" onclick="confirmarImportacionInventario()">CONFIRMAR LO ENTENDIDO</button><button class="btn btn-outline" type="button" onclick="cancelarImportacionInventario()">Cancelar</button></div></div>';
+}
+function confirmarImportacionInventario(){
+  if(!inventarioImportacion)return;
+  const revision=inventarioImportacion.items.filter(x=>!x.lugar), aceptados=inventarioImportacion.items.filter(x=>x.lugar);
+  revision.forEach((x,i)=>{const lugar=document.getElementById('inventario-importacion-lugar-'+i)?.value;if(lugar)aceptados.push({...x,lugar});});
+  const pendientes=revision.filter((x,i)=>!document.getElementById('inventario-importacion-lugar-'+i)?.value);
+  aceptados.forEach(incorporarInventario);
+  const prev=cargar('inventario_revision',[]);guardar('inventario_revision',prev.concat(pendientes));
+  const input=document.getElementById('inventario-importacion-entrada');if(input)input.value='';inventarioImportacion=null;
+  const el=document.getElementById('inventario-importacion');if(el)el.style.display='none';renderInventario();
+  toast(aceptados.length+' '+(aceptados.length===1?'elemento incorporado':'elementos incorporados')+(pendientes.length?' · '+pendientes.length+' para revisar más tarde':''));
+}
+function resolverInventarioRevision(index,lugar){
+  const lista=cargar('inventario_revision',[]),item=lista[index];if(!item||!lugar)return;
+  incorporarInventario({...item,lugar});lista.splice(index,1);guardar('inventario_revision',lista);renderInventario();
 }
 function guardarInventarioPendiente(lugar){
   const item=cargar('inventario_pendiente',null); if(!item)return;
@@ -4903,9 +4960,13 @@ function proponerCocinaInventario(){
 function mostrarGastarPronto(){document.getElementById('inventario-pronto')?.scrollIntoView({behavior:'smooth',block:'start'});}
 function inventarioLugarSelect(x){return Object.keys(INVENTARIO_LUGARES).map(k=>'<option value="'+k+'" '+(x.lugar===k?'selected':'')+'>'+INVENTARIO_LUGARES[k]+'</option>').join('');}
 function renderInventario(){
-  const espacios=document.getElementById('inventario-espacios'),prontoEl=document.getElementById('inventario-pronto'),pendingEl=document.getElementById('inventario-pendiente');if(!espacios)return;
-  const items=inventarioDatos(),pending=cargar('inventario_pendiente',null);
+  const espacios=document.getElementById('inventario-espacios'),prontoEl=document.getElementById('inventario-pronto'),pendingEl=document.getElementById('inventario-pendiente'),revisionEl=document.getElementById('inventario-revision');if(!espacios)return;
+  const items=inventarioDatos(),pending=cargar('inventario_pendiente',null),revision=cargar('inventario_revision',[]);
+  const inicial=document.getElementById('inventario-inicial'),alta=document.getElementById('inventario-add');
+  if(inicial)inicial.style.display=items.length?'none':'block';
+  if(alta)alta.style.display=items.length?'block':'none';
   if(pendingEl)pendingEl.innerHTML=pending?'<div class="inventario-pending"><p><strong>'+invEsc(pending.producto)+'</strong> · '+invEsc(pending.cantidad)+'</p><p>¿Dónde lo guardo?</p><div class="inventario-pending-actions"><button class="btn btn-outline" type="button" onclick="guardarInventarioPendiente(\'nevera\')">🧊 Nevera</button><button class="btn btn-outline" type="button" onclick="guardarInventarioPendiente(\'despensa\')">🥫 Despensa</button><button class="btn btn-outline" type="button" onclick="guardarInventarioPendiente(\'congelador\')">❄️ Congelador</button><button class="btn btn-outline" type="button" onclick="cancelarInventarioPendiente()">Ahora no</button></div></div>':'';
+  if(revisionEl)revisionEl.innerHTML=revision.length?'<div class="inventario-pending inventario-revision"><p><strong>Hay '+revision.length+' '+(revision.length===1?'elemento':'elementos')+' para revisar cuando quieras.</strong></p>'+revision.map((x,i)=>'<div class="inventario-revision-row"><span>'+invEsc(x.producto)+' · '+invEsc(x.cantidad)+'</span><select onchange="resolverInventarioRevision('+i+',this.value)">'+opcionesLugarInventario('')+'</select></div>').join('')+'</div>':'';
   const estados=(x)=>Object.keys(INVENTARIO_ESTADOS).filter(k=>k!=='merma').map(k=>'<button type="button" class="'+(x.estado===k?'sel':'')+'" onclick="inventarioEstado('+x.id+',\''+k+'\')">'+INVENTARIO_ESTADOS[k]+'</button>').join('');
   const tarjeta=(x)=>'<div class="inventario-item"><div class="inventario-item-head"><div><strong>'+invEsc(x.producto)+'</strong><span class="inventario-amount">'+invEsc(x.cantidad)+(x.fecha?' · Fecha: '+invEsc(x.fecha):'')+'</span></div><span class="inventario-status">'+(x.estado==='merma'?'MERMA':INVENTARIO_ESTADOS[x.estado])+'</span></div><div class="inventario-actions">'+estados(x)+'<button type="button" class="'+(x.gastarPronto?'sel':'')+'" onclick="inventarioPronto('+x.id+')">⏳ GASTAR PRONTO</button></div><details class="inventario-more"><summary>Más opciones</summary><div class="inventario-more-row"><label for="inv-lugar-'+x.id+'">Guardar en</label><select id="inv-lugar-'+x.id+'" onchange="inventarioMover('+x.id+',this.value)">'+inventarioLugarSelect(x)+'</select></div><div class="inventario-more-row"><label for="inv-cantidad-'+x.id+'">Cantidad aproximada</label><input id="inv-cantidad-'+x.id+'" type="text" value="'+invEsc(x.cantidad||'')+'" onchange="inventarioCantidad('+x.id+',this.value)"></div><div class="inventario-more-row"><label for="inv-fecha-'+x.id+'">Fecha opcional</label><input id="inv-fecha-'+x.id+'" type="date" value="'+invEsc(x.fecha||'')+'" onchange="inventarioFecha('+x.id+',this.value)"></div>'+(x.estado==='poco'||x.estado==='acabado'?'<div class="inventario-more-row"><button class="btn btn-outline" type="button" onclick="inventarioAnadirCompra('+x.id+')">Añadir a la compra</button></div>':'')+'<div class="inventario-more-row"><button class="btn btn-outline" type="button" onclick="inventarioMerma('+x.id+')">Registrar merma</button></div></details></div>';
   espacios.innerHTML=Object.keys(INVENTARIO_LUGARES).map(l=>'<section class="inventario-space"><div class="inventario-space-title">'+INVENTARIO_LUGARES[l]+'</div>'+(items.filter(x=>x.lugar===l).length?items.filter(x=>x.lugar===l).map(tarjeta).join(''):'<div class="inventario-empty">Nada apuntado aún.</div>')+'</section>').join('');
@@ -4925,15 +4986,32 @@ function renderCasa() {
   const html = `
     <div class="card inventario-card">
       <div class="card-title">LO QUE TENGO</div>
-      <p class="inventario-intro">Cuanto mejor sepa Yuki qué hay en casa, mejor podrá ayudarte. No hace falta mantenerlo perfecto.</p>
-      <button class="btn btn-primary inventario-add" type="button" onclick="mostrarAltaInventario()">＋ TENGO ALGO NUEVO</button>
+      <p class="inventario-intro">Esto es una memoria de lo que hay en casa. No necesitas registrarlo todo ni mantenerlo perfecto.</p>
+      <div id="inventario-inicial" class="inventario-inicial" style="display:none">
+        <h3>¿Qué tienes en casa?</h3>
+        <p>Cuéntaselo a Yuki de una vez, empieza solo por una zona o deja la carga para otro momento.</p>
+        <div id="inventario-inicial-opciones" class="inventario-inicial-opciones">
+          <button class="btn btn-primary" type="button" onclick="mostrarImportacionInventario()">Puedo contártelo todo de una vez</button>
+          <button class="btn btn-outline" type="button" onclick="mostrarAltaInventario()">Prefiero empezar poco a poco</button>
+          <div class="inventario-fotos-proximamente">📷 Carga con fotos · próximamente</div>
+        </div>
+      </div>
+      <button id="inventario-add" class="btn btn-primary inventario-add" type="button" onclick="mostrarAltaInventario()" style="display:none">＋ TENGO ALGO NUEVO</button>
       <div id="inventario-alta" class="inventario-alta" style="display:none">
-        <label for="inventario-entrada">Escribe lo que tienes, como te salga</label>
+        <label for="inventario-entrada">Escribe una cosa, como te salga</label>
         <textarea id="inventario-entrada" rows="2" placeholder="6 huevos · medio kilo de calabacines · he congelado caldo"></textarea>
         <div class="inventario-alta-actions"><button class="btn btn-primary" type="button" onclick="guardarNuevoInventario()">Guardar</button><button class="btn btn-outline" type="button" onclick="cerrarAltaInventario()">Cancelar</button></div>
         <p class="inventario-ejemplos">Puedes indicar una cantidad aproximada y, si quieres, dónde lo guardas.</p>
       </div>
+      <div id="inventario-importacion" class="inventario-importacion" style="display:none">
+        <label for="inventario-importacion-entrada">Pega o escribe una cosa por línea</label>
+        <textarea id="inventario-importacion-entrada" rows="8" placeholder="6 huevos\nleche\nmedio calabacín\nqueso fresco\ntomates\narroz\npimentón\norégano"></textarea>
+        <div class="inventario-alta-actions"><button class="btn btn-primary" type="button" onclick="prepararImportacionInventario()">ENTENDER ESTA LISTA</button><button class="btn btn-outline" type="button" onclick="cancelarImportacionInventario()">Cancelar</button></div>
+        <p class="inventario-ejemplos">No hace falta saber dónde va cada cosa. Yuki intentará distinguirlo y te preguntará solo por lo que no tenga claro.</p>
+        <div id="inventario-importacion-preview"></div>
+      </div>
       <div id="inventario-pendiente"></div>
+      <div id="inventario-revision"></div>
       <div class="inventario-tools">
         <button class="btn btn-outline inventario-tool" type="button" onclick="mostrarGastarPronto()">⏳ GASTAR PRONTO</button>
         <button class="btn btn-outline inventario-tool" type="button" onclick="proponerCocinaInventario()">🍳 ¿QUÉ PUEDO COCINAR?</button>
