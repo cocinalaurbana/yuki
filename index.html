@@ -4832,11 +4832,13 @@ function interpretarInventario(texto){
   t=t.replace(/\s+(?:en|a)\s+(?:la\s+)?(?:nevera|frigorifico|refrigerador|despensa|armario|congelador|freezer)\s*$/i,'').trim();
   let cantidad='Sin cantidad indicada', producto=t;
   const approx=/^(medio\s+(?:kilo|kg)|un\s+poco|casi\s+entero|casi\s+entera|un\s+puñado|una\s+pizca)\s+(?:de\s+)?(.+)$/i.exec(t);
+  const fraccion=/^(medio|media)\s+(?:de\s+)?(.+)$/i.exec(t);
   const medida=/^(\d+(?:[.,]\d+)?\s*(?:kg|kilos?|kilogramos?|g|gramos?|l|litros?|botes?|tarros?|paquetes?|unidades?|uds?))\s+(?:de\s+)?(.+)$/i.exec(t);
   const recipiente=/^(?:(un(?:a)?\s+)?(bote|tarro|paquete|lata|litro|kilo|tupper))\s+de\s+(.+)$/i.exec(t);
   const numero=/^(\d+(?:[.,]\d+)?)\s+(?:de\s+)?(.+)$/i.exec(t);
   const palabra=/^(un|una|dos|tres|cuatro|cinco|seis|medio|media)\s+(.+)$/i.exec(t);
   if(approx){cantidad=approx[1];producto=approx[2];}
+  else if(fraccion){cantidad=fraccion[1];producto=fraccion[2];}
   else if(medida){cantidad=medida[1];producto=medida[2];}
   else if(recipiente){cantidad=(recipiente[1]?recipiente[1].trim()+' ':'')+recipiente[2];producto=recipiente[3];}
   else if(numero){cantidad=numero[1]+' unidades';producto=numero[2];}
