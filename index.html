@@ -1053,11 +1053,6 @@ body[data-momento="noche"] .now-action{border-top-color:#756b61!important;backgr
 <div id="tab-diario" class="tab">
 
     <div class="book-shell home-detail-book" style="display:block">
-      <div class="book-nav" aria-label="Páginas del Cuaderno de climas">
-        <button type="button" class="book-prev" onclick="bookMove(-1)">← Anterior</button>
-        <span id="book-indicator">Página 1 de 4</span>
-        <button type="button" class="book-next" onclick="bookMove(1)">Siguiente →</button>
-      </div>
       <div class="book-pages" id="book-pages">
     <section class="today-hero">
       <div class="eyebrow">CUADERNO DE CLIMAS · DIARIO</div>
@@ -1068,7 +1063,7 @@ body[data-momento="noche"] .now-action{border-top-color:#756b61!important;backgr
         <div><span>Energía</span><b>—</b></div>
         <div><span>Necesidad</span><b>—</b></div>
       </div>
-      <button class="quiet-link" onclick="bookShow(1)">Abrir mi registro <span>↓</span></button>
+      <button class="quiet-link" onclick="abrirCuadernoHoy()">Abrir mi registro <span>↓</span></button>
     </section>
   
   
@@ -1452,7 +1447,7 @@ body[data-momento="noche"] .now-action{border-top-color:#756b61!important;backgr
       <div><span><strong>Piscina</strong><small>Retomar con calma · empezar con 1 día</small></span><b>≈</b></div>
     </div>
     <p class="plan-warning">Esto queda aparcado hasta que te resulte claro y amable. Si el cuerpo pide menos, menos también cuenta.</p>
-    <button type="button" class="btn btn-outline btn-sm book-video-jump" onclick="showTabBook('salud',2,4)">Ir a vídeos y prácticas de hoy →</button>
+    <button type="button" class="btn btn-outline btn-sm book-video-jump" onclick="document.querySelector('#tab-salud .movement-routine')?.scrollIntoView({behavior:'smooth',block:'start'})">Ir a vídeos y prácticas de hoy →</button>
   </div>
 
   <div class="card movement-plan">
@@ -2032,7 +2027,6 @@ function tab(id, btn, fromHistory=false) {
   if(id === 'casa') renderCasa();
   if(id === 'hobbies') renderHobbies();
   if(id === 'sistema') initSistema();
-  if(id !== 'check' && id !== 'diario') prepareTabBook(id);
 }
 
 function tabActualYuki(){return document.querySelector('.tab.active')?.id.replace('tab-','') || 'check';}
@@ -2162,7 +2156,6 @@ function abrirCuadernoHoy() {
   // Abrir directamente la página del clima y llevarla al campo real,
   // no al principio de la portada, para que el siguiente paso sea evidente.
   if (typeof initBook === 'function') initBook();
-  if (typeof bookShow === 'function') bookShow(1);
   setTimeout(() => form?.scrollIntoView({behavior:'smooth', block:'start'}), 80);
 }
 function abrirInventarioDesdeAlimentacion() {
@@ -3056,10 +3049,6 @@ function abrirModalPlanta(id) {
   }
 
   document.getElementById('modal-planta').classList.add('open');
-}
-
-function cerrarModal(id) {
-  document.getElementById(id).classList.remove('open');
 }
 
 function guardarPlanta() {
@@ -4397,186 +4386,18 @@ function initBelleza() {
 
 
 // ── INICIO COMO LIBRO ──────────────────────────────────
-let bookCurrentPage = 0;
 function initBook() {
+  // Diario es una sección continua: el antiguo paginado solo cubría
+  // el Cuaderno de climas y dejaba entradas y sueños fuera, haciendo
+  // que parecieran repetirse en cada página.
   const pages = document.getElementById('book-pages');
-  if (!pages || pages.dataset.ready === 'yes') return;
-  const nodes = Array.from(pages.children);
-  const groups = [
-    nodes.filter(n => n.matches('.today-hero, #check-resumen')),
-    nodes.filter(n => n.matches('#check-form')),
-    nodes.filter(n => n.matches('.inicio-despertar')),
-    nodes.filter(n => n.matches('.sec-title, #check-historial'))
-  ];
-  pages.innerHTML = '';
-  groups.forEach((group, i) => {
-    const page = document.createElement('section');
-    page.className = 'book-page';
-    group.forEach(node => page.appendChild(node));
-    if (i === 1) {
-      const note = document.createElement('p');
-      note.className = 'book-note';
-      note.textContent = 'Cuando hayas guardado tu clima, pasa la página. No hace falta hacerlo todo: solo estar aquí ya cuenta.';
-      page.appendChild(note);
-    }
-    if (i === 2) {
-      const check = document.createElement('label');
-      check.className = 'book-check';
-      check.innerHTML = '<input type="checkbox" id="book-despertar-hecho"> <span>He hecho o he escuchado este despertar suave</span>';
-      page.appendChild(check);
-    }
-    if (i === 3) {
-      const close = document.createElement('div');
-      close.className = 'book-close';
-      close.innerHTML = '<h3>Cuando quieras cerrar el día</h3><p class="book-note">No tienes que completar todas las prácticas. Marca solo lo que de verdad hayas hecho y pasa al atardecer para recoger el día.</p><label class="book-check"><input type="checkbox" id="book-cierre-listo"> <span>He recogido lo esencial de hoy</span></label><div class="book-page-actions"><button type="button" class="btn btn-primary" onclick="bookCloseDay()">Ir a Atardecer →</button></div>';
-      page.appendChild(close);
-    }
-    pages.appendChild(page);
-  });
-  pages.dataset.ready = 'yes';
-  bookShow(0);
-}
-function bookShow(index) {
-  const pages = document.querySelectorAll('#book-pages .book-page');
-  if (!pages.length) return;
-  bookCurrentPage = Math.max(0, Math.min(index, pages.length - 1));
-  pages.forEach((page, i) => page.classList.toggle('active', i === bookCurrentPage));
-  const indicator = document.getElementById('book-indicator');
-  if (indicator) indicator.textContent = `Página ${bookCurrentPage + 1} de ${pages.length}`;
-  const previous = document.querySelector('.book-prev');
-  const next = document.querySelector('.book-next');
-  if (previous) previous.disabled = bookCurrentPage === 0;
-  if (next) {
-    next.disabled = false;
-    next.textContent = bookCurrentPage === pages.length - 1 ? 'Ir al cierre →' : 'Siguiente →';
-  }
-  window.scrollTo({top:0, behavior:'smooth'});
-}
-function bookMove(direction) {
-  const pages = document.querySelectorAll('#book-pages .book-page');
-  if (!pages.length) return;
-  if (direction > 0 && bookCurrentPage === pages.length - 1) return bookCloseDay();
-  bookShow(bookCurrentPage + direction);
-}
-function bookCloseDay() {
-  const check = document.getElementById('book-cierre-listo');
-  if (check && !check.checked) {
-    toast('Marca el cierre cuando hayas terminado de recoger el día.');
-    return;
-  }
-  const button = Array.from(document.querySelectorAll('nav button')).find(b => b.textContent.trim() === 'Atardecer');
-  if (button) tab('cierre', button);
+  if (pages) pages.dataset.ready = 'yes';
 }
 
 initBook();
 
 
-// ── PESTAÑAS LARGAS COMO PÁGINAS DE LIBRO ─────────────
-
-function splitHealthRoutine(tabEl) {
-  if (tabEl.dataset.routineSplit === 'yes') return;
-  const routine = tabEl.querySelector(':scope > .movement-routine');
-  if (!routine) return;
-  const blocks = Array.from(routine.children).filter(n => n.classList.contains('routine-block'));
-  if (blocks.length < 2) return;
-  const title = routine.querySelector(':scope > .card-title')?.cloneNode(true);
-  const intro = routine.querySelector(':scope > .routine-intro')?.cloneNode(true);
-  const note = routine.querySelector(':scope > .routine-note')?.cloneNode(true);
-  blocks.forEach((block, i) => {
-    const page = document.createElement('div');
-    page.className = 'card movement-routine health-book-routine';
-    if (title) page.appendChild(title.cloneNode(true));
-    if (intro) page.appendChild(intro.cloneNode(true));
-    page.appendChild(block);
-    if (i === blocks.length - 1 && note) page.appendChild(note);
-    tabEl.insertBefore(page, routine);
-  });
-  routine.remove();
-  tabEl.dataset.routineSplit = 'yes';
-}
-function prepareTabBook(id) {
-  if (id === 'check') return;
-  const tabEl = document.getElementById('tab-' + id);
-  if (!tabEl) return;
-  // Salud es la más larga: cada bloque de práctica se convierte en una página.
-  if (id === 'salud') splitHealthRoutine(tabEl);
-  if (tabEl.querySelector('.tab-book-controls')) return;
-  const nodes = Array.from(tabEl.children).filter(n => !n.classList.contains('tab-book-controls'));
-  if (nodes.length < 2) return;
-
-  // Una tarjeta por página: menos saturación y mucho menos scroll vertical.
-  // En vez de obligarte a recorrer una columna larga, Yuki te acompaña con Anterior/Siguiente.
-  const groups = nodes.map(node => [node]);
-  if (groups.length < 2) return;
-
-  const controls = document.createElement('div');
-  controls.className = 'tab-book-controls';
-  controls.innerHTML = `<button type="button" class="tab-book-prev" onclick="moveTabBook('${id}',-1)">← Anterior</button><span class="tab-book-indicator"></span><button type="button" class="tab-book-next" onclick="moveTabBook('${id}',1)">Siguiente →</button>`;
-  tabEl.insertBefore(controls, tabEl.firstChild);
-  tabEl.dataset.bookPage = '0';
-  groups.forEach((group, page) => group.forEach(node => { node.dataset.bookPage = String(page); }));
-  showTabBook(id, 0, groups.length);
-}
-function showTabBook(id, page, total) {
-  const tabEl = document.getElementById('tab-' + id);
-  if (!tabEl) return;
-  const nodes = Array.from(tabEl.children).filter(n => !n.classList.contains('tab-book-controls'));
-  nodes.forEach(node => node.classList.toggle('tab-book-hidden', node.dataset.bookPage !== String(page)));
-  tabEl.dataset.bookPage = String(page);
-  const controls = tabEl.querySelector('.tab-book-controls');
-  if (!controls) return;
-  controls.querySelector('.tab-book-indicator').textContent = `Página ${page + 1} de ${total}`;
-  controls.querySelector('.tab-book-prev').disabled = page === 0;
-  controls.querySelector('.tab-book-next').disabled = false;
-  controls.querySelector('.tab-book-next').textContent = page === total - 1 ? 'Última página' : 'Siguiente →';
-  window.scrollTo({top:0, behavior:'smooth'});
-}
-
-function addInnerBook(container, selector, label) {
-  if (!container || container.querySelector('.inner-book-controls')) return;
-  const parts = Array.from(container.children).filter(n => n.matches(selector));
-  if (parts.length < 2) return;
-  const key = 'inner' + Math.random().toString(36).slice(2);
-  container.dataset.innerBookKey = key;
-  const controls = document.createElement('div');
-  controls.className = 'inner-book-controls';
-  controls.dataset.innerLabel = label;
-  controls.innerHTML = `<button type="button" onclick="moveInnerBook('${key}',-1)">← Anterior</button><span></span><button type="button" onclick="moveInnerBook('${key}',1)">Siguiente →</button>`;
-  container.insertBefore(controls, parts[0]);
-  parts.forEach((part, i) => { part.dataset.innerPage = String(i); });
-  showInnerBook(key, 0, parts.length, label);
-}
-function showInnerBook(key, page, total, label) {
-  const container = document.querySelector(`[data-inner-book-key="${key}"]`);
-  if (!container) return;
-  const parts = Array.from(container.children).filter(n => n.dataset.innerPage !== undefined);
-  parts.forEach(part => part.classList.toggle('inner-book-hidden', part.dataset.innerPage !== String(page)));
-  container.dataset.innerPage = String(page);
-  const controls = container.querySelector('.inner-book-controls');
-  if (!controls) return;
-  controls.querySelector('span').textContent = `${label} ${page + 1} de ${total}`;
-  controls.querySelector('button:first-child').disabled = page === 0;
-  controls.querySelector('button:last-child').disabled = page === total - 1;
-}
-function moveInnerBook(key, direction) {
-  const container = document.querySelector(`[data-inner-book-key="${key}"]`);
-  if (!container) return;
-  const parts = Array.from(container.children).filter(n => n.dataset.innerPage !== undefined);
-  const total = parts.length;
-  const current = Number(container.dataset.innerPage || 0);
-  const label = container.querySelector('.inner-book-controls')?.dataset.innerLabel || 'Página';
-  showInnerBook(key, Math.max(0, Math.min(total - 1, current + direction)), total, label);
-}
-function moveTabBook(id, direction) {
-  const tabEl = document.getElementById('tab-' + id);
-  if (!tabEl) return;
-  const pages = [...tabEl.querySelectorAll('[data-book-page]')].map(n => Number(n.dataset.bookPage));
-  const total = pages.length ? Math.max(...pages) + 1 : 1;
-  const current = Number(tabEl.dataset.bookPage || 0);
-  const next = Math.max(0, Math.min(total - 1, current + direction));
-  showTabBook(id, next, total);
-}
-
+// La navegación de cada sección mantiene ahora su contenido completo.
 
 // ── HOBBIES ────────────────────────────────────────────
 const HOBBIES_BASE = [
@@ -4799,7 +4620,7 @@ function abrirAyudaYuki(){ const modal=document.getElementById('modal-ayuda-yuki
 function cerrarAyudaYuki(){ const modal=document.getElementById('modal-ayuda-yuki'); if(modal) modal.classList.remove('open'); }
 function ayudaYuki(tipo){
   const el=document.getElementById('ayuda-yuki-respuesta'); if(!el)return;
-  const textos={inicio:'Inicio es la puerta de entrada de Yuki. Aquí le dices cómo llegas, cuánto espacio tienes y le preguntas qué tiene sentido ahora. El resto de funciones sigue disponible en la navegación, pero no necesita aparecer todo a la vez.',ahora:'Pulsa «Yuki, ¿qué hago?». Yuki reúne el contexto que pueda ser relevante —clima exterior, cómo llegas, energía, tiempo, pendientes, movimiento, música, preferencias y tu sistema— y te propone una sola cosa. Yuki propone; tú decides.',propuesta:'Una propuesta es un siguiente paso pequeño y concreto para este momento. Puede reunir elementos que pertenecen a una misma escena, pero no es una lista de tareas ni una obligación.',decisiones:'Hecho indica que la propuesta encajó o la realizaste. Otra opción pide a Yuki que vuelva a pensar. No hoy significa que ahora no es el momento y no penaliza la decisión. No me sirve indica que esa propuesta o ese contexto no encajan y ayuda a Yuki a ajustar futuras propuestas.',exterior:'Es el tiempo meteorológico real del lugar: temperatura, cielo, lluvia y viento. Yuki lo utiliza como una variable más del contexto; no es lo mismo que los minutos disponibles. Si no está disponible, puedes continuar sin ese dato.',interior:'Es cómo llegas tú hoy: Alegre, Bien, Neutro, Bajo o Tenso. Puedes añadir qué necesitas sin tener que analizarte.',disponible:'Son los minutos reales que tienes para el siguiente paso: 10, 20 o 30+ minutos. Es decir, cuánto espacio tienes ahora; no es otro formulario ni el tiempo meteorológico.',resto:'El resto de Yuki está en la navegación. Mi Día reúne el recorrido temporal completo; Diario reúne el Cuaderno de climas, el registro íntimo, sueños y observaciones. Mi Mundo reúne Casa, Plantas, Alimentación, Compra, Gastos, Música, Ver y leer y Hobbies; Cuerpo reúne Salud y Cuidado; Orientación reúne Luna, Guía y Reflexiones; y Mi sistema conserva tu dirección, cuidado y mundo. Estas áreas siguen existiendo, pero no compiten con tu primer paso.',musica:'En Música puedes capturar canciones, sesiones y artistas por separado, añadir etiquetas y guardar por qué una canción te cambia el estado. Yuki puede utilizar esa memoria para proponerte movimiento. La reproducción ocurre fuera de Yuki, mediante el enlace externo.',fluir:'FLUIR no es entrenar. Es bailar, explorar, soltar tensión o moverte con música y poca preparación. Puedes elegir Despertar, Soltar o Explorar. Se registra internamente para que Yuki conozca tus ritmos, sin objetivos, rachas ni puntuaciones.',paspar:'Paspar también es una forma de estar. No siempre necesitas hacer algo con tu tiempo. Si Yuki te lo propone, no es una tarea, no tiene una duración obligatoria y no tienes que marcarlo como hecho. Puedes simplemente dejar que el momento sea.',luna:'En Luna puedes ver referencias opcionales para tareas como depilarte, cortarte el pelo o trasplantar. Las fases lunares influyen de forma demostrable en las mareas, pero no hay evidencia concluyente de que hagan crecer más rápido el pelo o mejoren un trasplante. Yuki las muestra como tradición u observación, nunca como obligación ni consejo científico.',paspar:'Paspar también es una forma de estar. No siempre necesitas hacer algo con tu tiempo. Si Yuki te lo propone, no es una tarea, no tiene una duración obligatoria y no tienes que marcarlo como hecho. Puedes simplemente dejar que el momento sea.',escalas:'Ahora es el paso pequeño. Después es una continuación posible. Hoy es una única cosa que merece atención. No son listas que tengas que completar.',sistema:'Mi sistema es la parte editable de Yuki: Mi dirección recoge hacia dónde quieres ir; Mi cuidado, cómo quieres cuidarte; y Mi mundo, los lugares, proyectos, personas e intereses que forman tu vida. No son objetivos que tengas que cumplir.',guardar:'Entra en la sección que corresponda y utiliza su botón Guardar. Lo que escribas queda en este dispositivo.',casa:'En Casa, «Lo que tengo» es una memoria sencilla de tu nevera, despensa y congelador. Pulsa «＋ TENGO ALGO NUEVO» y escribe, por ejemplo, «medio kilo de calabacines», «6 huevos» o «he congelado caldo». Yuki interpreta lo que puede y solo pregunta dónde guardarlo si no lo sabe. Puedes marcar TENGO, QUEDA POCO, SE ACABÓ o GASTAR PRONTO. QUEDA POCO y SE ACABÓ ofrecen «Añadir a la compra», pero tú decides. Al marcar algo como comprado en Compra puedes elegir «Guardar en casa». «¿Qué puedo cocinar?» muestra una idea sencilla usando lo apuntado. No pasa nada si un día no lo actualizas: cuanto mejor sepa Yuki qué hay en casa, mejor podrá ayudarte.',inventario:'Lo que tengo es el inventario de tu casa. No necesitas introducirlo todo de una vez: puedes contarle a Yuki muchas cosas de golpe, añadirlas poco a poco o, cuando esté disponible, utilizar fotografías para hacer una primera carga. Yuki intenta separar cada elemento y clasificarlo; si no puede saber dónde va con seguridad, lo deja para revisar. El inventario puede estar incompleto y sigue siendo útil.',conexion:'Yuki no funciona como una colección de compartimentos independientes. Alimentación, Casa, Cuerpo y las demás partes son dimensiones distintas de tu vida, pero una misma información puede ayudar en varias. Si eliges Alimentación y quieres cocinar, Yuki puede consultar lo que tienes en Casa, tu tiempo, cómo llegas, tus preferencias y tus recetas, sin trasladarte a otra parte ni duplicar datos. Tú eliges por dónde empezar; Yuki conecta lo que resulte útil.',alimentacion:'Cuando entras en Alimentación, no estás entrando en un almacén ni en una dieta. Estás diciendo por dónde quieres empezar. Puedes elegir qué quieres cuidar ahora o decir «No lo sé». Esa elección orienta a Yuki, pero no te encierra en una categoría.',aprende:'Yuki aprende de tus decisiones. Hecho indica que la propuesta encajó; No hoy significa que hoy no era el momento; No me sirve indica que esa propuesta o ese contexto no encajaron; Otra opción le pide volver a pensar. No interpreta un rechazo como falta de disciplina.',ligero:'Modo Ligero todavía no está disponible en esta versión.'};
+  const textos={inicio:'Inicio es la puerta de entrada de Yuki. Aquí le dices cómo llegas, cuánto espacio tienes y le preguntas qué tiene sentido ahora. El resto de funciones sigue disponible en la navegación, pero no necesita aparecer todo a la vez.',ahora:'Pulsa «Yuki, ¿qué hago?». Yuki reúne el contexto que pueda ser relevante —clima exterior, cómo llegas, energía, tiempo, pendientes, movimiento, música, preferencias y tu sistema— y te propone una sola cosa. Yuki propone; tú decides.',propuesta:'Una propuesta es un siguiente paso pequeño y concreto para este momento. Puede reunir elementos que pertenecen a una misma escena, pero no es una lista de tareas ni una obligación.',decisiones:'Hecho indica que la propuesta encajó o la realizaste. Otra opción pide a Yuki que vuelva a pensar. No hoy significa que ahora no es el momento y no penaliza la decisión. No me sirve indica que esa propuesta o ese contexto no encajan y ayuda a Yuki a ajustar futuras propuestas.',exterior:'Es el tiempo meteorológico real del lugar: temperatura, cielo, lluvia y viento. Yuki lo utiliza como una variable más del contexto; no es lo mismo que los minutos disponibles. Si no está disponible, puedes continuar sin ese dato.',interior:'Es cómo llegas tú hoy: Alegre, Bien, Neutro, Bajo o Tenso. Puedes añadir qué necesitas sin tener que analizarte.',disponible:'Son los minutos reales que tienes para el siguiente paso: 10, 20 o 30+ minutos. Es decir, cuánto espacio tienes ahora; no es otro formulario ni el tiempo meteorológico.',resto:'El resto de Yuki está en la navegación. Mi Día reúne el recorrido temporal completo; Diario reúne el Cuaderno de climas, el registro íntimo, sueños y observaciones. Mi Mundo reúne Casa, Plantas, Alimentación, Compra, Gastos, Música, Ver y leer y Hobbies; Cuerpo reúne Salud y Cuidado; Orientación reúne Luna, Guía y Reflexiones; y Mi sistema conserva tu dirección, cuidado y mundo. Estas áreas siguen existiendo, pero no compiten con tu primer paso.',musica:'En Música puedes capturar canciones, sesiones y artistas por separado, añadir etiquetas y guardar por qué una canción te cambia el estado. Yuki puede utilizar esa memoria para proponerte movimiento. La reproducción ocurre fuera de Yuki, mediante el enlace externo.',fluir:'FLUIR no es entrenar. Es bailar, explorar, soltar tensión o moverte con música y poca preparación. Puedes elegir Despertar, Soltar o Explorar. Se registra internamente para que Yuki conozca tus ritmos, sin objetivos, rachas ni puntuaciones.',paspar:'Paspar también es una forma de estar. No siempre necesitas hacer algo con tu tiempo. Si Yuki te lo propone, no es una tarea, no tiene una duración obligatoria y no tienes que marcarlo como hecho. Puedes simplemente dejar que el momento sea.',luna:'En Luna puedes ver referencias opcionales para tareas como depilarte, cortarte el pelo o trasplantar. Las fases lunares influyen de forma demostrable en las mareas, pero no hay evidencia concluyente de que hagan crecer más rápido el pelo o mejoren un trasplante. Yuki las muestra como tradición u observación, nunca como obligación ni consejo científico.',escalas:'Ahora es el paso pequeño. Después es una continuación posible. Hoy es una única cosa que merece atención. No son listas que tengas que completar.',sistema:'Mi sistema es la parte editable de Yuki: Mi dirección recoge hacia dónde quieres ir; Mi cuidado, cómo quieres cuidarte; y Mi mundo, los lugares, proyectos, personas e intereses que forman tu vida. No son objetivos que tengas que cumplir.',guardar:'Entra en la sección que corresponda y utiliza su botón Guardar. Lo que escribas queda en este dispositivo.',casa:'En Casa, «Lo que tengo» es una memoria sencilla de tu nevera, despensa y congelador. Pulsa «＋ TENGO ALGO NUEVO» y escribe, por ejemplo, «medio kilo de calabacines», «6 huevos» o «he congelado caldo». Yuki interpreta lo que puede y solo pregunta dónde guardarlo si no lo sabe. Puedes marcar TENGO, QUEDA POCO, SE ACABÓ o GASTAR PRONTO. QUEDA POCO y SE ACABÓ ofrecen «Añadir a la compra», pero tú decides. Al marcar algo como comprado en Compra puedes elegir «Guardar en casa». «¿Qué puedo cocinar?» muestra una idea sencilla usando lo apuntado. No pasa nada si un día no lo actualizas: cuanto mejor sepa Yuki qué hay en casa, mejor podrá ayudarte.',inventario:'Lo que tengo es el inventario de tu casa. No necesitas introducirlo todo de una vez: puedes contarle a Yuki muchas cosas de golpe, añadirlas poco a poco o, cuando esté disponible, utilizar fotografías para hacer una primera carga. Yuki intenta separar cada elemento y clasificarlo; si no puede saber dónde va con seguridad, lo deja para revisar. El inventario puede estar incompleto y sigue siendo útil.',conexion:'Yuki no funciona como una colección de compartimentos independientes. Alimentación, Casa, Cuerpo y las demás partes son dimensiones distintas de tu vida, pero una misma información puede ayudar en varias. Si eliges Alimentación y quieres cocinar, Yuki puede consultar lo que tienes en Casa, tu tiempo, cómo llegas, tus preferencias y tus recetas, sin trasladarte a otra parte ni duplicar datos. Tú eliges por dónde empezar; Yuki conecta lo que resulte útil.',alimentacion:'Cuando entras en Alimentación, no estás entrando en un almacén ni en una dieta. Estás diciendo por dónde quieres empezar. Puedes elegir qué quieres cuidar ahora o decir «No lo sé». Esa elección orienta a Yuki, pero no te encierra en una categoría.',aprende:'Yuki aprende de tus decisiones. Hecho indica que la propuesta encajó; No hoy significa que hoy no era el momento; No me sirve indica que esa propuesta o ese contexto no encajaron; Otra opción le pide volver a pensar. No interpreta un rechazo como falta de disciplina.',ligero:'Modo Ligero todavía no está disponible en esta versión.'};
   el.textContent=textos[tipo]||'';
 }
 window.addEventListener('resize',()=>{if(onboardingActive) onboardingRender();});
