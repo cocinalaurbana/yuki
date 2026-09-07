@@ -4504,12 +4504,7 @@ function musicaFluirCompatible(tipo){
   const criterio=criterios[tipo]||/MOVIMIENTO|BAILAR|FLUIR/;
   const canciones=listaMusica('musica_canciones').map(x=>({id:x.id,titulo:x.titulo,artista:x.artista||'',enlace:enlaceMusica(x.enlace),tags:tagsMusica(x.tags),tipo:'cancion',fuente:'Yuki'}));
   const sesiones=listaMusica('musica_sesiones').map(x=>({id:x.id,titulo:x.nombre,artista:x.tipo||'',enlace:enlaceMusica(x.enlace),tags:tagsMusica(x.tags),tipo:'sesion',fuente:'Yuki'}));
-  // La Urbana comparte el origen de almacenamiento, pero no se crea una biblioteca nueva:
-  // solo se leen playlists ya guardadas, con nombre, momento y enlace válido.
-  let playlists=[];
-  try { const raw=JSON.parse(localStorage.getItem('urb_playlists')||'[]'); playlists=Array.isArray(raw)?raw:[]; } catch(e) { playlists=[]; }
-  const urbana=playlists.map(x=>({id:'la-urbana-'+x.id,titulo:x.nombre||'',artista:'',enlace:enlaceMusica(x.url),tags:tagsMusica(x.momento||''),tipo:'sesion',fuente:'La Urbana'}));
-  const compatibles=[...canciones,...sesiones,...urbana].filter(x=>x.enlace&&x.tags.some(tag=>criterio.test(tag)));
+  const compatibles=[...canciones,...sesiones].filter(x=>x.enlace&&x.tags.some(tag=>criterio.test(tag)));
   if(tipo==='soltar') return compatibles.find(x=>x.tipo==='cancion')||null;
   if(tipo==='explorar') return compatibles.find(x=>x.tipo==='sesion')||compatibles.find(x=>x.tipo==='cancion')||null;
   return compatibles.find(x=>x.tipo==='cancion')||compatibles.find(x=>x.tipo==='sesion')||null;
