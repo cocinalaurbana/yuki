@@ -57,6 +57,7 @@ nav button:hover{color:#fff}
 
 /* TABS */
 .tab{display:none;padding:18px;max-width:750px;margin:0 auto;padding-bottom:40px}
+.tab[hidden]{display:none!important}
 .tab.active{display:block}
 
 /* En tablet/ordenador el contenido empieza después del menú, no queda debajo */
@@ -1530,10 +1531,11 @@ body[data-momento="noche"] .now-action{border-top-color:#756b61!important;backgr
     <div class="card-title">∿ FLUIR</div>
     <p class="routine-intro">Moverse no siempre es entrenar. Aquí el cuerpo puede cambiar de estado con música, curiosidad y poca preparación.</p><p class="choice-note">Inspiración conceptual: movilidad, columna, fuerza, fluidez y conciencia corporal. No es un método cerrado.</p>
     <div class="today-choice-grid">
-      <div class="choice-item"><span><strong>DESPERTAR</strong><small>3–5 min · movilidad suave + música</small></span><button class="btn btn-outline btn-sm" onclick="registrarFluir('despertar')">Empezar</button></div>
-      <div class="choice-item"><span><strong>SOLTAR</strong><small>1–3 canciones · bailar sin coreografía</small></span><button class="btn btn-outline btn-sm" onclick="registrarFluir('soltar')">Empezar</button></div>
-      <div class="choice-item"><span><strong>EXPLORAR</strong><small>10–20 min · columna, caderas, brazos y espacio</small></span><button class="btn btn-outline btn-sm" onclick="registrarFluir('explorar')">Empezar</button></div>
+      <div class="choice-item"><span><strong>DESPERTAR</strong><small>3–5 min · movilidad suave + música</small></span><button class="btn btn-outline btn-sm" onclick="empezarFluir('despertar')">Empezar</button></div>
+      <div class="choice-item"><span><strong>SOLTAR</strong><small>1–3 canciones · bailar sin coreografía</small></span><button class="btn btn-outline btn-sm" onclick="empezarFluir('soltar')">Empezar</button></div>
+      <div class="choice-item"><span><strong>EXPLORAR</strong><small>10–20 min · columna, caderas, brazos y espacio</small></span><button class="btn btn-outline btn-sm" onclick="empezarFluir('explorar')">Empezar</button></div>
     </div>
+    <div id="fluir-practica" aria-live="polite"></div>
     <p class="choice-note">Sin objetivos, rachas ni obligación. Si hoy no te apetece, no pasa nada.</p>
   </div>
   <div class="card health-meditation-choice">
@@ -1950,10 +1952,18 @@ function tab(id, btn, fromHistory=false) {
   if (!fromHistory && history.state?.yukiTab !== id) {
     history.pushState({yukiTab:id}, '', `${location.pathname}${location.search}#${id}`);
   }
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => {
+    const active = t === panel;
+    t.classList.toggle('active', active);
+    t.hidden = !active;
+    t.setAttribute('aria-hidden', active ? 'false' : 'true');
+  });
   document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
   panel.classList.add('active');
+  panel.hidden = false;
+  panel.setAttribute('aria-hidden','false');
   if (btn) btn.classList.add('active');
+  window.scrollTo({top:0,left:0,behavior:'auto'});
   const areaPorTab={cocina:'alimentacion',salud:'cuerpo',belleza:'cuerpo',casa:'casa',musica:'musica',hobbies:'creatividad',tareas:'proyectos',luna:'mundo-interior',guia:'mundo-interior',reflexiones:'mundo-interior',check:'inicio',dia:'mi-dia',diario:'diario'};
   if(areaPorTab[id]) guardar('area_actual',areaPorTab[id]);
   if(id === 'diario') { renderDiario(); const climateBook=document.querySelector('.home-detail-book'); if(climateBook) { climateBook.style.display='block'; initBook(); } }
@@ -1980,7 +1990,8 @@ function iniciarHistorialNavegacionYuki(){
   const hash=(location.hash||'').replace('#','');
   const id=document.getElementById('tab-'+hash)?hash:'check';
   history.replaceState({yukiTab:id},'',location.href);
-  if(id!=='check'){const b=[...document.querySelectorAll('nav button')].find(x=>x.getAttribute('onclick')?.includes(`tab('${id}'`));if(b)tab(id,b,true);}
+  const initialButton=[...document.querySelectorAll('nav button')].find(x=>x.getAttribute('onclick')?.includes(`tab('${id}'`));
+  if(initialButton) tab(id,initialButton,true);
   window.addEventListener('popstate',ev=>{
     const modal=document.getElementById('yuki-flow-modal');
     if(ev.state?.yukiModal==='flow'){if(modal&&!modal.classList.contains('open'))iniciarFlujoYuki();return;}
@@ -4488,6 +4499,26 @@ function borrarRegistroMusica(key,id){guardarListaMusica(key,listaMusica(key).fi
 function editarCancion(id){const list=listaMusica('musica_canciones'),s=list.find(x=>x.id===id);if(!s)return;s.tags=tagsMusica(prompt('Etiquetas separadas por comas',tagsMusica(s.tags).join(', '))??tagsMusica(s.tags).join(', '));s.notas=prompt('Notas o motivo',s.notas||'')??s.notas;guardarListaMusica('musica_canciones',list);}
 function editarSesionMusical(id){const list=listaMusica('musica_sesiones'),s=list.find(x=>x.id===id);if(!s)return;s.tags=tagsMusica(prompt('Etiquetas separadas por comas',tagsMusica(s.tags).join(', '))??tagsMusica(s.tags).join(', '));s.notas=prompt('Notas',s.notas||'')??s.notas;guardarListaMusica('musica_sesiones',list);}
 function editarArtistaMusical(id){const list=listaMusica('musica_artistas'),a=list.find(x=>x.id===id);if(!a)return;a.notas=prompt('Notas',a.notas||'')??a.notas;guardarListaMusica('musica_artistas',list);}
+function musicaFluirCompatible(tipo){
+  const criterios={despertar:/ACTIVAR|CALMAR|MOVIMIENTO|DESPERTAR/,soltar:/BAILAR|ACTIVAR|BUEN ROLLO|MOVIMIENTO/,explorar:/MOVIMIENTO|CAMINAR|CALMAR|CONCENTRAR/};
+  const criterio=criterios[tipo]||/MOVIMIENTO|BAILAR/;
+  const guardadas=[...listaMusica('musica_canciones'),...listaMusica('musica_sesiones')];
+  return guardadas.find(x=>enlaceMusica(x.enlace)&&tagsMusica(x.tags).some(tag=>criterio.test(tag)))||null;
+}
+function empezarFluir(tipo){
+  const el=document.getElementById('fluir-practica'); if(!el)return;
+  const datos={
+    despertar:{titulo:'Despertar · 3–5 min',texto:'Hazlo de pie o sentada, sin buscar amplitud.',pasos:['Apoya bien los pies y nota el peso del cuerpo.','Sube los hombros hacia las orejas y suéltalos cinco veces.','Deja que la cabeza mire lentamente a un lado y al otro, sin forzar.','Mueve los brazos como si despejaras espacio delante de ti; respira con naturalidad.','Pasa el peso de un pie al otro y termina con una respiración larga.']},
+    soltar:{titulo:'Soltar · una canción',texto:'Pon una canción que te guste. Empieza moviendo los hombros. No busques hacerlo bien. Deja que el resto del cuerpo entre cuando quiera.',pasos:['Deja las rodillas blandas y permite un movimiento pequeño.','Sigue lo que te pida el cuerpo durante una canción, sin coreografía.','Si te quedas quieta, vuelve a balancearte o mueve solo las manos.']},
+    explorar:{titulo:'Explorar · 10–20 min',texto:'Explora sin corregirte. Cambia de zona cuando sientas que ya has encontrado algo.',pasos:['Columna · alarga y redondea suavemente la espalda; deja que el movimiento sea respirado.','Caderas · dibuja círculos pequeños y cambia el peso de un lado al otro.','Brazos · abre, cruza, alcanza y deja caer los brazos sin contar repeticiones.','Espacio · camina despacio por la habitación y cambia la dirección cuando te apetezca.','Cierra quedándote quieta unos instantes y nota qué ha cambiado.']}
+  }[tipo];
+  if(!datos)return;
+  const musica=musicaFluirCompatible(tipo);
+  const musicLink=musica?`<a class='btn btn-outline btn-sm' href='${escMusica(enlaceMusica(musica.enlace))}' target='_blank' rel='noopener' onclick="registrarFluir('${tipo}')">ABRIR MI MÚSICA ↗</a>`:'';
+  const musicNote=musica?`<p class='choice-note'>He encontrado «${escMusica(musica.titulo||musica.nombre||'una sesión guardada')}» con una etiqueta compatible. La reproducción se abre fuera de Yuki.</p>`:'<p class="choice-note">No hay una canción o sesión compatible guardada ahora. Puedes empezar sin música.</p>';
+  el.innerHTML=`<div class='card fluir-practica-card'><div class='card-title'>${datos.titulo}</div><p class='routine-intro'>${datos.texto}</p><ol class='fluir-practica-pasos'>${datos.pasos.map(p=>`<li>${p}</li>`).join('')}</ol>${musicNote}<div class='alimentacion-opciones'>${musicLink}<button class='btn btn-primary btn-sm' type='button' onclick="registrarFluir('${tipo}')">EMPEZAR SIN MÚSICA</button></div></div>`;
+  el.scrollIntoView({behavior:'smooth',block:'start'});
+}
 function registrarFluir(tipo){const key='fluir_sesiones_'+hoyStr(),list=cargar(key,[]);list.push({tipo,fecha:new Date().toISOString()});guardar(key,list);const rutina=cargar('rutina_movimiento_'+hoyStr(),{});rutina['fluir-'+tipo]=true;guardar('rutina_movimiento_'+hoyStr(),rutina);toast('Fluir registrado · sin puntuación');}
 
 function aplicarAtmoAhora() {
