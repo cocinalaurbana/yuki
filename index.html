@@ -1771,6 +1771,17 @@ body[data-momento="noche"] .now-action{border-top-color:#756b61!important;backgr
     </div>
     <button class="btn btn-primary tab-sistema-save" onclick="guardarSistema()">Guardar mi sistema</button>
   </div>
+  <div class="card" id="sistema-datos">
+    <div class="card-title">Datos</div>
+    <p class="system-note">Tus datos se guardan en este dispositivo. Puedes exportarlos para conservar una copia o importar una copia creada por Yuki.</p>
+    <div class="alimentacion-opciones">
+      <button class="btn btn-primary" type="button" onclick="exportarDatosYuki()">EXPORTAR MIS DATOS</button>
+      <button class="btn btn-outline" type="button" onclick="document.getElementById('yuki-data-import-file').click()">IMPORTAR MIS DATOS</button>
+      <input id="yuki-data-import-file" type="file" accept="application/json,.json" style="display:none" onchange="prepararImportacionDatos(event)">
+    </div>
+    <div id="yuki-data-status" class="system-note" role="status" aria-live="polite" style="margin-top:12px"></div>
+    <div id="yuki-data-import-preview" style="margin-top:12px"></div>
+  </div>
 </div>
 
 <!-- TAB COCINA -->
@@ -1939,6 +1950,133 @@ function cargar(key, def) {
 }
 function guardar(key, val) {
   localStorage.setItem('yuki_' + key, JSON.stringify(val));
+}
+
+// ════════════════════════════════════════════════════════
+// DATOS YUKI · EXPORTACIÓN E IMPORTACIÓN V99
+// ════════════════════════════════════════════════════════
+const YUKI_APP_VERSION = '99.0';
+const YUKI_SCHEMA_VERSION = 1;
+const YUKI_DATA_INTERNAL_KEYS = new Set(['yuki_backup_preimport_v1','yuki_backup_plants_v1','yuki_migration_plants_v1_done']);
+let yukiImportacionPendiente = null;
+
+function yukiEsClaveDatos(key) {
+  return (key === 'plantas' || key.startsWith('yuki_')) && !YUKI_DATA_INTERNAL_KEYS.has(key);
+}
+function yukiCapturarDatosUsuario() {
+  const data = {};
+  for (let i = 0; i < localStorage.length; i++) {
+    const key = localStorage.key(i);
+    if (!key || !yukiEsClaveDatos(key)) continue;
+    const raw = localStorage.getItem(key);
+    try { data[key] = JSON.parse(raw); }
+    catch (e) { data[key] = raw; }
+  }
+  return data;
+}
+function yukiConstruirExportacion(data = yukiCapturarDatosUsuario(), reason = '') {
+  const result = {format:'yuki-data', schemaVersion:YUKI_SCHEMA_VERSION, appVersion:YUKI_APP_VERSION, exportedAt:new Date().toISOString(), data};
+  if (reason) result.reason = reason;
+  return result;
+}
+function yukiDatosTexto(texto) {
+  const el = document.getElementById('yuki-data-status');
+  if (el) el.textContent = texto || '';
+}
+function yukiDescargarJson(payload, filename) {
+  const blob = new Blob([JSON.stringify(payload, null, 2)], {type:'application/json;charset=utf-8'});
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url; link.download = filename; link.style.display = 'none';
+  document.body.appendChild(link); link.click(); link.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+function exportarDatosYuki() {
+  const payload = yukiConstruirExportacion();
+  const stamp = payload.exportedAt.replace(/[:.]/g,'-');
+  yukiDescargarJson(payload, 'yuki-datos-' + stamp + '.json');
+  yukiDatosTexto('Exportación creada: ' + Object.keys(payload.data).length + ' claves de datos de Yuki. Guarda el archivo fuera del navegador.');
+}
+function yukiResumenImportacion(payload, current) {
+  const incoming = Object.keys(payload.data);
+  const actual = new Set(Object.keys(current));
+  const conflicts = incoming.filter(k => actual.has(k));
+  const nuevos = incoming.filter(k => !actual.has(k));
+  return {incoming, conflicts, nuevos};
+}
+function yukiMostrarVistaImportacion(summary, filename, payload) {
+  const el = document.getElementById('yuki-data-import-preview');
+  if (!el) return;
+  el.textContent = '';
+  const box = document.createElement('div');
+  box.style.cssText = 'border-top:1px solid var(--linea);padding-top:12px;line-height:1.5';
+  const title = document.createElement('strong'); title.textContent = 'Copia lista para revisar'; box.appendChild(title);
+  const info = document.createElement('p'); info.className='system-note';
+  info.textContent = filename + ' · esquema ' + payload.schemaVersion + ' · ' + summary.incoming.length + ' claves · ' + summary.nuevos.length + ' nuevas · ' + summary.conflicts.length + ' conflictos.';
+  box.appendChild(info);
+  const note = document.createElement('p'); note.className='system-note';
+  note.textContent = 'RESTAURAR sustituye los datos actuales después de crear una copia interna. FUSIONAR conserva las claves actuales que no estén en la copia y usa la copia en los conflictos.';
+  box.appendChild(note);
+  const actions = document.createElement('div'); actions.className='alimentacion-opciones';
+  const restore = document.createElement('button'); restore.className='btn btn-primary'; restore.type='button'; restore.textContent='RESTAURAR'; restore.onclick=()=>aplicarImportacionYuki('restaurar');
+  const merge = document.createElement('button'); merge.className='btn btn-outline'; merge.type='button'; merge.textContent='FUSIONAR'; merge.onclick=()=>aplicarImportacionYuki('fusionar');
+  const cancel = document.createElement('button'); cancel.className='btn btn-outline'; cancel.type='button'; cancel.textContent='CANCELAR'; cancel.onclick=cancelarImportacionYuki;
+  actions.append(restore, merge, cancel); box.appendChild(actions); el.appendChild(box);
+}
+async function prepararImportacionDatos(event) {
+  const file = event?.target?.files?.[0];
+  if (event?.target) event.target.value = '';
+  if (!file) return;
+  try {
+    const text = await file.text();
+    const payload = JSON.parse(text);
+    if (!payload || payload.format !== 'yuki-data' || payload.schemaVersion !== YUKI_SCHEMA_VERSION || !payload.data || Array.isArray(payload.data) || typeof payload.data !== 'object') {
+      throw new Error('formato');
+    }
+    const foreign = Object.keys(payload.data).filter(k => !yukiEsClaveDatos(k));
+    if (foreign.length) throw new Error('claves');
+    Object.keys(payload.data).forEach(k => JSON.stringify(payload.data[k]));
+    const summary = yukiResumenImportacion(payload, yukiCapturarDatosUsuario());
+    yukiImportacionPendiente = {payload, summary, filename:file.name};
+    yukiMostrarVistaImportacion(summary, file.name, payload);
+    yukiDatosTexto('Archivo validado. No se ha modificado ningún dato.');
+  } catch (e) {
+    yukiImportacionPendiente = null;
+    const preview = document.getElementById('yuki-data-import-preview'); if (preview) preview.textContent='';
+    yukiDatosTexto('No se puede importar: el archivo no es una copia válida de Yuki V99.');
+  }
+}
+function cancelarImportacionYuki() {
+  yukiImportacionPendiente = null;
+  const preview = document.getElementById('yuki-data-import-preview'); if (preview) preview.textContent='';
+  yukiDatosTexto('Importación cancelada. No se ha modificado ningún dato.');
+}
+function yukiGuardarCopiaInterna(data, reason, key = 'yuki_backup_preimport_v1') {
+  const backup = yukiConstruirExportacion(data, reason);
+  localStorage.setItem(key, JSON.stringify(backup));
+}
+function yukiRestaurarDatos(data) {
+  Object.keys(yukiCapturarDatosUsuario()).forEach(key => localStorage.removeItem(key));
+  Object.entries(data).forEach(([key,value]) => localStorage.setItem(key, JSON.stringify(value)));
+}
+function aplicarImportacionYuki(mode) {
+  const pending = yukiImportacionPendiente;
+  if (!pending) return;
+  const current = yukiCapturarDatosUsuario();
+  const incoming = pending.payload.data;
+  const next = mode === 'restaurar' ? {...incoming} : {...current, ...incoming};
+  try {
+    yukiGuardarCopiaInterna(current, 'pre-import-' + mode);
+    yukiRestaurarDatos(next);
+    yukiImportacionPendiente = null;
+    const preview = document.getElementById('yuki-data-import-preview'); if (preview) preview.textContent='';
+    yukiDatosTexto(mode === 'restaurar' ? 'Datos restaurados correctamente.' : 'Datos fusionados correctamente.');
+    renderAhoraDashboard();
+  } catch (e) {
+    localStorage.removeItem('yuki_backup_preimport_v1');
+    try { yukiRestaurarDatos(current); yukiDatosTexto('La importación no se pudo completar. Los datos anteriores se han conservado.'); }
+    catch (rollbackError) { yukiDatosTexto('La importación se detuvo y no se pudo confirmar el estado. No continúes usando Yuki hasta revisar la copia exportada.'); }
+  }
 }
 
 // ════════════════════════════════════════════════════════
@@ -4400,6 +4538,35 @@ function initBelleza() {
     localStorage.setItem(KEY, JSON.stringify(plantas));
   }
 })();
+
+// ── MIGRACIÓN IDENTIFICADA · PLANTAS V99 ──────────────
+// No elimina la clave antigua. La clave oficial de lectura pasa a ser yuki_plantas.
+function migrarPlantasV99() {
+  if (localStorage.getItem('yuki_migration_plants_v1_done')) return;
+  const current = yukiCapturarDatosUsuario();
+  let legacy = [], official = [];
+  try { legacy = JSON.parse(localStorage.getItem('plantas') || '[]'); } catch (e) { legacy = []; }
+  official = cargar('plantas', []);
+  if (!Array.isArray(legacy)) legacy = [];
+  if (!Array.isArray(official)) official = [];
+  const merged = [];
+  const positions = new Map();
+  [...legacy, ...official].forEach(item => {
+    if (!item || typeof item !== 'object') return;
+    const identity = item.id != null ? 'id:' + item.id : 'nombre:' + String(item.nombre || '').trim().toLowerCase();
+    if (positions.has(identity)) Object.assign(merged[positions.get(identity)], item);
+    else { positions.set(identity, merged.length); merged.push({...item}); }
+  });
+  try {
+    yukiGuardarCopiaInterna(current, 'pre-plantas-migration-v1', 'yuki_backup_plants_v1');
+    guardar('plantas', merged);
+    localStorage.setItem('yuki_migration_plants_v1_done', JSON.stringify({schemaVersion:1,completedAt:new Date().toISOString(),legacyCount:legacy.length,officialCount:official.length,mergedCount:merged.length}));
+  } catch (e) {
+    localStorage.removeItem('yuki_backup_plants_v1');
+    try { yukiRestaurarDatos(current); } catch (rollbackError) {}
+  }
+}
+migrarPlantasV99();
 
 
 // ── INICIO COMO LIBRO ──────────────────────────────────
