@@ -1504,12 +1504,11 @@ body[data-momento="noche"] .now-action{border-top-color:#756b61!important;backgr
     </div>
     <div class="routine-block routine-choice-block"><span class="routine-time">DESPUÉS · ELIGE UNA PRÁCTICA</span>
       <div class="today-choice-grid">
-        <div class="choice-item"><label><input type="checkbox" data-rutina="yoga-eleccion" onchange="toggleRutina(this)"><span><strong>Yoga miofascial</strong><small>Marcar y abrir práctica</small></span></label><a href="https://campus.yogaprogresivo.com/campus/" target="_blank" rel="noopener">Abrir ↗</a></div>
+        <div class="choice-item"><label><input type="checkbox" data-rutina="yoga-eleccion" onchange="toggleRutina(this)"><span><strong>Yoga miofascial</strong><small>Marina Jaquete · marcar y abrir práctica</small></span></label><a href="https://campus.yogaprogresivo.com/campus/" target="_blank" rel="noopener">Abrir ↗</a></div>
         <div class="choice-item"><label><input type="checkbox" data-rutina="powerstart-eleccion" onchange="toggleRutina(this)"><span><strong>Movimiento funcional · Power Start</strong><small>Marcar y abrir El Método Funcional</small></span></label><a href="https://www.elmetodofuncional.com/" target="_blank" rel="noopener">Abrir ↗</a></div>
         <div class="choice-item"><label><input type="checkbox" data-rutina="paseo-eleccion" onchange="toggleRutina(this)"><span><strong>Caminar</strong><small>10–20 min</small></span></label><span class="choice-no-link">Sin enlace · salir a caminar</span></div>
         <div class="choice-item"><label><input type="checkbox" data-rutina="pilates-eleccion" onchange="toggleRutina(this)"><span><strong>Pilates</strong><small>Bajo impacto · 10 min</small></span></label><a href="https://youtu.be/oHMpC-mR6qU?is=qlFl_FwMnWYNjdir" target="_blank" rel="noopener">Abrir ↗</a></div>
         <div class="choice-item"><label><input type="checkbox" data-rutina="taichi-eleccion" onchange="toggleRutina(this)"><span><strong>Tai Chi / Qigong</strong><small>Elegir sesión</small></span></label><a href="https://youtube.com/playlist?list=PLQrAIBFp_iv10yybHxF7-e9cEi-X1PkJI&si=McyRDUs3bKs4eVj-" target="_blank" rel="noopener">Abrir ↗</a></div>
-        <div class="choice-item"><label><input type="checkbox" data-rutina="fascia-eleccion" onchange="toggleRutina(this)"><span><strong>Movilidad y liberación fascial</strong><small>Marina Jaquete</small></span></label><a href="https://campus.yogaprogresivo.com/campus/" target="_blank" rel="noopener">Abrir ↗</a></div>
         <div class="choice-item"><label><input type="checkbox" data-rutina="piscina" onchange="toggleRutina(this)"><span><strong>Piscina</strong><small>Cuando toque</small></span></label><span class="choice-no-link">Marcar al hacerla</span></div>
       </div>
       <p class="choice-note">Solo una opción. Lo demás puede esperar.</p>
@@ -3813,6 +3812,56 @@ function renderCocina() {
     });
     guardar('recetas_prueba', recetasPrueba);
   }
+  // Recetas domésticas de Lore para probar: se guardan en este bloque,
+  // separadas de las elaboraciones de La Urbana.
+  const salsasCasaParaProbar = [
+    {
+      id:'salsa-tomate-asado-casa', slug:'salsa-tomate-asado-casa',
+      nombre:'Salsa de tomate asado al horno', estado:'Para probar',
+      meta:'Casa · 1,2 kg aprox. · congelar o conservar con método seguro',
+      descripcion:'Tomate asado con cebolla, ajo y aceite: más profundo, dulce y concentrado que una salsa normal.',
+      ingredientes:['1,5 kg de tomates maduros','1 cebolla grande','4 dientes de ajo','3 cucharadas de aceite de oliva','1 cucharadita de sal','Orégano o tomillo','Pimienta negra','1 cucharada de vinagre de Jerez o de manzana, al final'],
+      pasos:['Calienta el horno a 220 °C. Parte los tomates, corta la cebolla en gajos y coloca todo con el ajo, aceite, sal y hierbas.','Asa 45–60 minutos, hasta que los bordes estén bien dorados y haya jugo concentrado, sin quemar el ajo.','Pela el ajo y tritura tomates, cebolla y jugos. Si la quieres más densa, reduce después a nivel 1,5 durante 10–15 minutos.','Añade el vinagre al final, prueba de sal y deja enfriar rápidamente antes de guardar.'],
+      punto:'La profundidad viene del dorado: mejor un borde tostado y dulce que una salsa con sabor a quemado.',
+      conservacion:'Para congelar, guarda porciones ya frías. Para envasar a temperatura ambiente, usa únicamente un procedimiento validado de acidificación y tratamiento térmico; no basta con llenar el tarro caliente. Si no, conservar en nevera o congelador.',
+      etiquetas:['casa','salsa','tomate','en prueba']
+    },
+    {
+      id:'salsa-tomate-mambo', slug:'salsa-tomate-mambo',
+      nombre:'Salsa de tomate clásica', estado:'Para probar',
+      meta:'Casa · cocción lenta · congelar o conservar con método seguro',
+      descripcion:'Salsa de tomate limpia y versátil para pasta, arroz, huevos, guisos y bases de cocina.',
+      ingredientes:['1,5 kg de tomate triturado o tomate fresco pelado','1 cebolla grande','2 dientes de ajo','3 cucharadas de aceite de oliva','1 hoja de laurel','Orégano o albahaca','1 cucharadita de sal','Pimienta negra','Azúcar solo si el tomate está muy ácido'],
+      pasos:['Sofríe la cebolla picada con el aceite a nivel 1,5 durante 10–12 minutos, sin que coja color fuerte.','Añade el ajo 30 segundos y después el tomate, laurel, sal y pimienta.','Cuece destapado a nivel 1,5–2 durante 45–60 minutos, removiendo de vez en cuando, hasta que cubra la cuchara.','Retira el laurel, tritura o pasa por el chino y ajusta sal y acidez. Añade albahaca al final si quieres una salsa más fresca.','Enfría rápidamente antes de guardar.'],
+      punto:'Debe saber a tomate y sofrito, no a azúcar. Si está plana, prueba primero con sal o unas gotas de vinagre antes de endulzar.',
+      conservacion:'Para congelar, divide en raciones ya frías. Para envasar a temperatura ambiente, usa únicamente un procedimiento validado de acidificación y tratamiento térmico; si no, conservar en nevera o congelador.',
+      etiquetas:['casa','salsa','tomate','en prueba']
+    }
+  ];
+  let salsasNuevas = false;
+  salsasCasaParaProbar.forEach(receta => {
+    if (!recetasPrueba.some(r => r.slug === receta.slug)) { recetasPrueba.unshift(receta); salsasNuevas = true; }
+  });
+  if (salsasNuevas) guardar('recetas_prueba', recetasPrueba);
+
+  // La receta de lentejas estaba entre las propias, pero sigue pendiente de probar.
+  // Se migra una sola vez al bloque correcto sin crear una copia.
+  const lentejasPendientes = recetas.find(r => r.slug === 'lentejas-manzana-canela');
+  if (lentejasPendientes) {
+    if (!recetasPrueba.some(r => r.slug === 'lentejas-manzana-canela')) {
+      recetasPrueba.unshift({...lentejasPendientes, estado:'Para probar', meta:`Casa · ${lentejasPendientes.raciones || '3–4'} raciones · ${lentejasPendientes.tiempo || '45 min aprox.'}`});
+      guardar('recetas_prueba', recetasPrueba);
+    }
+    recetas = recetas.filter(r => r.slug !== 'lentejas-manzana-canela');
+    guardar('recetas_propias', recetas);
+  }
+  // La salsa clásica ya existía entre las recetas propias; queda una sola
+  // ficha en «Recetas para probar», sin duplicar el registro.
+  if (recetas.some(r => r.slug === 'salsa-tomate-mambo')) {
+    recetas = recetas.filter(r => r.slug !== 'salsa-tomate-mambo');
+    guardar('recetas_propias', recetas);
+  }
+
   const temporada = informacionTemporada();
   const recetasPruebaHtml = recetasPrueba.map(r => `
     <article class='trial-recipe'>
@@ -3823,26 +3872,11 @@ function renderCocina() {
       ${r.pasos && r.pasos.length ? `<details><summary><b>Proceso completo</b></summary><ol>${r.pasos.map(x => `<li>${x}</li>`).join('')}</ol></details>` : ''}
       ${r.adaptacion ? `<details><summary><b>Adaptación para La Urbana</b></summary><p>${r.adaptacion}</p></details>` : ''}
       ${r.punto ? `<div class='trial-meta' style='margin-top:10px;padding-top:10px;border-top:1px solid var(--linea)'><b>Punto de control:</b> ${r.punto}</div>` : ''}
+      ${r.conservacion ? `<div class='trial-meta' style='margin-top:10px;padding-top:10px;border-top:1px solid var(--linea)'><b>Conservación:</b> ${r.conservacion}</div>` : ''}
       ${r.enlace ? `<a class='trial-source' href='${r.enlace}' target='_blank' rel='noopener'>Ver receta original ↗</a>` : ''}
       ${r.ingredientes && r.ingredientes.length ? `<br><button class='btn btn-outline btn-sm mt-8' onclick='mandarACompra(${JSON.stringify(r.ingredientes)})'>🛒 Añadir ingredientes a Compra</button>` : ''}
     </article>
   `).join('');
-  // Receta inicial guardada para que aparezca también en otros dispositivos/perfiles.
-  if (!recetas.some(r => r.slug === 'lentejas-manzana-canela')) {
-    recetas.push({
-      id: 'lentejas-manzana-canela',
-      slug: 'lentejas-manzana-canela',
-      nombre: 'Lentejas vegetales con manzana y canela',
-      descripcion: 'Guiso vegetal reconfortante: la manzana aporta frescura y la canela un fondo cálido, sin convertirlo en un plato dulce.',
-      raciones: '3–4',
-      tiempo: '45 min aprox.',
-      ingredientes: ['250 g de lenteja pardina', '1 cebolla', '1 zanahoria', '1 puerro o apio', '1 manzana ácida (reineta o Granny Smith)', '1 diente de ajo', '1 tomate rallado o 1 cda de tomate concentrado', '1 hoja de laurel', '1 trozo pequeño de canela en rama (2–3 cm)', '½ cdta de comino', '½ cdta de pimentón dulce', '800–900 ml de agua o caldo vegetal', 'aceite de oliva', 'sal', 'vinagre de manzana o de Jerez'],
-      pasos: ['Sofríe suavemente cebolla, zanahoria, puerro y ajo.', 'Añade el tomate y deja que pierda el agua.', 'Incorpora pimentón, comino, laurel y la canela; remueve unos segundos.', 'Añade las lentejas y el caldo. Cuece a fuego suave 25–30 minutos, según la lenteja.', 'Corta la manzana en dados. Añade la mitad cuando falten unos 8 minutos.', 'Cuando las lentejas estén tiernas, retira canela y laurel. Añade el resto de la manzana cruda o apenas salteada.', 'Termina con unas gotas de vinagre: debe levantar el plato, no saber a vinagre.'],
-      punto: 'Primero debe saberse a lenteja y sofrito; después aparece la canela y al final la manzana fresca. Si queda dulce, corrige con acidez, pimienta o un poco de tomate; si queda plano, prueba primero con sal o acidez antes de añadir más canela.',
-      etiquetas: ['vegetal', 'antiinflamatoria', 'temporada', 'en prueba']
-    });
-    guardar('recetas_propias', recetas);
-  }
   // Recetas domésticas de Lore: se guardan una sola vez en Yuki, sin mezclar con La Urbana.
   const recetasCasaYuki = [
     {
@@ -4219,7 +4253,7 @@ function renderCocina() {
   const preferenciasAlimentacion = String(cargar('sistema_alimentos', '') || '').trim();
   const contenidosAlimentacion = `
     <details id='alimentacion-contenidos' class='card alimentacion-contenidos'>
-      <summary><b>Ver ideas, temporada y recetas guardadas</b></summary>
+      <summary><b>Recetas para probar, menús y lista de compra</b></summary>
       <div class='alimentacion-contenidos-body'>
     <div class='card season-card'>
       <div class='season-kicker'>AHORA · ${temporada.nombre.toUpperCase()}</div>
@@ -4314,6 +4348,8 @@ function renderCocina() {
         <div class='card-title'>Una ayuda cuando la necesites</div>
         <p class='trial-intro'>Si quieres cocinar o aprovechar lo que tienes, Yuki puede consultar tu inventario de Casa.</p>
         <button class='btn btn-outline' type='button' onclick='abrirInventarioDesdeAlimentacion()'>VER QUÉ HAY EN CASA</button>
+        <button class='btn btn-outline' type='button' onclick='abrirRecetasAlimentacion()'>VER RECETAS PARA PROBAR</button>
+        <button class='btn btn-outline' type='button' onclick="abrirAyudaYuki();ayudaYuki('alimentacion')">¿CÓMO USAR ALIMENTACIÓN?</button>
       </div>
     </div>
     <details class='card alimentacion-preferencias'>
@@ -4620,7 +4656,7 @@ function abrirAyudaYuki(){ const modal=document.getElementById('modal-ayuda-yuki
 function cerrarAyudaYuki(){ const modal=document.getElementById('modal-ayuda-yuki'); if(modal) modal.classList.remove('open'); }
 function ayudaYuki(tipo){
   const el=document.getElementById('ayuda-yuki-respuesta'); if(!el)return;
-  const textos={inicio:'Inicio es la puerta de entrada de Yuki. Aquí le dices cómo llegas, cuánto espacio tienes y le preguntas qué tiene sentido ahora. El resto de funciones sigue disponible en la navegación, pero no necesita aparecer todo a la vez.',ahora:'Pulsa «Yuki, ¿qué hago?». Yuki reúne el contexto que pueda ser relevante —clima exterior, cómo llegas, energía, tiempo, pendientes, movimiento, música, preferencias y tu sistema— y te propone una sola cosa. Yuki propone; tú decides.',propuesta:'Una propuesta es un siguiente paso pequeño y concreto para este momento. Puede reunir elementos que pertenecen a una misma escena, pero no es una lista de tareas ni una obligación.',decisiones:'Hecho indica que la propuesta encajó o la realizaste. Otra opción pide a Yuki que vuelva a pensar. No hoy significa que ahora no es el momento y no penaliza la decisión. No me sirve indica que esa propuesta o ese contexto no encajan y ayuda a Yuki a ajustar futuras propuestas.',exterior:'Es el tiempo meteorológico real del lugar: temperatura, cielo, lluvia y viento. Yuki lo utiliza como una variable más del contexto; no es lo mismo que los minutos disponibles. Si no está disponible, puedes continuar sin ese dato.',interior:'Es cómo llegas tú hoy: Alegre, Bien, Neutro, Bajo o Tenso. Puedes añadir qué necesitas sin tener que analizarte.',disponible:'Son los minutos reales que tienes para el siguiente paso: 10, 20 o 30+ minutos. Es decir, cuánto espacio tienes ahora; no es otro formulario ni el tiempo meteorológico.',resto:'El resto de Yuki está en la navegación. Mi Día reúne el recorrido temporal completo; Diario reúne el Cuaderno de climas, el registro íntimo, sueños y observaciones. Mi Mundo reúne Casa, Plantas, Alimentación, Compra, Gastos, Música, Ver y leer y Hobbies; Cuerpo reúne Salud y Cuidado; Orientación reúne Luna, Guía y Reflexiones; y Mi sistema conserva tu dirección, cuidado y mundo. Estas áreas siguen existiendo, pero no compiten con tu primer paso.',musica:'En Música puedes capturar canciones, sesiones y artistas por separado, añadir etiquetas y guardar por qué una canción te cambia el estado. Yuki puede utilizar esa memoria para proponerte movimiento. La reproducción ocurre fuera de Yuki, mediante el enlace externo.',fluir:'FLUIR no es entrenar. Es bailar, explorar, soltar tensión o moverte con música y poca preparación. Puedes elegir Despertar, Soltar o Explorar. Se registra internamente para que Yuki conozca tus ritmos, sin objetivos, rachas ni puntuaciones.',paspar:'Paspar también es una forma de estar. No siempre necesitas hacer algo con tu tiempo. Si Yuki te lo propone, no es una tarea, no tiene una duración obligatoria y no tienes que marcarlo como hecho. Puedes simplemente dejar que el momento sea.',luna:'En Luna puedes ver referencias opcionales para tareas como depilarte, cortarte el pelo o trasplantar. Las fases lunares influyen de forma demostrable en las mareas, pero no hay evidencia concluyente de que hagan crecer más rápido el pelo o mejoren un trasplante. Yuki las muestra como tradición u observación, nunca como obligación ni consejo científico.',escalas:'Ahora es el paso pequeño. Después es una continuación posible. Hoy es una única cosa que merece atención. No son listas que tengas que completar.',sistema:'Mi sistema es la parte editable de Yuki: Mi dirección recoge hacia dónde quieres ir; Mi cuidado, cómo quieres cuidarte; y Mi mundo, los lugares, proyectos, personas e intereses que forman tu vida. No son objetivos que tengas que cumplir.',guardar:'Entra en la sección que corresponda y utiliza su botón Guardar. Lo que escribas queda en este dispositivo.',casa:'En Casa, «Lo que tengo» es una memoria sencilla de tu nevera, despensa y congelador. Pulsa «＋ TENGO ALGO NUEVO» y escribe, por ejemplo, «medio kilo de calabacines», «6 huevos» o «he congelado caldo». Yuki interpreta lo que puede y solo pregunta dónde guardarlo si no lo sabe. Puedes marcar TENGO, QUEDA POCO, SE ACABÓ o GASTAR PRONTO. QUEDA POCO y SE ACABÓ ofrecen «Añadir a la compra», pero tú decides. Al marcar algo como comprado en Compra puedes elegir «Guardar en casa». «¿Qué puedo cocinar?» muestra una idea sencilla usando lo apuntado. No pasa nada si un día no lo actualizas: cuanto mejor sepa Yuki qué hay en casa, mejor podrá ayudarte.',inventario:'Lo que tengo es el inventario de tu casa. No necesitas introducirlo todo de una vez: puedes contarle a Yuki muchas cosas de golpe, añadirlas poco a poco o, cuando esté disponible, utilizar fotografías para hacer una primera carga. Yuki intenta separar cada elemento y clasificarlo; si no puede saber dónde va con seguridad, lo deja para revisar. El inventario puede estar incompleto y sigue siendo útil.',conexion:'Yuki no funciona como una colección de compartimentos independientes. Alimentación, Casa, Cuerpo y las demás partes son dimensiones distintas de tu vida, pero una misma información puede ayudar en varias. Si eliges Alimentación y quieres cocinar, Yuki puede consultar lo que tienes en Casa, tu tiempo, cómo llegas, tus preferencias y tus recetas, sin trasladarte a otra parte ni duplicar datos. Tú eliges por dónde empezar; Yuki conecta lo que resulte útil.',alimentacion:'Cuando entras en Alimentación, no estás entrando en un almacén ni en una dieta. Estás diciendo por dónde quieres empezar. Puedes elegir qué quieres cuidar ahora o decir «No lo sé». Esa elección orienta a Yuki, pero no te encierra en una categoría.',aprende:'Yuki aprende de tus decisiones. Hecho indica que la propuesta encajó; No hoy significa que hoy no era el momento; No me sirve indica que esa propuesta o ese contexto no encajaron; Otra opción le pide volver a pensar. No interpreta un rechazo como falta de disciplina.',ligero:'Modo Ligero todavía no está disponible en esta versión.'};
+  const textos={inicio:'Inicio es la puerta de entrada de Yuki. Aquí le dices cómo llegas, cuánto espacio tienes y le preguntas qué tiene sentido ahora. El resto de funciones sigue disponible en la navegación, pero no necesita aparecer todo a la vez.',ahora:'Pulsa «Yuki, ¿qué hago?». Yuki reúne el contexto que pueda ser relevante —clima exterior, cómo llegas, energía, tiempo, pendientes, movimiento, música, preferencias y tu sistema— y te propone una sola cosa. Yuki propone; tú decides.',propuesta:'Una propuesta es un siguiente paso pequeño y concreto para este momento. Puede reunir elementos que pertenecen a una misma escena, pero no es una lista de tareas ni una obligación.',decisiones:'Hecho indica que la propuesta encajó o la realizaste. Otra opción pide a Yuki que vuelva a pensar. No hoy significa que ahora no es el momento y no penaliza la decisión. No me sirve indica que esa propuesta o ese contexto no encajan y ayuda a Yuki a ajustar futuras propuestas.',exterior:'Es el tiempo meteorológico real del lugar: temperatura, cielo, lluvia y viento. Yuki lo utiliza como una variable más del contexto; no es lo mismo que los minutos disponibles. Si no está disponible, puedes continuar sin ese dato.',interior:'Es cómo llegas tú hoy: Alegre, Bien, Neutro, Bajo o Tenso. Puedes añadir qué necesitas sin tener que analizarte.',disponible:'Son los minutos reales que tienes para el siguiente paso: 10, 20 o 30+ minutos. Es decir, cuánto espacio tienes ahora; no es otro formulario ni el tiempo meteorológico.',resto:'El resto de Yuki está en la navegación. Mi Día reúne el recorrido temporal completo; Diario reúne el Cuaderno de climas, el registro íntimo, sueños y observaciones. Mi Mundo reúne Casa, Plantas, Alimentación, Compra, Gastos, Música, Ver y leer y Hobbies; Cuerpo reúne Salud y Cuidado; Orientación reúne Luna, Guía y Reflexiones; y Mi sistema conserva tu dirección, cuidado y mundo. Estas áreas siguen existiendo, pero no compiten con tu primer paso.',musica:'En Música puedes capturar canciones, sesiones y artistas por separado, añadir etiquetas y guardar por qué una canción te cambia el estado. Yuki puede utilizar esa memoria para proponerte movimiento. La reproducción ocurre fuera de Yuki, mediante el enlace externo.',fluir:'FLUIR no es entrenar. Es bailar, explorar, soltar tensión o moverte con música y poca preparación. Puedes elegir Despertar, Soltar o Explorar. Se registra internamente para que Yuki conozca tus ritmos, sin objetivos, rachas ni puntuaciones.',paspar:'Paspar también es una forma de estar. No siempre necesitas hacer algo con tu tiempo. Si Yuki te lo propone, no es una tarea, no tiene una duración obligatoria y no tienes que marcarlo como hecho. Puedes simplemente dejar que el momento sea.',luna:'En Luna puedes ver referencias opcionales para tareas como depilarte, cortarte el pelo o trasplantar. Las fases lunares influyen de forma demostrable en las mareas, pero no hay evidencia concluyente de que hagan crecer más rápido el pelo o mejoren un trasplante. Yuki las muestra como tradición u observación, nunca como obligación ni consejo científico.',escalas:'Ahora es el paso pequeño. Después es una continuación posible. Hoy es una única cosa que merece atención. No son listas que tengas que completar.',sistema:'Mi sistema es la parte editable de Yuki: Mi dirección recoge hacia dónde quieres ir; Mi cuidado, cómo quieres cuidarte; y Mi mundo, los lugares, proyectos, personas e intereses que forman tu vida. No son objetivos que tengas que cumplir.',guardar:'Entra en la sección que corresponda y utiliza su botón Guardar. Lo que escribas queda en este dispositivo.',casa:'En Casa, «Lo que tengo» es una memoria sencilla de tu nevera, despensa y congelador. Pulsa «＋ TENGO ALGO NUEVO» y escribe, por ejemplo, «medio kilo de calabacines», «6 huevos» o «he congelado caldo». Yuki interpreta lo que puede y solo pregunta dónde guardarlo si no lo sabe. Puedes marcar TENGO, QUEDA POCO, SE ACABÓ o GASTAR PRONTO. QUEDA POCO y SE ACABÓ ofrecen «Añadir a la compra», pero tú decides. Al marcar algo como comprado en Compra puedes elegir «Guardar en casa». «¿Qué puedo cocinar?» muestra una idea sencilla usando lo apuntado. No pasa nada si un día no lo actualizas: cuanto mejor sepa Yuki qué hay en casa, mejor podrá ayudarte.',inventario:'Lo que tengo es el inventario de tu casa. No necesitas introducirlo todo de una vez: puedes contarle a Yuki muchas cosas de golpe, añadirlas poco a poco o, cuando esté disponible, utilizar fotografías para hacer una primera carga. Yuki intenta separar cada elemento y clasificarlo; si no puede saber dónde va con seguridad, lo deja para revisar. El inventario puede estar incompleto y sigue siendo útil.',conexion:'Yuki no funciona como una colección de compartimentos independientes. Alimentación, Casa, Cuerpo y las demás partes son dimensiones distintas de tu vida, pero una misma información puede ayudar en varias. Si eliges Alimentación y quieres cocinar, Yuki puede consultar lo que tienes en Casa, tu tiempo, cómo llegas, tus preferencias y tus recetas, sin trasladarte a otra parte ni duplicar datos. Tú eliges por dónde empezar; Yuki conecta lo que resulte útil.',alimentacion:'Cuando entras en Alimentación, primero eliges qué quieres cuidar. Después puedes abrir «Recetas para probar, menús y lista de compra». Ahí guardas ideas pendientes, abres ingredientes y pulsas «Añadir ingredientes a Compra»; la lista queda en Compra y el inventario sigue estando en Casa. «Mis Recetas & Menús» reúne recetas propias o ya más asentadas. Puedes decir «No lo sé» y volver cuando quieras: esta elección orienta a Yuki, pero no te encierra en una categoría.',aprende:'Yuki aprende de tus decisiones. Hecho indica que la propuesta encajó; No hoy significa que hoy no era el momento; No me sirve indica que esa propuesta o ese contexto no encajaron; Otra opción le pide volver a pensar. No interpreta un rechazo como falta de disciplina.',ligero:'Modo Ligero todavía no está disponible en esta versión.'};
   el.textContent=textos[tipo]||'';
 }
 window.addEventListener('resize',()=>{if(onboardingActive) onboardingRender();});
