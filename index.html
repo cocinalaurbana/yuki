@@ -4500,38 +4500,27 @@ function editarCancion(id){const list=listaMusica('musica_canciones'),s=list.fin
 function editarSesionMusical(id){const list=listaMusica('musica_sesiones'),s=list.find(x=>x.id===id);if(!s)return;s.tags=tagsMusica(prompt('Etiquetas separadas por comas',tagsMusica(s.tags).join(', '))??tagsMusica(s.tags).join(', '));s.notas=prompt('Notas',s.notas||'')??s.notas;guardarListaMusica('musica_sesiones',list);}
 function editarArtistaMusical(id){const list=listaMusica('musica_artistas'),a=list.find(x=>x.id===id);if(!a)return;a.notas=prompt('Notas',a.notas||'')??a.notas;guardarListaMusica('musica_artistas',list);}
 function musicaFluirCompatible(tipo){
-  const criterios={despertar:/ACTIVAR|CALMAR|MOVIMIENTO|DESPERTAR|SUAVE|MANANA|MAÑANA|FLUIR/,soltar:/BAILAR|BAILE|DANCE|ACTIVAR|BUEN ROLLO|MOVIMIENTO|FLUIR/,explorar:/MOVIMIENTO|CAMINAR|CALMAR|CONCENTRAR|EXPLORAR|FLUIR/};
-  const criterio=criterios[tipo]||/MOVIMIENTO|BAILAR|FLUIR/;
-  const canciones=listaMusica('musica_canciones').map(x=>({id:x.id,titulo:x.titulo,artista:x.artista||'',enlace:enlaceMusica(x.enlace),tags:tagsMusica(x.tags),tipo:'cancion',fuente:'Yuki'}));
-  const sesiones=listaMusica('musica_sesiones').map(x=>({id:x.id,titulo:x.nombre,artista:x.tipo||'',enlace:enlaceMusica(x.enlace),tags:tagsMusica(x.tags),tipo:'sesion',fuente:'Yuki'}));
-  const compatibles=[...canciones,...sesiones].filter(x=>x.enlace&&x.tags.some(tag=>criterio.test(tag)));
-  if(tipo==='soltar') return compatibles.find(x=>x.tipo==='cancion')||null;
-  if(tipo==='explorar') return compatibles.find(x=>x.tipo==='sesion')||compatibles.find(x=>x.tipo==='cancion')||null;
-  return compatibles.find(x=>x.tipo==='cancion')||compatibles.find(x=>x.tipo==='sesion')||null;
-}
-function registrarFluirConMusica(tipo){
-  const el=document.getElementById('fluir-practica'); let musica=null;
-  try{musica=el?.dataset.fluiMusica?JSON.parse(el.dataset.fluiMusica):null;}catch(e){}
-  registrarFluir(tipo,musica);
+  const criterios={despertar:/ACTIVAR|CALMAR|MOVIMIENTO|DESPERTAR/,soltar:/BAILAR|ACTIVAR|BUEN ROLLO|MOVIMIENTO/,explorar:/MOVIMIENTO|CAMINAR|CALMAR|CONCENTRAR/};
+  const criterio=criterios[tipo]||/MOVIMIENTO|BAILAR/;
+  const guardadas=[...listaMusica('musica_canciones'),...listaMusica('musica_sesiones')];
+  return guardadas.find(x=>enlaceMusica(x.enlace)&&tagsMusica(x.tags).some(tag=>criterio.test(tag)))||null;
 }
 function empezarFluir(tipo){
   const el=document.getElementById('fluir-practica'); if(!el)return;
   const datos={
-    despertar:{titulo:'Despertar · 3–5 min',texto:'Hazlo de pie o sentada, sin buscar amplitud.',musica:'Para acompañarlo',pasos:['Apoya bien los pies y nota el peso del cuerpo.','Sube los hombros hacia las orejas y suéltalos cinco veces.','Deja que la cabeza mire lentamente a un lado y al otro, sin forzar.','Mueve los brazos como si despejaras espacio delante de ti; respira con naturalidad.','Pasa el peso de un pie al otro y termina con una respiración larga.']},
-    soltar:{titulo:'Soltar · una canción',texto:'No busques hacerlo bien. Empieza moviendo los hombros y deja que el resto del cuerpo entre cuando quiera.',musica:'Hoy Yuki te propone',pasos:['Deja las rodillas blandas y permite un movimiento pequeño.','Sigue lo que te pida el cuerpo durante una canción, sin coreografía.','Si te quedas quieta, vuelve a balancearte o mueve solo las manos.']},
-    explorar:{titulo:'Explorar · 10–20 min',texto:'Explora sin corregirte. Cambia de zona cuando sientas que ya has encontrado algo.',musica:'Para explorar hoy',pasos:['Columna · alarga y redondea suavemente la espalda; deja que el movimiento sea respirado.','Caderas · dibuja círculos pequeños y cambia el peso de un lado al otro.','Brazos · abre, cruza, alcanza y deja caer los brazos sin contar repeticiones.','Espacio · camina despacio por la habitación y cambia la dirección cuando te apetezca.','Cierra quedándote quieta unos instantes y nota qué ha cambiado.']}
+    despertar:{titulo:'Despertar · 3–5 min',texto:'Hazlo de pie o sentada, sin buscar amplitud.',pasos:['Apoya bien los pies y nota el peso del cuerpo.','Sube los hombros hacia las orejas y suéltalos cinco veces.','Deja que la cabeza mire lentamente a un lado y al otro, sin forzar.','Mueve los brazos como si despejaras espacio delante de ti; respira con naturalidad.','Pasa el peso de un pie al otro y termina con una respiración larga.']},
+    soltar:{titulo:'Soltar · una canción',texto:'Pon una canción que te guste. Empieza moviendo los hombros. No busques hacerlo bien. Deja que el resto del cuerpo entre cuando quiera.',pasos:['Deja las rodillas blandas y permite un movimiento pequeño.','Sigue lo que te pida el cuerpo durante una canción, sin coreografía.','Si te quedas quieta, vuelve a balancearte o mueve solo las manos.']},
+    explorar:{titulo:'Explorar · 10–20 min',texto:'Explora sin corregirte. Cambia de zona cuando sientas que ya has encontrado algo.',pasos:['Columna · alarga y redondea suavemente la espalda; deja que el movimiento sea respirado.','Caderas · dibuja círculos pequeños y cambia el peso de un lado al otro.','Brazos · abre, cruza, alcanza y deja caer los brazos sin contar repeticiones.','Espacio · camina despacio por la habitación y cambia la dirección cuando te apetezca.','Cierra quedándote quieta unos instantes y nota qué ha cambiado.']}
   }[tipo];
   if(!datos)return;
   const musica=musicaFluirCompatible(tipo);
-  if(musica){
-    el.dataset.fluiMusica=JSON.stringify({id:musica.id,titulo:musica.titulo,artista:musica.artista,fuente:musica.fuente,enlace:musica.enlace});
-  }else delete el.dataset.fluiMusica;
-  const musicBlock=musica?`<div class='fluir-musica-sugerida'><div class='trial-meta'>${datos.musica}</div><strong>${escMusica(musica.titulo)}</strong>${musica.artista?`<small>${escMusica(musica.artista)}</small>`:''}<a class='btn btn-outline btn-sm' href='${escMusica(musica.enlace)}' target='_blank' rel='noopener' onclick="registrarFluirConMusica('${tipo}')">ABRIR MÚSICA ↗</a><p class='choice-note'>La reproducción se abre fuera de Yuki.</p></div>`:'<p class="choice-note">No tengo ahora una canción o sesión compatible guardada. Puedes empezar sin música.</p>';
-  const noMusicButton=musica?'':`<button class='btn btn-primary btn-sm' type='button' onclick="registrarFluir('${tipo}')">EMPEZAR SIN MÚSICA</button>`;
-  el.innerHTML=`<div class='card fluir-practica-card'><div class='card-title'>${datos.titulo}</div>${musicBlock}<p class='routine-intro'>${datos.texto}</p><ol class='fluir-practica-pasos'>${datos.pasos.map(p=>`<li>${p}</li>`).join('')}</ol>${noMusicButton}</div>`;
+  const musicLink=musica?`<a class='btn btn-outline btn-sm' href='${escMusica(enlaceMusica(musica.enlace))}' target='_blank' rel='noopener' onclick="registrarFluir('${tipo}')">ABRIR MI MÚSICA ↗</a>`:'';
+  const musicNote=musica?`<p class='choice-note'>He encontrado «${escMusica(musica.titulo||musica.nombre||'una sesión guardada')}» con una etiqueta compatible. La reproducción se abre fuera de Yuki.</p>`:'<p class="choice-note">No hay una canción o sesión compatible guardada ahora. Puedes empezar sin música.</p>';
+  el.innerHTML=`<div class='card fluir-practica-card'><div class='card-title'>${datos.titulo}</div><p class='routine-intro'>${datos.texto}</p><ol class='fluir-practica-pasos'>${datos.pasos.map(p=>`<li>${p}</li>`).join('')}</ol>${musicNote}<div class='alimentacion-opciones'>${musicLink}<button class='btn btn-primary btn-sm' type='button' onclick="registrarFluir('${tipo}')">EMPEZAR SIN MÚSICA</button></div></div>`;
   el.scrollIntoView({behavior:'smooth',block:'start'});
 }
-function registrarFluir(tipo,musica=null){const key='fluir_sesiones_'+hoyStr(),list=cargar(key,[]);list.push({tipo,fecha:new Date().toISOString(),musica:musica?{id:musica.id,titulo:musica.titulo,artista:musica.artista||'',fuente:musica.fuente,enlace:musica.enlace}:null});guardar(key,list);const rutina=cargar('rutina_movimiento_'+hoyStr(),{});rutina['fluir-'+tipo]=true;guardar('rutina_movimiento_'+hoyStr(),rutina);toast('Fluir registrado · sin puntuación');}
+function registrarFluir(tipo){const key='fluir_sesiones_'+hoyStr(),list=cargar(key,[]);list.push({tipo,fecha:new Date().toISOString()});guardar(key,list);const rutina=cargar('rutina_movimiento_'+hoyStr(),{});rutina['fluir-'+tipo]=true;guardar('rutina_movimiento_'+hoyStr(),rutina);toast('Fluir registrado · sin puntuación');}
+
 function aplicarAtmoAhora() {
   const h = new Date().getHours();
   const momento = h < 12 ? 'manana' : h < 17 ? 'mediodia' : h < 21 ? 'atardecer' : 'noche';
