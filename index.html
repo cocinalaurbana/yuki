@@ -1773,60 +1773,7 @@ body[data-momento="noche"] .now-action{border-top-color:#756b61!important;backgr
 
 <!-- TAB COCINA -->
 <div id="tab-cocina" class="tab">
-  <div class="card">
-    <div class="card-title">🥬 Dieta Antiinflamatoria</div>
-    <div style="font-size:13px;line-height:1.8;color:var(--texto)">
-      <div style="margin-bottom:8px">✨ <b>Pilares:</b> Alimentos reales, fermentados (chucrut, kéfir), reducción de sal y procesados.</div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
-        <div style="background:rgba(0,128,0,0.05);padding:8px;border-radius:8px">
-          <b style="color:green">SÍ:</b><br>🥦 Crucíferas<br>🐟 Omega 3<br>🫐 Antocianinas<br>🫚 Jengibre/Cúrcuma
-        </div>
-        <div style="background:rgba(255,0,0,0.05);padding:8px;border-radius:8px">
-          <b style="color:red">EVITAR:</b><br>🍭 Azúcar<br>🥖 Harinas refinadas<br>🌻 Aceites semilla<br>🧪 Aditivos
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="card-title">🍳 Recetas Antiinflamatorias</div>
-    <div style="font-size:13px;color:var(--texto)">
-      <details style="margin-bottom:10px">
-        <summary style="font-weight:bold;cursor:pointer;padding:5px;background:rgba(212,175,55,0.1);border-radius:4px">🥣 Desayuno: Kéfir Potenciado</summary>
-        <div style="padding:10px;line-height:1.6">
-          Kéfir de cabra con semillas de lino molidas, arándanos (antocianinas) y una pizca de canela. Ayuda a tu microbiota desde primera hora.
-        </div>
-      </details>
-      <details style="margin-bottom:10px">
-        <summary style="font-weight:bold;cursor:pointer;padding:5px;background:rgba(212,175,55,0.1);border-radius:4px">🥗 Almuerzo: Ensalada de Crucíferas</summary>
-        <div style="padding:10px;line-height:1.6">
-          Brócoli al vapor (poco hecho), caballa o sardinas (Omega 3), chucrut y aliño de aceite de oliva virgen extra con cúrcuma y pimienta negra.
-        </div>
-      </details>
-      <details style="margin-bottom:10px">
-        <summary style="font-weight:bold;cursor:pointer;padding:5px;background:rgba(212,175,55,0.1);border-radius:4px">🍲 Cena: Crema Depurativa</summary>
-        <div style="padding:10px;line-height:1.6">
-          Crema de calabaza y jengibre fresco. El jengibre es un potente antiinflamatorio natural ideal para antes de dormir.
-        </div>
-      </details>
-    </div>
-  </div>
-
-  <div class="card alimentacion-contexto-card">
-    <div class="card-title">Recursos para Alimentación</div>
-    <p class="trial-intro">Alimentación es una parte de tu vida. Cuando sea útil, Yuki puede tener en cuenta lo que tienes guardado en Casa, además de tu tiempo, tus preferencias y tus recetas.</p>
-    <p class="trial-meta">El inventario es compartido: no se traslada ni se duplica.</p>
-    <button class="btn btn-outline" type="button" onclick="abrirInventarioDesdeAlimentacion()">VER QUÉ HAY EN CASA</button>
-  </div>
-
-  <div class="card">
-    <div class="card-title">🍽 Sugerencias de Cena</div>
-    <div style="display:flex;flex-direction:column;gap:8px">
-      <button class="btn btn-outline btn-sm" onclick="toast('Crema de calabaza con semillas y kéfir')">🥣 Crema de verduras</button>
-      <button class="btn btn-outline btn-sm" onclick="toast('Salmón a la plancha con brócoli al vapor')">🐟 Pescado + Verde</button>
-      <button class="btn btn-outline btn-sm" onclick="toast('Tortilla de 2 huevos con espinacas y cúrcuma')">🥚 Proteína limpia</button>
-    </div>
-  </div>
+  <!-- El contenido se ordena aquí mediante renderCocina() para mantener una entrada limpia. -->
 </div>
 
 <!-- TAB CASA -->
@@ -4253,22 +4200,29 @@ function renderCocina() {
   const preferenciasAlimentacion = String(cargar('sistema_alimentos', '') || '').trim();
   const contenidosAlimentacion = `
     <details id='alimentacion-contenidos' class='card alimentacion-contenidos'>
-      <summary><b>Recetas para probar, menús y lista de compra</b></summary>
+      <summary><b>Ver ideas, temporada y recetas guardadas</b></summary>
       <div class='alimentacion-contenidos-body'>
     <div class='card season-card'>
       <div class='season-kicker'>AHORA · ${temporada.nombre.toUpperCase()}</div>
-      <div class='card-title' style='margin-top:6px'>Recetas de temporada</div>
+      <div class='card-title' style='margin-top:6px'>Ideas de temporada</div>
       <p class='season-lead'>${temporada.frase}</p>
       <div class='season-grid'>${temporada.ideas.map(i => `<div class='season-item'><strong>${i[0]}</strong><small>${i[1]}</small></div>`).join('')}</div>
     </div>
     ${temporada.nombre === 'Verano' ? `<div class='card'>
       <div class='card-title'>Esta semana · verano</div>
-      <p class='trial-intro'>Elige dos, repite una si te funciona y deja la receta especial para cuando te apetezca cocinar con calma.</p>
+      <p class='trial-intro'>Ideas guardadas para cuando te apetezca cocinar con calma; no son una lista que tengas que completar.</p>
       <div class='season-grid'>${propuestasVerano.map(r => `<div class='season-item'>
         <strong>${r.nombre}</strong><small>${r.tipo}</small><small style='margin-top:7px'>${r.texto}</small>
         <button class='btn btn-outline btn-sm mt-8' onclick='mandarACompra(${JSON.stringify(r.ingredientes)})'>Añadir ingredientes</button>
       </div>`).join('')}</div>
     </div>` : ''}
+    <div class='card'>
+      <div class='card-title'>Ideas guardadas</div>
+      <p class='trial-intro'>Recursos de cocina que puedes consultar cuando encajen contigo. No son recomendaciones automáticas ni indicaciones médicas.</p>
+      <details style='margin-bottom:10px'><summary><b>🥣 Desayuno: Kéfir Potenciado</b></summary><div class='entrada mt-8'>Kéfir de cabra con semillas de lino molidas, arándanos y una pizca de canela.<br><button class='btn btn-outline btn-sm mt-8' onclick="mandarACompra(['Kéfir de cabra', 'Semillas de lino', 'Arándanos'])">🛒 Añadir ingredientes</button></div></details>
+      <details style='margin-bottom:10px'><summary><b>🥗 Almuerzo: Ensalada de Crucíferas</b></summary><div class='entrada mt-8'>Brócoli al vapor, caballa o sardinas, chucrut y aliño de aceite de oliva virgen extra con cúrcuma y pimienta negra.<br><button class='btn btn-outline btn-sm mt-8' onclick="mandarACompra(['Brócoli', 'Caballa o sardinas', 'Chucrut', 'Aceite de oliva virgen extra', 'Cúrcuma', 'Pimienta negra'])">🛒 Añadir ingredientes</button></div></details>
+      <details><summary><b>🍲 Cena: Crema de calabaza y jengibre</b></summary><div class='entrada mt-8'>Crema de calabaza con jengibre fresco, como idea de cocina dentro de tus criterios personales.<br><button class='btn btn-outline btn-sm mt-8' onclick="mandarACompra(['Calabaza', 'Jengibre fresco'])">🛒 Añadir ingredientes</button></div></details>
+    </div>
     <div class='card'>
       <div class='card-title'>Base vegetal · excepciones con sentido</div>
       <p class='trial-intro'>La mayor parte será vegetal, pero no vamos a renunciar a un buen caldo, unos mejillones o unas sardinitas cuando te apetezcan.</p>
@@ -4280,7 +4234,7 @@ function renderCocina() {
     </div>
     <div class='card trial-recipes'>
       <div class='card-title'>Recetas para probar</div>
-      <p class='trial-intro'>Un lugar para guardar ideas antes de convertirlas en platos de la carta o de casa.</p>
+      <p class='trial-intro'>Ideas guardadas para recorrerlas a tu ritmo. El estado describe dónde está cada receta; no es una puntuación ni una obligación.</p>
       <button class='btn btn-primary btn-sm mt-12 mb-12' onclick='agregarRecetaParaProbar()'>+ Nueva receta para probar</button>
       ${recetasPruebaHtml}
     </div>
@@ -4301,21 +4255,17 @@ function renderCocina() {
         `).join('')}
       </div>
     </div>
-    <div class='card'>
-      <div class='card-title'>Base cotidiana</div>
-      <div style='font-size:13px;line-height:1.6'>
-        <details>
-          <summary><b>Ideas sencillas para comer bien</b></summary>
-          <div class='entrada mt-8'>
-            <b>Kéfir Potenciado</b><br>
-            <button class='btn btn-outline btn-sm mt-8' onclick=\"mandarACompra(['Kéfir de cabra', 'Semillas de lino', 'Arándanos'])\">🛒 Comprar ingredientes</button>
-          </div>
-        </details>
-      </div>
-    </div>
 
       </div>
     </details>
+  `;
+  const criteriosPersonales = `
+    <p class='trial-intro'>Esto es lo que Yuki sabe por ahora. No es una dieta médica ni algo que tengas que seguir.</p>
+    <p class='trial-meta'>Son preferencias y criterios que pueden ayudarte a elegir cuando tú quieras.</p>
+    <div class='entrada mt-8'><b>Lo que quieres priorizar</b><br>Alimentos reales, fermentados como chucrut y kéfir, y una menor presencia de sal y productos procesados.</div>
+    <div class='entrada mt-8'><b>Lo que quieres tener presente</b><br>Crucíferas, pescados ricos en omega 3, frutas con antocianinas y alimentos como jengibre o cúrcuma, dentro de tus elecciones personales.</div>
+    <div class='entrada mt-8'><b>Lo que quieres revisar o limitar</b><br>Azúcar, harinas refinadas, aceites de semillas y aditivos, cuando encaje con lo que quieres priorizar.</div>
+    ${preferenciasAlimentacion ? `<div class='entrada mt-8'><b>Notas guardadas en Mi sistema</b><p style='white-space:pre-wrap;line-height:1.6;margin:6px 0 0'>${invEsc(preferenciasAlimentacion)}</p></div>` : ''}
   `;
   let html = `
     <div class='card alimentacion-necesidad'>
@@ -4328,7 +4278,7 @@ function renderCocina() {
         <button type='button' class='btn btn-outline alimentacion-opcion' data-alimentacion-necesidad='cocinar' onclick="seleccionarNecesidadAlimentacion('cocinar')">🍳 Cocinar</button>
         <button type='button' class='btn btn-outline alimentacion-opcion' data-alimentacion-necesidad='comer-mejor' onclick="seleccionarNecesidadAlimentacion('comer-mejor')">🥦 Comer mejor</button>
         <button type='button' class='btn btn-outline alimentacion-opcion' data-alimentacion-necesidad='compra' onclick="seleccionarNecesidadAlimentacion('compra')">🛒 Organizar la compra</button>
-        <button type='button' class='btn btn-outline alimentacion-opcion' data-alimentacion-necesidad='aprovechar' onclick="seleccionarNecesidadAlimentacion('aprovechar')">🏠 Aprovechar lo que tengo en casa</button>
+        <button type='button' class='btn btn-outline alimentacion-opcion' data-alimentacion-necesidad='aprovechar' onclick="seleccionarNecesidadAlimentacion('aprovechar')">🏠 Aprovechar lo que tengo</button>
         <button type='button' class='btn btn-outline alimentacion-opcion' data-alimentacion-necesidad='aprender' onclick="seleccionarNecesidadAlimentacion('aprender')">📚 Aprender</button>
         <button type='button' class='btn btn-outline alimentacion-opcion' data-alimentacion-necesidad='disfrutar' onclick="seleccionarNecesidadAlimentacion('disfrutar')">✨ Disfrutar más</button>
         <button type='button' class='btn btn-outline alimentacion-opcion' data-alimentacion-necesidad='no-se' onclick="seleccionarNecesidadAlimentacion('no-se')">❓ No lo sé</button>
@@ -4338,24 +4288,24 @@ function renderCocina() {
       <div id='alimentacion-cocinar' class='alimentacion-cocinar' style='display:none'>
       <div class='card-title'>🍳 Cocinar</div>
       <p class='trial-intro'>¿Quieres cocinar con lo que tienes?</p>
-      <p class='trial-meta'>Yuki puede reunir inventario, recetas y el tiempo que tengas, sin convertirlo en una obligación.</p>
+      <p class='trial-meta'>Yuki puede reunir lo que hay en Casa, tus recetas y el tiempo disponible, sin convertirlo en una obligación.</p>
       <div class='alimentacion-opciones'>
         <button class='btn btn-primary' type='button' onclick='proponerCocinaDesdeAlimentacion()'>PROPONER ALGO CON LO QUE TENGO</button>
         <button class='btn btn-outline' type='button' onclick='abrirRecetasAlimentacion()'>VER IDEAS Y RECETAS</button>
       </div>
+      <div id='alimentacion-propuesta' aria-live='polite'></div>
       </div>
       <div class='alimentacion-contexto-card'>
         <div class='card-title'>Una ayuda cuando la necesites</div>
         <p class='trial-intro'>Si quieres cocinar o aprovechar lo que tienes, Yuki puede consultar tu inventario de Casa.</p>
         <button class='btn btn-outline' type='button' onclick='abrirInventarioDesdeAlimentacion()'>VER QUÉ HAY EN CASA</button>
-        <button class='btn btn-outline' type='button' onclick='abrirRecetasAlimentacion()'>VER RECETAS PARA PROBAR</button>
         <button class='btn btn-outline' type='button' onclick="abrirAyudaYuki();ayudaYuki('alimentacion')">¿CÓMO USAR ALIMENTACIÓN?</button>
       </div>
     </div>
     <details class='card alimentacion-preferencias'>
-      <summary><b>Lo que Yuki sabe sobre tus preferencias</b></summary>
-      <p class='trial-intro'>Esto es lo que Yuki sabe por ahora; no es una dieta ni algo que tengas que seguir.</p>
-      ${preferenciasAlimentacion ? `<p style='white-space:pre-wrap;line-height:1.6'>${invEsc(preferenciasAlimentacion)}</p>` : `<p class='trial-meta'>Todavía no has guardado preferencias alimentarias en Mi sistema.</p>`}
+      <summary><b>Criterios personales de alimentación</b></summary>
+      <p class='trial-meta' style='margin-top:8px'><b>Lo que Yuki sabe sobre tus preferencias</b></p>
+      ${criteriosPersonales}
     </details>
     ${contenidosAlimentacion}
   `;
@@ -4382,11 +4332,31 @@ function abrirRecetasAlimentacion() {
   contenidos.scrollIntoView({behavior:'smooth', block:'start'});
 }
 function proponerCocinaDesdeAlimentacion() {
-  const navButton=[...document.querySelectorAll('nav button')].find(b=>b.getAttribute('onclick')?.includes("tab('casa'"));
-  if (navButton) {
-    tab('casa',navButton);
-    setTimeout(() => proponerCocinaInventario(), 80);
+  const el=document.getElementById('alimentacion-propuesta');
+  if(!el)return;
+  const items=inventarioDisponible();
+  if(!items.length){
+    el.innerHTML='<div class="card alimentacion-propuesta"><div class="card-title">PROPUESTA DE YUKI</div><p class="trial-intro">Para proponerte algo con lo que tienes, primero necesito consultar lo que hay apuntado en Casa.</p><button class="btn btn-outline" type="button" onclick="abrirInventarioDesdeAlimentacion()">VER QUÉ HAY EN CASA</button></div>';
+    el.scrollIntoView({behavior:'smooth',block:'start'});
+    return;
   }
+  const pronto=items.filter(x=>x.gastarPronto),pool=pronto.concat(items.filter(x=>!x.gastarPronto));
+  const offset=inventarioCocinaIdx%Math.max(1,pool.length);
+  const orden=pool.slice(offset).concat(pool.slice(0,offset));
+  const propuesta=recetaInventario(orden.slice(0,4));
+  const base=orden.slice(0,3).map(x=>x.producto).join(', ');
+  const razon=pronto.length?'porque tiene en cuenta lo que has marcado para gastar pronto.':'porque parte de lo que tienes apuntado en Casa.';
+  el.dataset.propuesta=propuesta;
+  el.innerHTML='<div class="card alimentacion-propuesta"><div class="card-title">PROPUESTA DE YUKI</div><p class="trial-intro"><b>'+invEsc(propuesta)+'</b></p><p class="trial-meta">¿Por qué encaja ahora? '+invEsc(razon)+'<br><span>Contexto consultado: '+invEsc(base)+'</span></p><div class="alimentacion-opciones"><button class="btn btn-primary" type="button" onclick="decidirPropuestaAlimentacion(\'elegir\')">ELIJO ESTO</button><button class="btn btn-outline" type="button" onclick="decidirPropuestaAlimentacion(\'otra\')">QUIERO OTRA COSA</button><button class="btn btn-outline" type="button" onclick="decidirPropuestaAlimentacion(\'ahora-no\')">AHORA NO</button></div></div>';
+  el.scrollIntoView({behavior:'smooth',block:'start'});
+}
+function decidirPropuestaAlimentacion(decision){
+  const el=document.getElementById('alimentacion-propuesta'); if(!el)return;
+  if(decision==='otra'){inventarioCocinaIdx++;proponerCocinaDesdeAlimentacion();return;}
+  const propuesta=el.dataset.propuesta||'';
+  guardar('alimentacion_ultima_decision',{decision,propuesta,fecha:new Date().toISOString()});
+  if(decision==='elegir'){el.innerHTML='<div class="card alimentacion-propuesta"><p class="trial-intro"><b>Propuesta elegida.</b> Yuki la tendrá en cuenta como una decisión real, sin pedirte ningún registro adicional.</p></div>';}
+  else {el.innerHTML='<div class="card alimentacion-propuesta"><p class="trial-meta">De acuerdo. Lo dejamos aquí por ahora.</p></div>';}
 }
 function toggleStock(item) {
   const stock = cargar('cocina_stock', {});
@@ -4656,7 +4626,7 @@ function abrirAyudaYuki(){ const modal=document.getElementById('modal-ayuda-yuki
 function cerrarAyudaYuki(){ const modal=document.getElementById('modal-ayuda-yuki'); if(modal) modal.classList.remove('open'); }
 function ayudaYuki(tipo){
   const el=document.getElementById('ayuda-yuki-respuesta'); if(!el)return;
-  const textos={inicio:'Inicio es la puerta de entrada de Yuki. Aquí le dices cómo llegas, cuánto espacio tienes y le preguntas qué tiene sentido ahora. El resto de funciones sigue disponible en la navegación, pero no necesita aparecer todo a la vez.',ahora:'Pulsa «Yuki, ¿qué hago?». Yuki reúne el contexto que pueda ser relevante —clima exterior, cómo llegas, energía, tiempo, pendientes, movimiento, música, preferencias y tu sistema— y te propone una sola cosa. Yuki propone; tú decides.',propuesta:'Una propuesta es un siguiente paso pequeño y concreto para este momento. Puede reunir elementos que pertenecen a una misma escena, pero no es una lista de tareas ni una obligación.',decisiones:'Hecho indica que la propuesta encajó o la realizaste. Otra opción pide a Yuki que vuelva a pensar. No hoy significa que ahora no es el momento y no penaliza la decisión. No me sirve indica que esa propuesta o ese contexto no encajan y ayuda a Yuki a ajustar futuras propuestas.',exterior:'Es el tiempo meteorológico real del lugar: temperatura, cielo, lluvia y viento. Yuki lo utiliza como una variable más del contexto; no es lo mismo que los minutos disponibles. Si no está disponible, puedes continuar sin ese dato.',interior:'Es cómo llegas tú hoy: Alegre, Bien, Neutro, Bajo o Tenso. Puedes añadir qué necesitas sin tener que analizarte.',disponible:'Son los minutos reales que tienes para el siguiente paso: 10, 20 o 30+ minutos. Es decir, cuánto espacio tienes ahora; no es otro formulario ni el tiempo meteorológico.',resto:'El resto de Yuki está en la navegación. Mi Día reúne el recorrido temporal completo; Diario reúne el Cuaderno de climas, el registro íntimo, sueños y observaciones. Mi Mundo reúne Casa, Plantas, Alimentación, Compra, Gastos, Música, Ver y leer y Hobbies; Cuerpo reúne Salud y Cuidado; Orientación reúne Luna, Guía y Reflexiones; y Mi sistema conserva tu dirección, cuidado y mundo. Estas áreas siguen existiendo, pero no compiten con tu primer paso.',musica:'En Música puedes capturar canciones, sesiones y artistas por separado, añadir etiquetas y guardar por qué una canción te cambia el estado. Yuki puede utilizar esa memoria para proponerte movimiento. La reproducción ocurre fuera de Yuki, mediante el enlace externo.',fluir:'FLUIR no es entrenar. Es bailar, explorar, soltar tensión o moverte con música y poca preparación. Puedes elegir Despertar, Soltar o Explorar. Se registra internamente para que Yuki conozca tus ritmos, sin objetivos, rachas ni puntuaciones.',paspar:'Paspar también es una forma de estar. No siempre necesitas hacer algo con tu tiempo. Si Yuki te lo propone, no es una tarea, no tiene una duración obligatoria y no tienes que marcarlo como hecho. Puedes simplemente dejar que el momento sea.',luna:'En Luna puedes ver referencias opcionales para tareas como depilarte, cortarte el pelo o trasplantar. Las fases lunares influyen de forma demostrable en las mareas, pero no hay evidencia concluyente de que hagan crecer más rápido el pelo o mejoren un trasplante. Yuki las muestra como tradición u observación, nunca como obligación ni consejo científico.',escalas:'Ahora es el paso pequeño. Después es una continuación posible. Hoy es una única cosa que merece atención. No son listas que tengas que completar.',sistema:'Mi sistema es la parte editable de Yuki: Mi dirección recoge hacia dónde quieres ir; Mi cuidado, cómo quieres cuidarte; y Mi mundo, los lugares, proyectos, personas e intereses que forman tu vida. No son objetivos que tengas que cumplir.',guardar:'Entra en la sección que corresponda y utiliza su botón Guardar. Lo que escribas queda en este dispositivo.',casa:'En Casa, «Lo que tengo» es una memoria sencilla de tu nevera, despensa y congelador. Pulsa «＋ TENGO ALGO NUEVO» y escribe, por ejemplo, «medio kilo de calabacines», «6 huevos» o «he congelado caldo». Yuki interpreta lo que puede y solo pregunta dónde guardarlo si no lo sabe. Puedes marcar TENGO, QUEDA POCO, SE ACABÓ o GASTAR PRONTO. QUEDA POCO y SE ACABÓ ofrecen «Añadir a la compra», pero tú decides. Al marcar algo como comprado en Compra puedes elegir «Guardar en casa». «¿Qué puedo cocinar?» muestra una idea sencilla usando lo apuntado. No pasa nada si un día no lo actualizas: cuanto mejor sepa Yuki qué hay en casa, mejor podrá ayudarte.',inventario:'Lo que tengo es el inventario de tu casa. No necesitas introducirlo todo de una vez: puedes contarle a Yuki muchas cosas de golpe, añadirlas poco a poco o, cuando esté disponible, utilizar fotografías para hacer una primera carga. Yuki intenta separar cada elemento y clasificarlo; si no puede saber dónde va con seguridad, lo deja para revisar. El inventario puede estar incompleto y sigue siendo útil.',conexion:'Yuki no funciona como una colección de compartimentos independientes. Alimentación, Casa, Cuerpo y las demás partes son dimensiones distintas de tu vida, pero una misma información puede ayudar en varias. Si eliges Alimentación y quieres cocinar, Yuki puede consultar lo que tienes en Casa, tu tiempo, cómo llegas, tus preferencias y tus recetas, sin trasladarte a otra parte ni duplicar datos. Tú eliges por dónde empezar; Yuki conecta lo que resulte útil.',alimentacion:'Cuando entras en Alimentación, primero eliges qué quieres cuidar. Después puedes abrir «Recetas para probar, menús y lista de compra». Ahí guardas ideas pendientes, abres ingredientes y pulsas «Añadir ingredientes a Compra»; la lista queda en Compra y el inventario sigue estando en Casa. «Mis Recetas & Menús» reúne recetas propias o ya más asentadas. Puedes decir «No lo sé» y volver cuando quieras: esta elección orienta a Yuki, pero no te encierra en una categoría.',aprende:'Yuki aprende de tus decisiones. Hecho indica que la propuesta encajó; No hoy significa que hoy no era el momento; No me sirve indica que esa propuesta o ese contexto no encajaron; Otra opción le pide volver a pensar. No interpreta un rechazo como falta de disciplina.',ligero:'Modo Ligero todavía no está disponible en esta versión.'};
+  const textos={inicio:'Inicio es la puerta de entrada de Yuki. Aquí le dices cómo llegas, cuánto espacio tienes y le preguntas qué tiene sentido ahora. El resto de funciones sigue disponible en la navegación, pero no necesita aparecer todo a la vez.',ahora:'Pulsa «Yuki, ¿qué hago?». Yuki reúne el contexto que pueda ser relevante —clima exterior, cómo llegas, energía, tiempo, pendientes, movimiento, música, preferencias y tu sistema— y te propone una sola cosa. Yuki propone; tú decides.',propuesta:'Una propuesta es un siguiente paso pequeño y concreto para este momento. Puede reunir elementos que pertenecen a una misma escena, pero no es una lista de tareas ni una obligación.',decisiones:'Hecho indica que la propuesta encajó o la realizaste. Otra opción pide a Yuki que vuelva a pensar. No hoy significa que ahora no es el momento y no penaliza la decisión. No me sirve indica que esa propuesta o ese contexto no encajan y ayuda a Yuki a ajustar futuras propuestas.',exterior:'Es el tiempo meteorológico real del lugar: temperatura, cielo, lluvia y viento. Yuki lo utiliza como una variable más del contexto; no es lo mismo que los minutos disponibles. Si no está disponible, puedes continuar sin ese dato.',interior:'Es cómo llegas tú hoy: Alegre, Bien, Neutro, Bajo o Tenso. Puedes añadir qué necesitas sin tener que analizarte.',disponible:'Son los minutos reales que tienes para el siguiente paso: 10, 20 o 30+ minutos. Es decir, cuánto espacio tienes ahora; no es otro formulario ni el tiempo meteorológico.',resto:'El resto de Yuki está en la navegación. Mi Día reúne el recorrido temporal completo; Diario reúne el Cuaderno de climas, el registro íntimo, sueños y observaciones. Mi Mundo reúne Casa, Plantas, Alimentación, Compra, Gastos, Música, Ver y leer y Hobbies; Cuerpo reúne Salud y Cuidado; Orientación reúne Luna, Guía y Reflexiones; y Mi sistema conserva tu dirección, cuidado y mundo. Estas áreas siguen existiendo, pero no compiten con tu primer paso.',musica:'En Música puedes capturar canciones, sesiones y artistas por separado, añadir etiquetas y guardar por qué una canción te cambia el estado. Yuki puede utilizar esa memoria para proponerte movimiento. La reproducción ocurre fuera de Yuki, mediante el enlace externo.',fluir:'FLUIR no es entrenar. Es bailar, explorar, soltar tensión o moverte con música y poca preparación. Puedes elegir Despertar, Soltar o Explorar. Se registra internamente para que Yuki conozca tus ritmos, sin objetivos, rachas ni puntuaciones.',paspar:'Paspar también es una forma de estar. No siempre necesitas hacer algo con tu tiempo. Si Yuki te lo propone, no es una tarea, no tiene una duración obligatoria y no tienes que marcarlo como hecho. Puedes simplemente dejar que el momento sea.',luna:'En Luna puedes ver referencias opcionales para tareas como depilarte, cortarte el pelo o trasplantar. Las fases lunares influyen de forma demostrable en las mareas, pero no hay evidencia concluyente de que hagan crecer más rápido el pelo o mejoren un trasplante. Yuki las muestra como tradición u observación, nunca como obligación ni consejo científico.',escalas:'Ahora es el paso pequeño. Después es una continuación posible. Hoy es una única cosa que merece atención. No son listas que tengas que completar.',sistema:'Mi sistema es la parte editable de Yuki: Mi dirección recoge hacia dónde quieres ir; Mi cuidado, cómo quieres cuidarte; y Mi mundo, los lugares, proyectos, personas e intereses que forman tu vida. No son objetivos que tengas que cumplir.',guardar:'Entra en la sección que corresponda y utiliza su botón Guardar. Lo que escribas queda en este dispositivo.',casa:'En Casa, «Lo que tengo» es una memoria sencilla de tu nevera, despensa y congelador. Pulsa «＋ TENGO ALGO NUEVO» y escribe, por ejemplo, «medio kilo de calabacines», «6 huevos» o «he congelado caldo». Yuki interpreta lo que puede y solo pregunta dónde guardarlo si no lo sabe. Puedes marcar TENGO, QUEDA POCO, SE ACABÓ o GASTAR PRONTO. QUEDA POCO y SE ACABÓ ofrecen «Añadir a la compra», pero tú decides. Al marcar algo como comprado en Compra puedes elegir «Guardar en casa». «¿Qué puedo cocinar?» muestra una idea sencilla usando lo apuntado. No pasa nada si un día no lo actualizas: cuanto mejor sepa Yuki qué hay en casa, mejor podrá ayudarte.',inventario:'Lo que tengo es el inventario de tu casa. No necesitas introducirlo todo de una vez: puedes contarle a Yuki muchas cosas de golpe, añadirlas poco a poco o, cuando esté disponible, utilizar fotografías para hacer una primera carga. Yuki intenta separar cada elemento y clasificarlo; si no puede saber dónde va con seguridad, lo deja para revisar. El inventario puede estar incompleto y sigue siendo útil.',conexion:'Yuki no funciona como una colección de compartimentos independientes. Alimentación, Casa, Cuerpo y las demás partes son dimensiones distintas de tu vida, pero una misma información puede ayudar en varias. Si eliges Alimentación y quieres cocinar, Yuki puede consultar lo que tienes en Casa, tu tiempo, cómo llegas, tus preferencias y tus recetas, sin trasladarte a otra parte ni duplicar datos. Tú eliges por dónde empezar; Yuki conecta lo que resulte útil.',alimentacion:'Alimentación no es una lista de cosas que tienes que hacer. Puedes entrar según lo que necesites ahora: cocinar, comer, comprar, aprovechar lo que tienes, aprender o simplemente disfrutar. Primero eliges un punto de partida. Después puedes consultar los recursos que tengan sentido para ese momento. Yuki puede mirar lo que tienes en Casa, tus preferencias y tus recetas, pero no decide por ti ni convierte una opción en una obligación.',aprende:'Yuki aprende de tus decisiones. Hecho indica que la propuesta encajó; No hoy significa que hoy no era el momento; No me sirve indica que esa propuesta o ese contexto no encajaron; Otra opción le pide volver a pensar. No interpreta un rechazo como falta de disciplina.',ligero:'Modo Ligero todavía no está disponible en esta versión.'};
   el.textContent=textos[tipo]||'';
 }
 window.addEventListener('resize',()=>{if(onboardingActive) onboardingRender();});
