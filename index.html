@@ -1777,7 +1777,7 @@ body[data-momento="noche"] .now-action{border-top-color:#756b61!important;backgr
     <div class="alimentacion-opciones">
       <button class="btn btn-primary" type="button" onclick="exportarDatosYuki()">EXPORTAR MIS DATOS</button>
       <button class="btn btn-outline" type="button" onclick="document.getElementById('yuki-data-import-file').click()">IMPORTAR MIS DATOS</button>
-      <input id="yuki-data-import-file" type="file" accept="application/json,.json" style="display:none" onchange="prepararImportacionDatos(event)">
+      <input id="yuki-data-import-file" type="file" accept="application/json,.json" aria-label="Seleccionar copia de datos de Yuki" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0" onchange="prepararImportacionDatos(event)">
     </div>
     <div id="yuki-data-status" class="system-note" role="status" aria-live="polite" style="margin-top:12px"></div>
     <div id="yuki-data-import-preview" style="margin-top:12px"></div>
